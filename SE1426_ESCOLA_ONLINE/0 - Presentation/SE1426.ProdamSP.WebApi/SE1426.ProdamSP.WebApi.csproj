@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>ac84b393-2df7-4be2-9fba-8dbddacabc93</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\LogradouroController.cs" />
+    <Compile Remove="Models\DadosPreNatalEolSigaModelRetorno.cs" />
+    <Compile Remove="Models\DadosPreNatalSIGAModelRetorno.cs" />
+    <Compile Remove="Models\SolicitacaoMatriculaPreNatalModelRetorno.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Fonetica.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.2" />
+    <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
+    <PackageReference Include="ElmahCore.Prodam.LogCorporativo" Version="1.0.0" />
+    <PackageReference Include="ElmahCore.Prodam.Mvc" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\1 - Application\ProdamSP.Application\ProdamSP.Application.csproj" />
+    <ProjectReference Include="..\..\2 - Business\ProdamSP.Business\ProdamSP.Business.csproj" />
+    <ProjectReference Include="..\..\3 - Domain\ProdamSP.Domain\ProdamSP.Domain.csproj" />
+    <ProjectReference Include="..\..\4 - Infrastructure\4.1 - Data\ProdamSP.Data\ProdamSP.Data.csproj" />
+    <ProjectReference Include="..\..\4 - Infrastructure\4.2 - CrossCutting\ProdamSP.CrossCutting.InversionOfControl\ProdamSP.CrossCutting.InversionOfControl.csproj" />
+    <ProjectReference Include="..\..\4 - Infrastructure\4.2 - CrossCutting\ProdamSP.CrossCutting.MemoryCache\ProdamSP.CrossCutting.MemoryCache.csproj" />
+    <ProjectReference Include="..\..\4 - Infrastructure\4.2 - CrossCutting\ProdamSP.CrossCutting.Services\ProdamSP.CrossCutting.Services.csproj" />
+    <ProjectReference Include="..\..\4 - Infrastructure\4.2 - CrossCutting\ProdamSP.CrossCutting\ProdamSP.CrossCutting.csproj" />
+    <ProjectReference Include="..\..\4 - Infrastructure\4.3 - Utils\ProdamSP.CAC.Token.Std\ProdamSP.CAC.Token.Std.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == '' Or '$(Configuration)' == 'Debug'">
+    <EnvironmentName>Development</EnvironmentName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' != '' AND '$(Configuration)' != 'Debug' ">
+    <EnvironmentName>Release</EnvironmentName>
+  </PropertyGroup>
+  
+</Project>

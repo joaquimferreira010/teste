@@ -1,0 +1,100 @@
+@inject NavigationManager NavigationManager
+
+@inject DadosPreNatalEOLSIGAModel dadosPreNatalModel
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IJSRuntime JSRuntime;
+
+<div id="skipto-menu" class="col s12 m4 l3 sidemenu secondary-color notprint">
+    <nav>
+        <ul class="right">
+            <li class="active" id="navCadastro">
+                <div class="menu-item">
+                    <a @onclick="@(e=>ConfirmarNavegacao("cadastro"))" @onclick:preventDefault Match="NavLinkMatch.Prefix" title="Cadastro pré-natal" alt="Cadastro pré-natal" tabindex="16">
+                        <span aria-hidden="true"></span> Cadastro pré-natal
+                    </a>
+                </div>
+            </li>
+
+            @if (!string.IsNullOrEmpty(codEOLPreNatal) && codEOLPreNatal != "0")
+            {
+
+    <li class="active" id="navConsultaInscricoes">
+        <div class="menu-item">
+            <a href="" @onclick="@(e=>ConfirmarNavegacao("consultaInscricoes"))" @onclick:preventDefault Match="NavLinkMatch.Prefix" title="Consulta de inscrições" alt="Item de menu Consulta de inscrições" tabindex="17">
+                <span aria-hidden="true"></span> Consulta de inscrições
+            </a>
+        </div>
+    </li>
+
+                    <li class="active" id="navInformarNascimento">
+                        <div class="menu-item">
+                            <NavLink href="informarNascimento" Match="NavLinkMatch.Prefix" title="Informar nascimento" alt="Item de menu Informar nascimento" tabindex="18">
+                                <img src="img/icone_InformarNascimento.png" alt="Informar Nascimento">
+                                <span aria-hidden="true"></span> Informar nascimento
+                            </NavLink>
+                        </div>
+                    </li>}
+        </ul>
+    </nav>
+</div>
+
+<!--modal confirmacao navegacao-------------------------------------------->
+<div id="modal_confirmacao_navegacao" class="modal modal_confirmacao">
+    <div class="modal-content">
+        <div class="row no-margin-bottom">
+            <div class="col s12 texto_centralizado texto_modal">
+                <p><strong>As informações serão perdidas, deseja prosseguir?</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer center-align">
+        <button class="btn-flat modal-close cancelar" @onclick="() => SetarMenuAtivo()" type="button" title="Cancelar">Não</button>
+        <button class="btn-flat btn-eol modal-close" @onclick="() => ProsseguirNavegacao()" title="Confirmar">Sim</button>
+    </div>
+</div>
+<!-- fim modal confirmacao------------------------------------------------------->
+
+
+
+@code { private string codEOLPreNatal { get; set; }
+    private string numeroCns { get; set; }
+    private string numeroSisPreNatal { get; set; }
+    private string dataPrevisaoParto { get; set; }
+    private string dataCadastroPreNatal { get; set; }
+    private string solicVagaPendente { get; set; }
+    private string pagina { get; set; } = "";
+    const string sessionSolicVagaPendente = "solicVagaPendente";
+
+    protected override async Task OnInitializedAsync()
+    {
+        codEOLPreNatal = await sessionStorage.GetItemAsync<string>("codEOLPreNatal");
+        codEOLPreNatal = Util.Decriptar(codEOLPreNatal);
+    }
+
+    protected async Task ConfirmarNavegacao(string paginaNavegacao)
+    {
+        pagina = paginaNavegacao;
+        solicVagaPendente = await sessionStorage.GetItemAsync<string>("solicVagaPendente");
+        solicVagaPendente = Util.Decriptar(solicVagaPendente);
+
+        if (solicVagaPendente == "N")
+        {
+            NavigationManager.NavigateTo(pagina);
+        }
+        else {
+            await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modal_confirmacao_navegacao");
+        }
+    }
+    protected async Task ProsseguirNavegacao() {
+
+        await sessionStorage.SetItemAsync(sessionSolicVagaPendente, Util.Encriptar("N"));
+        NavigationManager.NavigateTo(pagina);
+    }
+    protected async Task SetarMenuAtivo()
+    {
+        await JSRuntime.InvokeVoidAsync("funcoes.ativarNavItemMenu", "navInformarNascimento");
+    }
+
+
+    }
+

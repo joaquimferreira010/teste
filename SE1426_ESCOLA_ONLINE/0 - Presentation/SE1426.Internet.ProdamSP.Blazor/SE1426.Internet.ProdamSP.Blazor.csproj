@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <PublishIISAssets>true</PublishIISAssets>
+    <UserSecretsId>f51c3ae3-251e-4319-be8b-63187806ec70</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Helpers\HtmlHelpers.cs" />
+    <Compile Remove="Models\DadosPreNatalEOLSIGAContainer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.SessionStorage" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    <PackageReference Include="ElmahCore.Prodam.LogCorporativo" Version="1.0.0" />
+    <PackageReference Include="ElmahCore.Prodam.Mvc" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\js\additional-methods.min.js" />
+    <None Include="wwwroot\assets\js\funcoes-acessibilidade.js" />
+    <None Include="wwwroot\assets\js\functions.js" />
+    <None Include="wwwroot\assets\js\jquery.cookie.js" />
+    <None Include="wwwroot\assets\js\jquery.mask.min.js" />
+    <None Include="wwwroot\assets\js\jquery.min.js" />
+    <None Include="wwwroot\assets\js\jquery.validate.min.js" />
+    <None Include="wwwroot\assets\js\materialize.js" />
+    <None Include="wwwroot\assets\js\materialize.min.js" />
+    <None Include="wwwroot\assets\js\messages_pt_BR.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\2 - Business\ProdamSP.Business\ProdamSP.Business.csproj" />
+    <ProjectReference Include="..\..\3 - Domain\ProdamSP.Domain\ProdamSP.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == '' Or '$(Configuration)' == 'Debug'">
+    <EnvironmentName>Development</EnvironmentName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' != '' AND '$(Configuration)' != 'Debug' ">
+    <EnvironmentName>Release</EnvironmentName>
+  </PropertyGroup>
+</Project>

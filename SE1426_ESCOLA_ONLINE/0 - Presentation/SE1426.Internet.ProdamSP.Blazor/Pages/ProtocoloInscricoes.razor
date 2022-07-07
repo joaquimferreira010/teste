@@ -1,0 +1,273 @@
+﻿@page "/protocoloInscricoes"
+@layout SimpleLayout
+
+@inject HttpClient Http;
+@inject IJSRuntime JSRuntime;
+@inject IConfiguration Configuration
+@inject RestService restService
+@inject NavigationManager NavigationManager
+
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@if (loading == true)
+{
+<div id="spinner"><div class="spinner" title="Carregando"></div></div> }
+
+@if (listaPreNatal != null && listaPreNatal.Count() > 0)
+{
+
+<main>
+    <div class="container content">
+        <div class="row">
+            <section>
+                <div id="skipto-content" class="col s12 content-box tamanho_box">
+                    <div id="imprimir">
+                        <div class="row">
+                            <div class="col s12 m3 alinhamento_mobile_center">
+                                <img src="img/logo_Educacao_Protocolo.png" alt="PMSP">
+                            </div>
+                            <div class="col s12 m6 alinhamento_mobile_center">
+                                <p class="paragrafo_menor_mobile">
+                                    <span>Prefeitura do Município de São Paulo</span><br>
+                                    Secretaria Municipal de Educação - SME <br>
+                                    Diretoria Regional de Educação
+                                </p>
+                            </div>
+                            <div class="col s12 m3">
+                                <p>Protocolo emitido em: <br> <strong>@DateTime.Today.ToString("dd/MM/yyyy")</strong></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 center-align">
+                                <h3 class="titulo_mobile">Protocolo de inscrição</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m4 col_largura">
+                                <label>Nome da mãe</label>
+                                <p class="paragrafo_menor_mobile">@listaPreNatal[0].Responsavel.NmResponsavel.ToString().Trim()</p>
+                            </div>
+                            <div class="col s12 m4 col_largura">
+                                <label>Nº CNS (Nº SUS)</label>
+                                <p class="paragrafo_menor_mobile">@listaPreNatal[0].MatriculaPreNatal.NrCnsResponsavelFormatado</p>
+                            </div>
+                            <div class="col s12 m4 col_largura">
+                                <label>Nº SISPRENATAL</label>
+                                <p class="paragrafo_menor_mobile">@listaPreNatal[0].MatriculaPreNatal.NrPreNatalFormatado</p>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col s12 m4 col_largura">
+                                <label>Tipo de gestação</label>
+                                @if (@listaPreNatal.Count() == 1)
+                                {
+            <p>Única</p> }
+        else
+        {
+<p class="paragrafo_menor_mobile">Múltipla (@listaPreNatal.Count() gêmeos)</p>}
+                            </div>
+                            <div class="col s12 m4 col_largura">
+                                <label>Nascimento previsto</label>
+                                <p class="paragrafo_menor_mobile"> @listaPreNatal[0].MatriculaPreNatal.DtNascimentoPrevistaFormatada</p>
+                            </div>
+                            <div class="col s12 m4 col_largura">
+                                <label>Desejada p/ matrícula</label>
+                                <p class="paragrafo_menor_mobile">@listaPreNatal[0].MatriculaPreNatal.DtIntencaoMatriculaFormatada</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12 m4">
+                                <p>Nº de protocolos relacionados</p>
+                            </div>
+                            <div class="col s12 m8">
+
+                                @foreach (var item in listaPreNatal)
+                                {
+            <p>
+                <strong>@item.MatriculaPreNatal.CdSolicitacaoMatriculaFormatado</strong>
+                @if (@listaPreNatal.Count() > 1 && item.MatriculaPreNatal.DtInscricaoEol.Value.Date > MenorDtInscricaoEolSolicitacao)
+                {
+<span> (Gerado após data original) </span>}
+            </p>}
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 info-protocolo">
+                                <p>Em caso de necessidade de alteração de data desejada para matrícula, procure a escola mais próxima.</p>
+                                <p><strong>Observação:</strong> Alteração de data pode ocasionar a perda da garantia de matrícula.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row notprint">
+                        <div class="col s12 center-align">
+                            <button class="btn-flat btn-voltar" type="button" @onclick="@Voltar" tabindex="20">Voltar</button>
+                            <button class="btn-flat btn-eol" type="button" @onclick="@Imprimir" tabindex="21">Imprimir</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+}
+                <style>
+
+                    @@media print {
+
+                        main {
+                            width: 100%;
+                            display: block;
+                        }
+
+                        .imprimir {
+                            width: 100%;
+                        }
+
+                        hr {
+                            float: left;
+                            width: 100%;
+                        }
+
+                        .row {
+                            width: 100%;
+                            float: left;
+                            display: block;
+                        }
+
+                        .col {
+                            display: block;
+                            float: left;
+                            padding: 0 0.75rem;
+                        }
+
+                        .col_largura {
+                            width: 25% !important;
+                        }
+
+                        header, footer, .notprint, button {
+                            display: none !important;
+                        }
+                    }
+                </style>
+
+                                @code { private string codEOLPreNatal { get; set; }
+                                    private string numeroCns { get; set; }
+                                    private string numeroSisPreNatal { get; set; }
+                                    private string mensagem_retorno { get; set; }
+                                    private bool loading = false;
+
+                                    private List<PreNatalModel> listaPreNatal;
+                                    private DateTime MenorDtInscricaoEolSolicitacao { get; set; }
+
+
+                                    protected override async Task OnInitializedAsync()
+
+                                    {
+                                        loading = true;
+                                        codEOLPreNatal = await sessionStorage.GetItemAsync<string>("codEOLPreNatal");
+                                        codEOLPreNatal = Util.Decriptar(codEOLPreNatal);
+
+                                        if (!string.IsNullOrEmpty(codEOLPreNatal))
+                                        {
+
+                                            numeroCns = await sessionStorage.GetItemAsync<string>("numeroCns");
+                                            numeroCns = Util.Decriptar(numeroCns);
+
+                                            numeroSisPreNatal = await sessionStorage.GetItemAsync<string>("numeroSisPreNatal");
+                                            numeroSisPreNatal = Util.Decriptar(numeroSisPreNatal);
+
+
+                                            await Consultar();
+
+                                        }
+                                        else
+                                        {
+                                            loading = false;
+                                            NavigationManager.NavigateTo("/");
+                                        }
+                                        loading = false;
+                                    }
+
+                                    protected override async Task OnAfterRenderAsync(bool firstRender)
+                                    {
+                                        await JSRuntime.InvokeVoidAsync("setTitle", "Impressão de protocolo de inscrição");
+                                    }
+
+                                    private async Task Consultar()
+                                    {
+                                        try
+                                        {
+                                            mensagem_retorno = "";
+
+                                            if (string.IsNullOrEmpty(numeroCns) && string.IsNullOrEmpty(numeroSisPreNatal))
+                                            {
+                                                mensagem_retorno = "Campo(s) obrigatório(s) não informado(s).";
+                                                await ExibirMensagem(mensagem_retorno);
+                                                return;
+                                            }
+
+                                            if (string.IsNullOrEmpty(numeroCns) || numeroCns.Replace(" ", "").Trim() == "")
+                                            {
+                                                mensagem_retorno = "Número do CNS é obrigatório.";
+                                                await ExibirMensagem(mensagem_retorno);
+                                                return;
+                                            }
+
+                                            if (string.IsNullOrEmpty(numeroSisPreNatal) || numeroSisPreNatal.Replace(" ", "").Trim() == "")
+                                            {
+                                                mensagem_retorno = "Número do cartão Pré-natal é obrigatório.";
+                                                await ExibirMensagem(mensagem_retorno);
+                                                return;
+                                            }
+
+
+                                            var listaPreNatalRetorno = await restService.BuscarSolicitacoesPreNatal(numeroCns, numeroSisPreNatal);
+                                            if (listaPreNatalRetorno.Count() > 0)
+                                            {
+
+                                                listaPreNatal = listaPreNatalRetorno;
+                                                if (listaPreNatalRetorno.Count() > 1)
+                                                {
+                                                    MenorDtInscricaoEolSolicitacao = DateTime.MinValue;
+                                                    foreach (var item in listaPreNatalRetorno)
+                                                    {
+                                                        if (MenorDtInscricaoEolSolicitacao == DateTime.MinValue || item.MatriculaPreNatal.DtInscricaoEol.Value.Date < MenorDtInscricaoEolSolicitacao)
+                                                        {
+                                                            MenorDtInscricaoEolSolicitacao = item.MatriculaPreNatal.DtInscricaoEol.Value.Date;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            //ver mensagem de exception
+                                            loading = false;
+                                            mensagem_retorno = "Ocorreu um erro na consulta de inscrições Pré-Natal." + ex.Message;
+                                            await ExibirMensagem(mensagem_retorno);
+                                        }
+                                    }
+
+
+                                    private async Task Imprimir()
+                                    {
+                                        await JSRuntime.InvokeVoidAsync("funcoes.imprimir");
+                                    }
+                                    private void Voltar()
+                                    {
+                                        NavigationManager.NavigateTo("consultaInscricoes");
+                                    }
+
+                                    protected async Task ExibirMensagem(string mensagem)
+                                    {
+                                        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalMensagem", mensagem);
+                                        return;
+                                    }
+                                    }

@@ -1,0 +1,45 @@
+﻿{
+  "ProviderId": "Microsoft.VisualStudio.ConnectedService.Wcf",
+  "Version": "15.0.30730.948",
+  "ExtendedData": {
+    "inputs": [
+      "http://localhost/PP9038_LogCorporativo/PaginasPublicas/LogAplicacao.asmx"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "namespaceMappings": [
+      "*, LogCorporativo"
+    ],
+    "references": [
+      "C:\\Pessoal\\GitSource\\ElmahCore-master (1)\\ElmahCore-master\\ElmahCore.LogCorporativoProdam\\bin\\Debug\\netstandard2.0\\ElmahCore.dll",
+      "Microsoft.AspNetCore.Hosting.Abstractions, {Microsoft.AspNetCore.Hosting.Abstractions, 2.1.1}",
+      "Microsoft.AspNetCore.Hosting.Server.Abstractions, {Microsoft.AspNetCore.Hosting.Server.Abstractions, 2.1.1}",
+      "Microsoft.AspNetCore.Http.Abstractions, {Microsoft.AspNetCore.Http.Abstractions, 2.1.1}",
+      "Microsoft.AspNetCore.Http.Features, {Microsoft.AspNetCore.Http.Features, 2.1.1}",
+      "Microsoft.AspNetCore.WebUtilities, {Microsoft.AspNetCore.WebUtilities, 2.1.1}",
+      "Microsoft.Extensions.Configuration.Abstractions, {Microsoft.Extensions.Configuration.Abstractions, 2.1.1}",
+      "Microsoft.Extensions.DependencyInjection.Abstractions, {Microsoft.Extensions.DependencyInjection.Abstractions, 2.1.1}",
+      "Microsoft.Extensions.FileProviders.Abstractions, {Microsoft.Extensions.FileProviders.Abstractions, 2.1.1}",
+      "Microsoft.Extensions.Hosting.Abstractions, {Microsoft.Extensions.Hosting.Abstractions, 2.1.1}",
+      "Microsoft.Extensions.Logging.Abstractions, {Microsoft.Extensions.Logging.Abstractions, 2.1.1}",
+      "Microsoft.Extensions.Options, {Microsoft.Extensions.Options, 2.1.1}",
+      "Microsoft.Extensions.Primitives, {Microsoft.Extensions.Primitives, 2.1.1}",
+      "Microsoft.Net.Http.Headers, {Microsoft.Net.Http.Headers, 2.1.1}",
+      "System.Buffers, {System.Buffers, 4.5.0}",
+      "System.Memory, {System.Memory, 4.5.1}",
+      "System.Runtime.CompilerServices.Unsafe, {System.Runtime.CompilerServices.Unsafe, 4.5.1}",
+      "System.ServiceModel, {System.ServiceModel.Primitives, 4.4.4}",
+      "System.ServiceModel.Duplex, {System.ServiceModel.Duplex, 4.4.4}",
+      "System.ServiceModel.Http, {System.ServiceModel.Http, 4.4.4}",
+      "System.ServiceModel.NetTcp, {System.ServiceModel.NetTcp, 4.4.4}",
+      "System.ServiceModel.Primitives, {System.ServiceModel.Primitives, 4.4.4}",
+      "System.ServiceModel.Security, {System.ServiceModel.Security, 4.4.4}",
+      "System.Text.Encodings.Web, {System.Text.Encodings.Web, 4.5.0}"
+    ],
+    "sync": true,
+    "targetFramework": "netstandard2.0",
+    "typeReuseMode": "All"
+  }
+}

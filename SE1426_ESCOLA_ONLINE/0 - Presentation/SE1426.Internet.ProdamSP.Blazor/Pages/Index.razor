@@ -1,0 +1,368 @@
+@layout InicialLayout
+@page "/"
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@using Models
+@using Microsoft.Extensions.Configuration
+@using SE1426.Internet.ProdamSP.Blazor.Services
+@inject IConfiguration Configuration
+@inject RestService restService
+@inject CaptchaService captchaService
+@inject NavigationManager NavigationManager
+@using Newtonsoft.Json
+
+@inject DadosPreNatalEOLSIGAModel dadosPreNatalModel
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject StateContainer StateContainer
+@inject CaptchaModel dadosCaptchaModel
+
+@inject ServiceErrorLog _logger
+@using ElmahCore;
+
+<main>
+    <fieldset class="fieldset_border">
+        <section>
+            @*modal imagem carteirinha*@
+            <div id="modal_carteirinha" class="modal col s12 m4 l3 carteirinha_mobile">
+                <div class="modal-header  right-align espacamento_div_topo">
+                    <button class="btn-flat modal-close cancelar" type="button"><img src="img/btn_Fechar.png" alt="Fechar"></button>
+                </div>
+                <div class="modal-content">
+                    <div class="row">
+                        <div class="col s12 m3 l3 texto_centralizado texto_modal">
+                            <img src="img/img_CartaoCNS.png" alt="Imagem ilustrativa: o verso do Cartão Nacional de Saúde apresenta o número CNS composto de 15 números." class="imagem_carteirinha_mobile">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="skipto-content" class="container home-content tamanho_box">
+                <div class="row">
+                    <div class="col s12 m4 l3 home-txt">
+                        <p>
+                            Mãe, você que faz parte do <strong>Programa Mãe Paulistana</strong>, agora pode cadastrar seu bebê, durante o período de pré-natal, como futuro candidato a vaga nas creches da cidade de São Paulo. Desta forma, você terá prioridade no atendimento. Basta digitar os números do CNS e do cartão de Pré-natal ao lado e fazer o cadastro.
+                        </p>
+                        <p><img src="img/icone_Cadastrar.png" alt="Ícone cadastrar"> Não faço parte do programa Mãe Paulistana. <a href="https://www.prefeitura.sp.gov.br/cidade/secretarias/saude/programas/mae_paulistana/index.php?p=5657" target="_blank" tabindex="20"><strong>Quero participar</strong>.</a></p>
+                        <p><img src="img/icone_Regras.png" alt="Ícone regras">Veja as <a href="" tabindex="21"><strong>regras</strong></a> para participar do programa de creches.</p>
+                    </div>
+                    <div class="col s12 m4 l3 home-form">
+                        <form>
+                            @*@if (!string.IsNullOrEmpty(@mensagem_retorno))
+        {
+            <MensagemDiv ExibirMensagem="true" Mensagem="@mensagem_retorno"></MensagemDiv>
+        }*@
+
+                            <div class="row">
+                                <div class="col s9 m7">
+                                    <div class="form-item">
+                                        <label for="cns">Nº CNS (Nº SUS) da mãe</label>
+                                        <input placeholder="000 0000 0000 0000" id="cns" type="text" @bind="@numeroCns" title=" Número CNS da mãe" tabindex="22">
+                                    </div>
+                                </div>
+                                <div class="col s3 m2">
+                                    <a href="" class="info-form" @onclick="@MostrarPopupCarteirinha" @onclick:preventDefault tabindex="23" title="Ajuda"><img src="assets/img/icone_Dica.png" alt="Ícone dica"></a>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s9 m7">
+                                    <div class="form-item">
+                                        <label for="cpn">Nº SISPRENATAL</label>
+                                        <input placeholder="000000000000000" id="cpn" type="text" @bind="@numeroSisPreNatal" title="Número SIS Pré-natal" tabindex="24">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s9 m8 imagemCaptcha">
+                                    <img id="captchaImagem"
+                                         class="@classe_captchaImagem"
+                                         src="@dadosCaptchaModel.SrcImagem"
+                                         alt="Ilustração do código captcha" title="Código Captcha" tabindex="25" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s7 m8">
+                                    <div class="form-item">
+                                        <label for="textoCaptcha">Digite o código da imagem</label>
+                                        <input placeholder="123abc" id="textoCaptcha" type="text" @bind="@textoDigitadoCaptcha" title="Captcha" tabindex="26">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col s6 captcha" title="Som Captcha" id="playCaptcha" tabindex="27">
+                                    @if (dadosCaptchaModel.SrcSom != null)
+                                    {
+
+                        <img id="audioControl" src="img/icone_Ouvir.png" alt="Ouvir captcha." title="Ouvir captcha" />
+                                        <span>Ouvir captcha</span>
+                                                        <div class=".audio">
+                                                            <audio id="player" src="@dadosCaptchaModel.SrcSom"> </audio>
+                                                        </div>}
+
+                                </div>
+                                <div class="col s6 captcha" id="divgerarCaptcha" @onclick=@(async () => await CarregarCaptcha()) @onkeyup="@EnterCarregarCaptcha" tabindex="28" title="Gerar novo captcha">
+                                    <img id="gerarCaptcha" src="img/icone_NovoCaptcha.png" alt="Gerar novo captcha" title="Gerar novo captcha" />
+                                    <span>Novo captcha</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s12">
+                                    <input type="button" class="btn-flat btn-eol" @onclick=@(async () => await Consultar()) value="Consultar" title="Consultar" tabindex="29" />
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </fieldset>
+</main>
+
+
+
+
+@code { private ElementReference divMensagemErro;
+    private string mensagem_retorno = "";
+    string numeroCns { get; set; }
+    string numeroSisPreNatal { get; set; }
+    string textoDigitadoCaptcha { get; set; }
+
+    //variaveis de sessao-->
+    const string sessionNumeroCns = "numeroCns";
+    const string sessionNumeroSisPreNatal = "numeroSisPreNatal";
+    const string sessionCodEOLPreNatal = "codEOLPreNatal";
+    const string sessionDataPrevisaoParto = "dataPrevisaoParto";
+    const string sessionDataCadastroPreNatal = "dataCadastroPreNatal";
+    const string sessionToken = "sessionToken";
+    const string sessionSolicVagaPendente = "solicVagaPendente";
+
+    bool hidden = true;
+    string classe_captchaImagem = "";
+
+    private async Task CarregarCaptcha()
+    {
+        CaptchaModel objCaptchaModel = new CaptchaModel();
+        objCaptchaModel.TipoSom = "mp3";
+
+        dadosCaptchaModel = objCaptchaModel;
+        dadosCaptchaModel.SrcImagem = "img/loading.gif";
+        classe_captchaImagem = "";
+
+        dadosCaptchaModel = await captchaService.ObterCaptcha(objCaptchaModel);
+
+        classe_captchaImagem = "captchaImagem";
+
+        return;
+
+    }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        LimparSessionStorage();
+        await CarregarCaptcha();
+
+    }
+
+
+
+    public void Dispose()
+    {
+        //dadosPreNatalModel.OnChange -= StateHasChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("setTitle", "");
+        //if (firstRender == true)
+        //{
+        //    await CarregarCaptcha();
+        //    LimparSessionStorage();
+        //}
+    }
+
+
+    private async Task Consultar()
+    {
+        try
+        {
+            //_logger.Log(new Error(new Exception("inicio evento consultar")));
+            mensagem_retorno = "";
+            
+
+            if (string.IsNullOrEmpty(textoDigitadoCaptcha) && string.IsNullOrEmpty(textoDigitadoCaptcha))
+            {
+                mensagem_retorno = "Campo(s) obrigatório(s) não informado(s).";
+                await MostrarMensagem(mensagem_retorno);
+                //await JSRuntime.InvokeVoidAsync("funcoes.abrirModalMensagem", "Campo(s) obrigatório(s) não informado(s).");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(numeroCns) && string.IsNullOrEmpty(numeroSisPreNatal))
+            {
+                mensagem_retorno = "Campo(s) obrigatório(s) não informado(s).";
+                await MostrarMensagem(mensagem_retorno);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(numeroCns) || numeroCns.Replace(" ", "").Trim() == "")
+            {
+                mensagem_retorno = "Número do CNS é obrigatório.";
+                await MostrarMensagem(mensagem_retorno);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(numeroSisPreNatal) || numeroSisPreNatal.Replace(" ", "").Trim() == "")
+            {
+                mensagem_retorno = "Número do cartão Pré-natal é obrigatório.";
+                await MostrarMensagem(mensagem_retorno);
+                return;
+            }
+
+            CaptchaModel objCaptchaModel = new CaptchaModel();
+
+            objCaptchaModel.RetornoValidacao = dadosCaptchaModel.RetornoValidacao;
+            objCaptchaModel.TextoDigitado = textoDigitadoCaptcha;
+
+            objCaptchaModel = await captchaService.ValidarCaptcha(objCaptchaModel);
+
+            if (objCaptchaModel.Valido == true)
+            {
+                StateContainer.ConexaoValida = true;
+            }
+
+
+            //-->não considerar zeros à esquerda
+            Int64 numeroSisPreNatalInt = 0;
+            numeroSisPreNatalInt = Convert.ToInt64(numeroSisPreNatal);
+            numeroSisPreNatal = numeroSisPreNatalInt.ToString();
+            //-->
+
+            var dadosPreNatalRetorno = await restService.BuscarSolicitacaoPreNatal(numeroCns, numeroSisPreNatal);
+
+            if (dadosPreNatalRetorno != null)
+            {
+                int? codEolPreNatal = null;
+                if (dadosPreNatalRetorno.codEOLPreNatal.HasValue)
+                {
+                    codEolPreNatal = dadosPreNatalRetorno.codEOLPreNatal.GetValueOrDefault();
+                }
+
+                int? codRetorno = null;
+                if (dadosPreNatalRetorno.codRetorno.HasValue)
+                {
+                    codRetorno = dadosPreNatalRetorno.codRetorno.GetValueOrDefault();
+                }
+
+                DateTime? dataPrevisaoParto = null;
+                if (dadosPreNatalRetorno.dataPrevisaoParto.HasValue)
+                {
+                    dataPrevisaoParto = dadosPreNatalRetorno.dataPrevisaoParto.GetValueOrDefault();
+                }
+
+                DateTime? dataCadastroPreNatal = null;
+                if (dadosPreNatalRetorno.dataCadastroPreNatal.HasValue)
+                {
+                    dataCadastroPreNatal = dadosPreNatalRetorno.dataCadastroPreNatal.GetValueOrDefault();
+                }
+
+                var mensagem_retorno_consulta = (dadosPreNatalRetorno.msgRetorno == null ? "" : dadosPreNatalRetorno.msgRetorno);
+
+                if (codRetorno == null)
+                {//mostrar mensagem de erro
+                    if (mensagem_retorno_consulta != "")
+                    {
+                        mensagem_retorno = mensagem_retorno_consulta;
+                    }
+                    else
+                    {
+                        mensagem_retorno = "Ocorreu um erro na consulta do Pré-Natal.";
+                    }
+                    await MostrarMensagem(mensagem_retorno);
+                    return;
+                }
+
+                if (codRetorno == 0)
+                {//mostrar mensagem de erro
+                    await sessionStorage.SetItemAsync(sessionNumeroCns, Util.Encriptar(numeroCns.Replace(" ", "").Trim()));
+                    await sessionStorage.SetItemAsync(sessionNumeroSisPreNatal, Util.Encriptar(numeroSisPreNatal.Replace(" ", "").Trim()));
+                    await sessionStorage.SetItemAsync(sessionCodEOLPreNatal, Util.Encriptar(codEolPreNatal.GetValueOrDefault().ToString()));
+                    await sessionStorage.SetItemAsync(sessionDataPrevisaoParto, Util.Encriptar(dataPrevisaoParto.GetValueOrDefault().ToString()));
+                    await sessionStorage.SetItemAsync(sessionDataCadastroPreNatal, Util.Encriptar(dataCadastroPreNatal.GetValueOrDefault().ToString()));
+
+                    await sessionStorage.SetItemAsync(sessionSolicVagaPendente, Util.Encriptar("N"));
+
+                    //dadosPreNatalModel.SetNumeroCns(numeroCns.Replace(" ", "").Trim());
+                    //dadosPreNatalModel.SetNumeroSisPreNatal(numeroSisPreNatal.Replace(" ", "").Trim());
+                    //dadosPreNatalModel.SetDataCadastroPreNatal(dataCadastroPreNatal);
+                    //dadosPreNatalModel.SetDataPrevisaoParto(dataPrevisaoParto);
+                    //dadosPreNatalModel.SetCodEOLPreNatal(codEolPreNatal);
+
+
+                    if (objCaptchaModel.Valido == true)
+                    {
+                        NavigationManager.NavigateTo("cadastro");
+                    }
+                    else
+                    {
+                        mensagem_retorno = "Captcha Inválido.";
+                        textoDigitadoCaptcha = "";
+                        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalMensagemFocus", mensagem_retorno, "textoCaptcha");
+                        return;
+                    }
+
+                }
+                else
+                {
+                    mensagem_retorno = mensagem_retorno_consulta;
+                    await MostrarMensagem(mensagem_retorno);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            //ver mensagem de exception
+
+            mensagem_retorno = "Ocorreu um erro na consulta do Pré-Natal.";
+            await MostrarMensagem(mensagem_retorno);
+        }
+    }
+
+
+    private async void LimparSessionStorage()
+    {
+        await sessionStorage.ClearAsync();
+    }
+
+    private async Task MostrarMensagem(string mensagem_retorno)
+    {
+        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalMensagem", mensagem_retorno);
+    }
+
+    private void MostrarPopupCarteirinha()
+    {
+        JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modal_carteirinha");
+    }
+
+    private async Task PlaySound()
+    {
+        await JSRuntime.InvokeVoidAsync("funcoes.playSound");
+    }
+
+    private async Task EnterCarregarCaptcha(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await CarregarCaptcha();
+        }
+
+    }
+
+}

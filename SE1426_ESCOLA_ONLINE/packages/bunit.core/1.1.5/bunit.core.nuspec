@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>bunit.core</id>
+    <version>1.1.5</version>
+    <title>bUnit.core</title>
+    <authors>Egil Hansen</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>bunit-logo.png</icon>
+    <projectUrl>https://bunit.egilhansen.com/</projectUrl>
+    <description>bUnit.core is the base library that provides support for testing Blazor components. You need to install bUnit.web as well to test web-based Blazor components.</description>
+    <copyright>Egil Hansen</copyright>
+    <tags>bUnit razor components blazor components unit testing testing blazor components blazor server blazor wasm</tags>
+    <repository type="git" url="https://github.com/bUnit-dev/bUnit" commit="c54db88428e73753e621ee00abcbcdceac92b615" />
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="Microsoft.AspNetCore.Components" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Components.Authorization" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Components.Web" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="5.0.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="Microsoft.AspNetCore.Components" version="6.0.0-preview.3.21201.13" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Components.Authorization" version="6.0.0-preview.3.21201.13" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Components.Web" version="6.0.0-preview.3.21201.13" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="6.0.0-preview.3.21201.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="6.0.0-preview.3.21201.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Microsoft.AspNetCore.Components" version="3.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Components.Authorization" version="3.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Components.Web" version="3.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="3.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="3.1.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

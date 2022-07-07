@@ -1,0 +1,92 @@
+﻿@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<div class="menu-acessivel-teclado hide-on-med-and-down notprint">
+    <ul class="menu-acess">
+        <li><a href="#skipto-content" accesskey="1" class="goto-content" title="Ir para o conteúdo" tabindex="1">IR PARA O CONTEÚDO</a></li>
+        <li><span aria-hidden="true">|</span></li>
+        <li><a href="#skipto-menu" accesskey="2" class="irparamenu" title="Ir para o menu" tabindex="2">IR PARA O MENU</a></li>
+        <li><span aria-hidden="true">|</span></li>
+        <li><a href="#skipto-rodape" accesskey="3" class="irparamenu" title="Ir para o rodapé" tabindex="3">IR PARA O RODAPÉ</a></li>
+    </ul>
+</div>
+
+<header>
+    <div class="cabecalhoPMSP">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8">
+                    <div class="nomePMSP">
+                        <a href="http://www.capital.sp.gov.br" target="_blank" title="Acessar Portal da Prefeitura de São Paulo" tabindex="4">Cidade de São Paulo</a>
+                    </div>
+                    <div class="acesso-info hide-on-med-and-down">
+                        <a href="http://transparencia.prefeitura.sp.gov.br/legislacao/"
+                           target="_blank"
+                           title="Acessar site de Acesso à informação da Prefeitura de São Paulo"
+                           tabindex="5">Acesso à informação <img src="img/icone_AcessoInformacao.png" title="Logotipo de Acesso à Informação" alt="Acesso à informação" tabindex="6"></a>
+                    </div>
+                    <div class="transparenciaSP hide-on-med-and-down">
+                        <a href="http://transparencia.prefeitura.sp.gov.br" target="_blank" title="Acessar site de Transparência da Prefeitura de São Paulo" tabindex="7">Transparência São Paulo</a>
+                    </div>
+                </div>
+                <div class="col s12 m4 fontResizer hide-on-med-and-down">
+                    <ul class="right">
+                        <li><button href="#" class="fontResizer_add btn-flat" title="Aumentar a fonte" tabindex="8">A+</button></li>
+                        <li><button href="#" class="fontResizer_minus btn-flat" title="Diminuir a fonte" tabindex="9">A-</button></li>
+                        <li><button href="#" class="fontResizer_reset btn-flat" title="Voltar ao tamanho padrão e ao contraste normal" tabindex="10">A</button></li>
+                        <li><button href="#" class="btn-contraste1 btn-flat" title="Deixar o fundo preto com letras brancas" aria-hidden="true" tabindex="11"><i class="material-icons" aria-hidden="true">invert_colors</i></button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="skipto-menu-header" class="header">
+        <div class="container">
+            <h1>Mãe Paulistana</h1>
+            <div class="row">
+                @if (mostraMenu == true)
+                {
+    <div class="col s2 button-box hide-on-med-and-up">
+        <button class="btn-flat btn-menu" type="button" @onclick="() => OpenMenu()" tabindex="12">Menu</button>
+    </div>}
+                <div class="col s4 m3 l2 site-logo">
+                    <a href="#" tabindex="13">
+                        <img src="img/logo_MaePaulistana_desktop.png" title="Logotipo do Mãe Paulistana" alt="Mãe Paulistana" />
+                    </a>
+                </div>
+                <div class="col s4 m6 l8 site-title">
+                    <h2 class="primary-text">
+                        Creche
+                    </h2>
+                </div>
+                <div class="col m3 l2 right header-pmsp hide-on-small-only">
+                    <a href="#" tabindex="14">
+                        <img class="right" src="img/logo_Prefeitura_Horizontal.png" title="Logotipo da Prefeitura da Cidade de São Paulo" alt="Prefeitura da Cidade de São Paulo">
+                    </a>
+                </div>
+                @if (mostraMenu == true)
+                {
+    <div class="col s2 button-box hide-on-med-and-up">
+        <button class="btn-flat btn-sair right" type="button" @onclick="@NavegarParaTelaInicial">
+            <img src="img/btn_Sair.png" title="Botão Sair" alt="Botão de sair" tabindex="15">
+        </button>
+    </div>}
+            </div>
+
+        </div>
+    </div>
+</header>
+
+@code { string imageURL = "http://dpp9764.prodam/maepaulistana/";
+    [Parameter] public bool mostraMenu { get; set; } = true;
+    private void NavegarParaTelaInicial()
+    {
+        NavigationManager.NavigateTo("");
+    }
+
+    protected async void OpenMenu()
+    {
+        await JSRuntime.InvokeVoidAsync("funcoes.openMenu");
+        return;
+    } }

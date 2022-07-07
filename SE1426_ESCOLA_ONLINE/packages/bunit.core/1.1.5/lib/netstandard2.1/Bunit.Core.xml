@@ -1,0 +1,1375 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bunit.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Bunit.Asserting.ActualExpectedAssertException">
+            <summary>
+            Represents a generic assert exception used when an actual result does not match an expected result.
+            </summary>
+        </member>
+        <member name="M:Bunit.Asserting.ActualExpectedAssertException.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Asserting.ActualExpectedAssertException"/> class.
+            </summary>
+            <param name="actual">The actual result.</param>
+            <param name="expected">The expected result.</param>
+            <param name="actualText">A text explaining the actual result.</param>
+            <param name="expectedText">A text explaining the expected result.</param>
+            <param name="message">An error message explaining the context of the assertion.</param>
+        </member>
+        <member name="M:Bunit.Asserting.ActualExpectedAssertException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Asserting.ActualExpectedAssertException"/> class.
+            </summary>
+        </member>
+        <member name="T:Bunit.Asserting.AssertionMethodAttribute">
+            <summary>
+            Add this attribute to assertion methods to indicate to
+            3rd party analyzers that the method is an assertion method.
+            See more here: https://rules.sonarsource.com/csharp/RSPEC-2699.
+            </summary>
+        </member>
+        <member name="T:Bunit.ComponentParameter">
+            <summary>
+            Represents a single parameter supplied to an <see cref="T:Microsoft.AspNetCore.Components.IComponent"/>
+            component under test.
+            </summary>
+        </member>
+        <member name="P:Bunit.ComponentParameter.Name">
+            <summary>
+            Gets the name of the parameter. Can be null if the parameter is for an unnamed cascading value.
+            </summary>
+        </member>
+        <member name="P:Bunit.ComponentParameter.Value">
+            <summary>
+            Gets the value being supplied to the component.
+            </summary>
+        </member>
+        <member name="P:Bunit.ComponentParameter.IsCascadingValue">
+            <summary>
+            Gets a value indicating whether the parameter is for use by a <see cref="T:Microsoft.AspNetCore.Components.CascadingValue`1"/>.
+            </summary>
+        </member>
+        <member name="M:Bunit.ComponentParameter.#ctor(System.String,System.Object,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.ComponentParameter"/> struct.
+            </summary>
+            <param name="name">An optional name.</param>
+            <param name="value">An optional value.</param>
+            <param name="isCascadingValue">Whether or not this is a cascading value.</param>
+        </member>
+        <member name="M:Bunit.ComponentParameter.CreateParameter(System.String,System.Object)">
+            <summary>
+            Create a parameter for a component under test.
+            </summary>
+            <param name="name">Name of the parameter to pass to the component.</param>
+            <param name="value">Value or null to pass the component.</param>
+            <returns>The created <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameter.CreateCascadingValue(System.String,System.Object)">
+            <summary>
+            Create a Cascading Value parameter for a component under test.
+            </summary>
+            <param name="name">A optional name for the cascading value.</param>
+            <param name="value">The cascading value.</param>
+            <returns>The created <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameter.op_Implicit(System.ValueTuple{System.String,System.Object})~Bunit.ComponentParameter">
+            <summary>
+            Create a parameter for a component under test.
+            </summary>
+            <param name="input">A name/value pair for the parameter.</param>
+            <returns>The created <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameter.op_Implicit(System.ValueTuple{System.String,System.Object,System.Boolean})~Bunit.ComponentParameter">
+            <summary>
+            Create a parameter or cascading value for a component under test.
+            </summary>
+            <param name="input">A name/value/isCascadingValue triple for the parameter.</param>
+            <returns>The created <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameter.Equals(Bunit.ComponentParameter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.ComponentParameter.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.ComponentParameter.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.ComponentParameter.op_Equality(Bunit.ComponentParameter,Bunit.ComponentParameter)">
+            <summary>
+            Verify whether the <paramref name="left"/> and <paramref name="right"/> <see cref="T:Bunit.ComponentParameter"/> are equal.
+            </summary>
+        </member>
+        <member name="M:Bunit.ComponentParameter.op_Inequality(Bunit.ComponentParameter,Bunit.ComponentParameter)">
+            <summary>
+            Verify whether the <paramref name="left"/> and <paramref name="right"/> <see cref="T:Bunit.ComponentParameter"/> are not equal.
+            </summary>
+        </member>
+        <member name="T:Bunit.ComponentParameterCollection">
+            <summary>
+            A collection for <see cref="T:Bunit.ComponentParameter" />.
+            </summary>
+        </member>
+        <member name="P:Bunit.ComponentParameterCollection.Count">
+            <summary>
+            Gets the number of <see cref="T:Bunit.ComponentParameter"/> in the collection.
+            </summary>
+        </member>
+        <member name="P:Bunit.ComponentParameterCollection.IsReadOnly">
+            <inheritdoc />
+        </member>
+        <member name="M:Bunit.ComponentParameterCollection.Add(Bunit.ComponentParameter)">
+            <summary>
+            Adds a <paramref name="item"/> to the collection.
+            </summary>
+            <param name="item">Parameter to add to the collection.</param>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollection.Add(System.Collections.Generic.IEnumerable{Bunit.ComponentParameter})">
+            <summary>
+            Adds an enumerable of parameters to the collection.
+            </summary>
+            <param name="parameters">Parameters to add.</param>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollection.Contains(Bunit.ComponentParameter)">
+            <summary>
+            Checks if the <paramref name="item"/> is in the collection.
+            </summary>
+            <param name="item">Parameter to check with.</param>
+            <returns>True if <paramref name="item"/> is in the collection, false otherwise.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollection.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollection.CopyTo(Bunit.ComponentParameter[],System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollection.Remove(Bunit.ComponentParameter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollection.ToRenderFragment``1">
+            <summary>
+            Creates a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> that will render a
+            component of type <typeparamref name="TComponent"/> with
+            the parameters in the collection passed to it.
+            </summary>
+            <typeparam name="TComponent">Type of component to render.</typeparam>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollection.GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollection.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="T:Bunit.ComponentParameterCollectionBuilder`1">
+            <summary>
+            A <see cref="T:Bunit.ComponentParameterCollection"/> builder for a specific <typeparamref name="TComponent"/> component under test.
+            </summary>
+            <typeparam name="TComponent">The type of component under test to add the parameters.</typeparam>
+        </member>
+        <member name="P:Bunit.ComponentParameterCollectionBuilder`1.HasUnmatchedCaptureParameter">
+            <summary>
+            Gets a value indicating whether <typeparamref name="TComponent"/> has a [Parameter(CaptureUnmatchedValues = true)] parameter.
+            </summary>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/> class.
+            </summary>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.#ctor(System.Action{Bunit.ComponentParameterCollectionBuilder{`0}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/> class
+            and invokes the <paramref name="parameterAdder"/> with it as the argument.
+            </summary>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)">
+            <summary>
+            Adds a component parameter for the parameter selected with <paramref name="parameterSelector"/>
+            with the value <paramref name="value"/>.
+            </summary>
+            <typeparam name="TValue">Type of <paramref name="value"/>.</typeparam>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="value">The value to pass to <typeparamref name="TComponent"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.RenderFragment}},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})">
+            <summary>
+            Adds a component parameter for a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> value is created through the <paramref name="childParameterBuilder"/> argument.
+            </summary>
+            <typeparam name="TChildComponent">The type of component to create a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> for.</typeparam>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="childParameterBuilder">A parameter builder for the <typeparamref name="TChildComponent"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.RenderFragment}},System.String)">
+            <summary>
+            Adds a component parameter for a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> value is the markup passed in through the <paramref name="markup"/> argument.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="markup">The markup string to pass to the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.RenderFragment{``0}}},System.Func{``0,System.String})">
+            <summary>
+            Adds a component parameter for a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1"/> template parameter selected with <paramref name="parameterSelector"/>,
+            where the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1"/> template is based on the <paramref name="markupFactory"/> argument.
+            </summary>
+            <typeparam name="TValue">The context type of the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1"/>.</typeparam>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="markupFactory">A markup factory used to create the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1"/> template with.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``2(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.RenderFragment{``1}}},System.Func{``1,System.Action{Bunit.ComponentParameterCollectionBuilder{``0}}})">
+            <summary>
+            Adds a component parameter for a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1"/> template parameter selected with <paramref name="parameterSelector"/>,
+            where the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1"/> template is based on the <paramref name="templateFactory"/>, which is used
+            to create a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1"/> that renders a <typeparamref name="TChildComponent"/> inside the template.
+            </summary>
+            <typeparam name="TChildComponent">The type of component to create a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1"/> for.</typeparam>
+            <typeparam name="TValue">The context type of the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1"/>.</typeparam>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="templateFactory">A template factory used to create the parameters being passed to the <typeparamref name="TChildComponent"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.EventCallback}},System.Action)">
+            <summary>
+            Adds a component parameter for an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{Microsoft.AspNetCore.Components.EventCallback}}},System.Action)">
+            <summary>
+            Adds a component parameter for a nullable <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.EventCallback}},System.Action{System.Object})">
+            <summary>
+            Adds a component parameter for an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{Microsoft.AspNetCore.Components.EventCallback}}},System.Action{System.Object})">
+            <summary>
+            Adds a component parameter for a nullable <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.EventCallback}},System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Adds a component parameter for an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{Microsoft.AspNetCore.Components.EventCallback}}},System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Adds a component parameter for a nullable <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.EventCallback{``0}}},System.Action)">
+            <summary>
+            Adds a component parameter for an <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{Microsoft.AspNetCore.Components.EventCallback{``0}}}},System.Action)">
+            <summary>
+            Adds a component parameter for a nullable <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.EventCallback{``0}}},System.Action{``0})">
+            <summary>
+            Adds a component parameter for an <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{Microsoft.AspNetCore.Components.EventCallback{``0}}}},System.Action{``0})">
+            <summary>
+            Adds a component parameter for a nullable <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,Microsoft.AspNetCore.Components.EventCallback{``0}}},System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Adds a component parameter for an <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{Microsoft.AspNetCore.Components.EventCallback{``0}}}},System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Adds a component parameter for a nullable <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/> parameter selected with <paramref name="parameterSelector"/>,
+            where the <paramref name="callback"/> is used as value.
+            </summary>
+            <param name="parameterSelector">A lambda function that selects the parameter.</param>
+            <param name="callback">The callback to pass to the <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/>.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.AddChildContent(Microsoft.AspNetCore.Components.RenderFragment)">
+             <summary>
+             Adds a ChildContent <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> type parameter with the <paramref name="childContent"/> as value.
+            
+             Note, this is equivalent to <c>Add(p => p.ChildContent, childContent)</c>.
+             </summary>
+             <param name="childContent">The <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> to pass the ChildContent parameter.</param>
+             <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.AddChildContent(System.String)">
+             <summary>
+             Adds a ChildContent <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> type parameter with the <paramref name="markup"/> as value
+             wrapped in a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/>.
+            
+             Note, this is equivalent to <c>Add(p => p.ChildContent, "...")</c>.
+             </summary>
+             <param name="markup">The markup string to pass the ChildContent parameter wrapped in a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/>.</param>
+             <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.AddChildContent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})">
+            <summary>
+            Adds a ChildContent <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> type parameter, that is passed a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/>,
+            which will render the <typeparamref name="TChildComponent"/> with the parameters passed to <paramref name="childParameterBuilder"/>.
+            </summary>
+            <typeparam name="TChildComponent">Type of child component to pass to the ChildContent parameter.</typeparam>
+            <param name="childParameterBuilder">A parameter builder for the <typeparamref name="TChildComponent"/>.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.AddCascadingValue``1(``0)">
+            <summary>
+            Adds an UNNAMED cascading value around the <typeparamref name="TComponent"/> when it is rendered. Used to
+            pass cascading values to child components of <typeparamref name="TComponent"/>.
+            </summary>
+            <typeparam name="TValue">The type of cascading value.</typeparam>
+            <param name="cascadingValue">The cascading value.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.AddCascadingValue``1(System.String,``0)">
+            <summary>
+            Adds an NAMED cascading value around the <typeparamref name="TComponent"/> when it is rendered. Used to
+            pass cascading values to child components of <typeparamref name="TComponent"/>.
+            </summary>
+            <typeparam name="TValue">The type of cascading value.</typeparam>
+            <param name="name">The name of the cascading value.</param>
+            <param name="cascadingValue">The cascading value.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.AddUnmatched(System.String,System.Object)">
+            <summary>
+            Adds an unmatched attribute value to <typeparamref name="TComponent"/>.
+            </summary>
+            <param name="name">The name of the unmatched attribute.</param>
+            <param name="value">The value of the unmatched attribute.</param>
+            <returns>This <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.TryAdd``1(System.String,``0)">
+            <summary>
+            Try to add a <paramref name="value"/> for a parameter with the <paramref name="name"/>, if
+            <typeparamref name="TComponent"/> has a property with that name, AND that property has a <see cref="T:Microsoft.AspNetCore.Components.ParameterAttribute"/>
+            or a <see cref="T:Microsoft.AspNetCore.Components.CascadingParameterAttribute"/>.
+            </summary>
+            <remarks>
+            This is an untyped version of the <see cref="M:Bunit.ComponentParameterCollectionBuilder`1.Add``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)"/> method. Always
+            prefer the strongly typed <c>Add</c> methods whenever possible.
+            </remarks>
+            <typeparam name="TValue">Value type.</typeparam>
+            <param name="name">Name of the property for the parameter.</param>
+            <param name="value">Value to assign to the parameter.</param>
+            <returns>True if parameter with the name exists and value was set, false otherwise.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterCollectionBuilder`1.Build">
+            <summary>
+            Builds the <see cref="T:Bunit.ComponentParameterCollection"/>.
+            </summary>
+            <returns>The created <see cref="T:Bunit.ComponentParameterCollection"/>.</returns>
+        </member>
+        <member name="T:Bunit.ComponentParameterFactory">
+            <summary>
+            <see cref="T:Bunit.ComponentParameter"/> factory methods.
+            </summary>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.EventCallback(System.String,System.Action)">
+            <summary>
+            Creates a <see cref="T:Bunit.ComponentParameter"/> with an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> that will call the provided <paramref name="callback"/>.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="callback">The event callback.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.EventCallback(System.String,System.Action{System.Object})">
+            <summary>
+            Creates a <see cref="T:Bunit.ComponentParameter"/> with an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> that will call the provided <paramref name="callback"/>.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="callback">The event callback.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.EventCallback(System.String,System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Creates a <see cref="T:Bunit.ComponentParameter"/> with an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> that will call the provided <paramref name="callback"/>.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="callback">The event callback.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.EventCallback(System.String,System.Func{System.Object,System.Threading.Tasks.Task})">
+            <summary>
+            Creates a <see cref="T:Bunit.ComponentParameter"/> with an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> that will call the provided <paramref name="callback"/>.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="callback">The event callback.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.EventCallback``1(System.String,System.Action)">
+            <summary>
+            Creates a <see cref="T:Bunit.ComponentParameter"/> with an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> that will call the provided <paramref name="callback"/>.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="callback">The event callback.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.EventCallback``1(System.String,System.Action{``0})">
+            <summary>
+            Creates a <see cref="T:Bunit.ComponentParameter"/> with an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> that will call the provided <paramref name="callback"/>.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="callback">The event callback.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.EventCallback``1(System.String,System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Creates a <see cref="T:Bunit.ComponentParameter"/> with an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> that will call the provided <paramref name="callback"/>.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="callback">The event callback.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.EventCallback``1(System.String,System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Creates a <see cref="T:Bunit.ComponentParameter"/> with an <see cref="T:Microsoft.AspNetCore.Components.EventCallback"/> that will call the provided <paramref name="callback"/>.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="callback">The event callback.</param>
+            <typeparam name="TValue">The value returned in the <see cref="T:Microsoft.AspNetCore.Components.EventCallback`1"/>.</typeparam>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.Parameter(System.String,System.Object)">
+            <summary>
+            Creates a component parameter which can be passed to a test contexts render methods.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="value">Value or null of the parameter.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.CascadingValue(System.String,System.Object)">
+            <summary>
+            Creates a cascading value which can be passed to a test contexts render methods.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="value">Value of the parameter.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.CascadingValue(System.Object)">
+            <summary>
+            Creates a cascading value which can be passed to a test contexts render methods.
+            </summary>
+            <param name="value">Value of the parameter.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.ChildContent(System.String)">
+            <summary>
+            Creates a ChildContent <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> with the provided
+            <paramref name="markup"/> as rendered output.
+            </summary>
+            <param name="markup">Markup to pass to the child content parameter.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.ChildContent``1(Bunit.ComponentParameter[])">
+            <summary>
+            Creates a ChildContent <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> which will render a <typeparamref name="TComponent"/> component
+            with the provided <paramref name="parameters"/> as input.
+            </summary>
+            <typeparam name="TComponent">The type of the component to render with the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/>.</typeparam>
+            <param name="parameters">Parameters to pass to the <typeparamref name="TComponent"/>.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.ChildContent(Microsoft.AspNetCore.Components.RenderFragment)">
+            <summary>
+            Creates a ChildContent parameter that will pass the provided <paramref name="renderFragment"/>
+            to the parameter in the component.
+            </summary>
+            <param name="renderFragment">The <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> to pass to the ChildContent parameter.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.RenderFragment(System.String,System.String)">
+            <summary>
+            Creates a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> with the provided
+            <paramref name="markup"/> as rendered output and passes it to the parameter specified in <paramref name="name"/>.
+            </summary>
+            <param name="name">Parameter name.</param>
+            <param name="markup">Markup to pass to the render fragment parameter.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.RenderFragment``1(System.String,Bunit.ComponentParameter[])">
+            <summary>
+            Creates a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> which will render a <typeparamref name="TComponent"/> component
+            with the provided <paramref name="parameters"/> as input, and passes it to the parameter specified in <paramref name="name"/>.
+            </summary>
+            <typeparam name="TComponent">The type of the component to render with the <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/>.</typeparam>
+            <param name="name">Parameter name.</param>
+            <param name="parameters">Parameters to pass to the <typeparamref name="TComponent"/>.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.Template``1(System.String,Microsoft.AspNetCore.Components.RenderFragment{``0})">
+            <summary>
+            Creates a template component parameter which will pass the <paramref name="template"/> <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1" />
+            to the parameter with the name <paramref name="name"/>.
+            </summary>
+            <typeparam name="TValue">The value used to build the content.</typeparam>
+            <param name="name">Parameter name.</param>
+            <param name="template"><see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1" /> to pass to the parameter.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.Template``1(System.String,System.Func{``0,System.String})">
+            <summary>
+            Creates a template component parameter which will pass the a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1" />
+            to the parameter with the name <paramref name="name"/>.
+            The <paramref name="markupFactory"/> will be used to generate the markup inside the template.
+            </summary>
+            <typeparam name="TValue">The value used to build the content.</typeparam>
+            <param name="name">Parameter name.</param>
+            <param name="markupFactory">A markup factory that takes a <typeparamref name="TValue"/> as input and returns markup/HTML.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="M:Bunit.ComponentParameterFactory.Template``2(System.String,System.Func{``1,Bunit.ComponentParameter[]})">
+            <summary>
+            Creates a template component parameter which will pass the a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment`1" />
+            to the <paramref name="parameterCollectionBuilder"/> at runtime. The parameters returned from it
+            will be passed to the <typeparamref name="TComponent"/> and it will be rendered as the template.
+            </summary>
+            <typeparam name="TComponent">The type of component to render in template.</typeparam>
+            <typeparam name="TValue">The value used to build the content.</typeparam>
+            <param name="name">Parameter name.</param>
+            <param name="parameterCollectionBuilder">The parameter collection builder function that will be passed the template <typeparamref name="TValue"/>.</param>
+            <returns>The <see cref="T:Bunit.ComponentParameter"/>.</returns>
+        </member>
+        <member name="T:Bunit.Extensions.BlazorExtensions">
+            <summary>
+            Extensions for Blazor types.
+            </summary>
+        </member>
+        <member name="M:Bunit.Extensions.BlazorExtensions.ToMarkupRenderFragment(System.String)">
+            <summary>
+            Creates a <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> that will render the <paramref name="markup"/>.
+            </summary>
+            <param name="markup">Markup to render.</param>
+            <returns>The <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/>.</returns>
+        </member>
+        <member name="T:Bunit.Extensions.EnumerableExtensions">
+            <summary>
+            Helper methods for working with <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
+            </summary>
+        </member>
+        <member name="M:Bunit.Extensions.EnumerableExtensions.IsNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns true if the numerable is null or empty.
+            </summary>
+        </member>
+        <member name="T:Bunit.Extensions.LoggerHelperExtensions">
+            <summary>
+            Helper extension methods for getting a logger.
+            </summary>
+        </member>
+        <member name="M:Bunit.Extensions.LoggerHelperExtensions.CreateLogger``1(System.IServiceProvider)">
+            <summary>
+            Creates a logger from the <see cref="T:Microsoft.Extensions.Logging.ILoggerFactory"/> registered in the <see cref="T:System.IServiceProvider"/>.
+            </summary>
+            <param name="services">The service to get the <see cref="T:Microsoft.Extensions.Logging.ILoggerFactory"/> from.</param>
+            <typeparam name="TCategoryName">The category for the logger.</typeparam>
+            <returns>The <see cref="T:Microsoft.Extensions.Logging.ILogger`1"/>.</returns>
+        </member>
+        <member name="T:Bunit.Extensions.TestContextBaseExtensions">
+            <summary>
+            Extensions methods for <see cref="T:Bunit.TestContextBase"/> types.
+            </summary>
+        </member>
+        <member name="M:Bunit.Extensions.TestContextBaseExtensions.RenderInsideRenderTree``1(Bunit.TestContextBase,Microsoft.AspNetCore.Components.RenderFragment)">
+            <summary>
+            Renders a component, declared in the <paramref name="renderFragment"/>, inside the <see cref="P:Bunit.TestContextBase.RenderTree"/>.
+            </summary>
+            <typeparam name="TComponent">The type of component to render.</typeparam>
+            <param name="testContext">Test context to use to render with.</param>
+            <param name="renderFragment">The <see cref="M:Bunit.Extensions.TestContextBaseExtensions.RenderInsideRenderTree(Bunit.TestContextBase,Microsoft.AspNetCore.Components.RenderFragment)"/> that contains a declaration of the component.</param>
+            <returns>A <see cref="T:Bunit.IRenderedComponentBase`1"/>.</returns>
+        </member>
+        <member name="M:Bunit.Extensions.TestContextBaseExtensions.RenderInsideRenderTree(Bunit.TestContextBase,Microsoft.AspNetCore.Components.RenderFragment)">
+            <summary>
+            Renders a fragment, declared in the <paramref name="renderFragment"/>, inside the <see cref="P:Bunit.TestContextBase.RenderTree"/>.
+            </summary>
+            <param name="testContext">Test context to use to render with.</param>
+            <param name="renderFragment">The <see cref="M:Bunit.Extensions.TestContextBaseExtensions.RenderInsideRenderTree(Bunit.TestContextBase,Microsoft.AspNetCore.Components.RenderFragment)"/> to render.</param>
+            <returns>A <see cref="T:Bunit.IRenderedFragmentBase"/>.</returns>
+        </member>
+        <member name="T:Bunit.Extensions.WaitForHelpers.WaitForAssertionHelper">
+            <summary>
+            Represents an async wait helper, that will wait for a specified time for an assertion to pass.
+            </summary>
+        </member>
+        <member name="P:Bunit.Extensions.WaitForHelpers.WaitForAssertionHelper.TimeoutErrorMessage">
+            <inheritdoc/>
+        </member>
+        <member name="P:Bunit.Extensions.WaitForHelpers.WaitForAssertionHelper.StopWaitingOnCheckException">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Extensions.WaitForHelpers.WaitForAssertionHelper.#ctor(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})">
+             <summary>
+             Initializes a new instance of the <see cref="T:Bunit.Extensions.WaitForHelpers.WaitForAssertionHelper"/> class,
+             which will until the provided <paramref name="assertion"/> passes (i.e. does not throw an
+             exception), or the <paramref name="timeout"/> is reached (default is one second).
+            
+             The <paramref name="assertion"/> is attempted initially, and then each time the <paramref name="renderedFragment"/> renders.
+             </summary>
+             <param name="renderedFragment">The rendered fragment to wait for renders from and assert against.</param>
+             <param name="assertion">The verification or assertion to perform.</param>
+             <param name="timeout">The maximum time to attempt the verification.</param>
+        </member>
+        <member name="T:Bunit.Extensions.WaitForHelpers.WaitForFailedException">
+            <summary>
+            Represents an exception thrown when the <see cref="T:Bunit.Extensions.WaitForHelpers.WaitForHelper"/> does not complete successfully.
+            </summary>
+        </member>
+        <member name="M:Bunit.Extensions.WaitForHelpers.WaitForFailedException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Extensions.WaitForHelpers.WaitForFailedException"/> class.
+            </summary>
+        </member>
+        <member name="T:Bunit.Extensions.WaitForHelpers.WaitForHelper">
+            <summary>
+            Represents a helper class that can wait for a render notifications from a <see cref="T:Bunit.IRenderedFragmentBase"/> type,
+            until a specific timeout is reached.
+            </summary>
+        </member>
+        <member name="P:Bunit.Extensions.WaitForHelpers.WaitForHelper.TimeoutErrorMessage">
+            <summary>
+            Gets the error message passed to the user when the wait for helper times out.
+            </summary>
+        </member>
+        <member name="P:Bunit.Extensions.WaitForHelpers.WaitForHelper.CheckThrowErrorMessage">
+            <summary>
+            Gets the error message passed to the user when the wait for checker throws an exception.
+            Only used if <see cref="P:Bunit.Extensions.WaitForHelpers.WaitForHelper.StopWaitingOnCheckException"/> is true.
+            </summary>
+        </member>
+        <member name="P:Bunit.Extensions.WaitForHelpers.WaitForHelper.StopWaitingOnCheckException">
+            <summary>
+            Gets a value indicating whether to continue waiting if the wait condition checker throws.
+            </summary>
+        </member>
+        <member name="P:Bunit.Extensions.WaitForHelpers.WaitForHelper.WaitTask">
+            <summary>
+            Gets the task that will complete successfully if the check passed before the timeout was reached.
+            The task will complete with an <see cref="T:Bunit.Extensions.WaitForHelpers.WaitForFailedException"/> exception if the timeout was reached without the check passing.
+            </summary>
+        </member>
+        <member name="M:Bunit.Extensions.WaitForHelpers.WaitForHelper.#ctor(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Extensions.WaitForHelpers.WaitForHelper"/> class.
+            </summary>
+        </member>
+        <member name="M:Bunit.Extensions.WaitForHelpers.WaitForHelper.Dispose">
+            <summary>
+            Disposes the wait helper and cancels the any ongoing waiting, if it is not
+            already in one of the other completed states.
+            </summary>
+        </member>
+        <member name="M:Bunit.Extensions.WaitForHelpers.WaitForHelper.Dispose(System.Boolean)">
+            <summary>
+            Disposes of the wait task and related logic.
+            </summary>
+            <remarks>
+            The disposing parameter should be false when called from a finalizer, and true when called from the
+            <see cref="M:Bunit.Extensions.WaitForHelpers.WaitForHelper.Dispose"/> method. In other words, it is true when deterministically called and false when non-deterministically called.
+            </remarks>
+            <param name="disposing">Set to true if called from <see cref="M:Bunit.Extensions.WaitForHelpers.WaitForHelper.Dispose"/>, false if called from a finalizer.f.</param>
+        </member>
+        <member name="T:Bunit.Extensions.WaitForHelpers.WaitForStateHelper">
+            <summary>
+            Represents an async wait helper, that will wait for a specified time for a state predicate to pass.
+            </summary>
+        </member>
+        <member name="P:Bunit.Extensions.WaitForHelpers.WaitForStateHelper.TimeoutErrorMessage">
+            <inheritdoc/>
+        </member>
+        <member name="P:Bunit.Extensions.WaitForHelpers.WaitForStateHelper.CheckThrowErrorMessage">
+            <inheritdoc/>
+        </member>
+        <member name="P:Bunit.Extensions.WaitForHelpers.WaitForStateHelper.StopWaitingOnCheckException">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Extensions.WaitForHelpers.WaitForStateHelper.#ctor(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Extensions.WaitForHelpers.WaitForStateHelper"/> class,
+            which will wait until the provided <paramref name="statePredicate"/> action returns true,
+            or the <paramref name="timeout"/> is reached (default is one second).
+            </summary>
+            <remarks>
+            The <paramref name="statePredicate"/> is evaluated initially, and then each time the <paramref name="renderedFragment"/> renders.
+            </remarks>
+            <param name="renderedFragment">The render fragment or component to attempt to verify state against.</param>
+            <param name="statePredicate">The predicate to invoke after each render, which must returns <c>true</c> when the desired state has been reached.</param>
+            <param name="timeout">The maximum time to wait for the desired state.</param>
+            <exception cref="T:Bunit.Extensions.WaitForHelpers.WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
+        </member>
+        <member name="T:Bunit.RenderedComponentRenderExtensions">
+            <summary>
+            Re-render extension methods, optionally with new parameters, for <see cref="T:Bunit.IRenderedComponentBase`1"/>.
+            </summary>
+        </member>
+        <member name="M:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponentBase{``0})">
+            <summary>
+            Render the component under test again.
+            </summary>
+            <param name="renderedComponent">The rendered component to re-render.</param>
+            <typeparam name="TComponent">The type of the component.</typeparam>
+        </member>
+        <member name="M:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},Microsoft.AspNetCore.Components.ParameterView)">
+            <summary>
+            Render the component under test again with the provided <paramref name="parameters"/>.
+            </summary>
+            <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
+            <param name="parameters">Parameters to pass to the component upon rendered.</param>
+            <typeparam name="TComponent">The type of the component.</typeparam>
+        </member>
+        <member name="M:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},Bunit.ComponentParameter[])">
+            <summary>
+            Render the component under test again with the provided <paramref name="parameters"/>.
+            </summary>
+            <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
+            <param name="parameters">Parameters to pass to the component upon rendered.</param>
+            <typeparam name="TComponent">The type of the component.</typeparam>
+        </member>
+        <member name="M:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})">
+            <summary>
+            Render the component under test again with the provided parameters from the <paramref name="parameterBuilder"/>.
+            </summary>
+            <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
+            <param name="parameterBuilder">An action that receives a <see cref="T:Bunit.ComponentParameterCollectionBuilder`1"/>.</param>
+            <typeparam name="TComponent">The type of the component.</typeparam>
+        </member>
+        <member name="T:Bunit.RenderedFragmentInvokeAsyncExtensions">
+            <summary>
+            InvokeAsync extensions methods on <see cref="T:Bunit.IRenderedFragmentBase"/>.
+            </summary>
+        </member>
+        <member name="M:Bunit.RenderedFragmentInvokeAsyncExtensions.InvokeAsync(Bunit.IRenderedFragmentBase,System.Action)">
+            <summary>
+            Invokes the given <paramref name="workItem"/> in the context of the associated <see cref="T:Bunit.Rendering.ITestRenderer"/>.
+            </summary>
+            <param name="renderedFragment">The rendered fragment whose dispatcher to invoke with.</param>
+            <param name="workItem">The work item to execute on the renderer's thread.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> that will be completed when the action has finished executing or is suspended by an asynchronous operation.</returns>
+        </member>
+        <member name="M:Bunit.RenderedFragmentInvokeAsyncExtensions.InvokeAsync(Bunit.IRenderedFragmentBase,System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Invokes the given <paramref name="workItem"/> in the context of the associated <see cref="T:Bunit.Rendering.ITestRenderer"/>.
+            </summary>
+            <param name="renderedFragment">The rendered component whose dispatcher to invoke with.</param>
+            <param name="workItem">The work item to execute on the renderer's thread.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> that will be completed when the action has finished executing.</returns>
+        </member>
+        <member name="T:Bunit.RenderedFragmentWaitForHelperExtensions">
+            <summary>
+            Helper methods dealing with async rendering during testing.
+            </summary>
+        </member>
+        <member name="M:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})">
+             <summary>
+             Wait until the provided <paramref name="statePredicate"/> action returns true,
+             or the <paramref name="timeout"/> is reached (default is one second).
+            
+             The <paramref name="statePredicate"/> is evaluated initially, and then each time
+             the <paramref name="renderedFragment"/> renders.
+             </summary>
+             <param name="renderedFragment">The render fragment or component to attempt to verify state against.</param>
+             <param name="statePredicate">The predicate to invoke after each render, which must returns <c>true</c> when the desired state has been reached.</param>
+             <param name="timeout">The maximum time to wait for the desired state.</param>
+             <exception cref="T:Bunit.Extensions.WaitForHelpers.WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
+        </member>
+        <member name="M:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})">
+             <summary>
+             Wait until the provided <paramref name="assertion"/> passes (i.e. does not throw an
+             exception), or the <paramref name="timeout"/> is reached (default is one second).
+            
+             The <paramref name="assertion"/> is attempted initially, and then each time the <paramref name="renderedFragment"/> renders.
+             </summary>
+             <param name="renderedFragment">The rendered fragment to wait for renders from and assert against.</param>
+             <param name="assertion">The verification or assertion to perform.</param>
+             <param name="timeout">The maximum time to attempt the verification.</param>
+             <exception cref="T:Bunit.Extensions.WaitForHelpers.WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
+        </member>
+        <member name="T:Bunit.IRenderedComponentBase`1">
+            <summary>
+            Represents a rendered component-under-test.
+            </summary>
+            <typeparam name="TComponent">The type of the component under test.</typeparam>
+        </member>
+        <member name="P:Bunit.IRenderedComponentBase`1.Instance">
+            <summary>
+            Gets the component under test.
+            </summary>
+        </member>
+        <member name="T:Bunit.IRenderedFragmentBase">
+            <summary>
+            Represents a rendered <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/>.
+            </summary>
+        </member>
+        <member name="P:Bunit.IRenderedFragmentBase.RenderCount">
+            <summary>
+            Gets the total number times the fragment has been through its render life-cycle.
+            </summary>
+        </member>
+        <member name="P:Bunit.IRenderedFragmentBase.IsDisposed">
+            <summary>
+            Gets a value indicating whether the rendered component or fragment has been disposed by the <see cref="T:Bunit.Rendering.ITestRenderer"/>.
+            </summary>
+        </member>
+        <member name="P:Bunit.IRenderedFragmentBase.ComponentId">
+            <summary>
+            Gets the id of the rendered component or fragment.
+            </summary>
+        </member>
+        <member name="M:Bunit.IRenderedFragmentBase.OnRender(Bunit.Rendering.RenderEvent)">
+            <summary>
+            Called by the owning <see cref="T:Bunit.Rendering.ITestRenderer"/> when it finishes a render.
+            </summary>
+            <param name="renderEvent">A <see cref="T:Bunit.Rendering.RenderEvent"/> that represents a render.</param>
+        </member>
+        <member name="P:Bunit.IRenderedFragmentBase.Services">
+            <summary>
+            Gets the <see cref="T:System.IServiceProvider"/> used when rendering the component.
+            </summary>
+        </member>
+        <member name="E:Bunit.IRenderedFragmentBase.OnAfterRender">
+            <summary>
+            Adds or removes an event handler that will be triggered after each render of this <see cref="T:Bunit.IRenderedFragmentBase"/>.
+            </summary>
+        </member>
+        <member name="T:Bunit.RazorTesting.ParameterException">
+            <summary>
+            Represents an missing or invalid Blazor parameter on a Blazor component.
+            </summary>
+        </member>
+        <member name="M:Bunit.RazorTesting.ParameterException.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.RazorTesting.ParameterException"/> class.
+            </summary>
+            <param name="messsage">Validation message.</param>
+            <param name="parameterName">Name of the Blazor parameter.</param>
+        </member>
+        <member name="T:Bunit.Rendering.ComponentDisposedException">
+            <summary>
+            Represents an exception that is thrown when a <see cref="T:Bunit.IRenderedFragmentBase"/>'s
+            properties is accessed after the underlying component has been disposed by the renderer.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.ComponentDisposedException.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Rendering.ComponentDisposedException"/> class.
+            </summary>
+            <param name="componentId">Id of the disposed component.</param>
+        </member>
+        <member name="T:Bunit.Rendering.ComponentNotFoundException">
+            <summary>
+            Represents an exception that is thrown when a search for a component did not succeed.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.ComponentNotFoundException.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Rendering.ComponentNotFoundException"/> class.
+            </summary>
+            <param name="componentType">The type of component that was not found.</param>
+        </member>
+        <member name="T:Bunit.Rendering.FragmentContainer">
+            <summary>
+            Creates an instance of the <see cref="T:Bunit.Rendering.FragmentContainer"/>, which is used
+            when a fragment is rendered inside a test contexts render tree.
+            It is primarily used to be able to find the starting point to return.
+            </summary>
+        </member>
+        <member name="P:Bunit.Rendering.FragmentContainer.ChildContent">
+            <summary>
+            Gets or sets the content to wrap.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.FragmentContainer.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.FragmentContainer.Wrap(Microsoft.AspNetCore.Components.RenderFragment)">
+            <summary>
+            Wraps the <paramref name="wrappingTarget"/> in a <see cref="T:Bunit.Rendering.FragmentContainer"/>.
+            </summary>
+        </member>
+        <member name="T:Bunit.Rendering.IRenderedComponentActivator">
+            <summary>
+            Represents an activator for <see cref="T:Bunit.IRenderedFragmentBase"/> and <see cref="T:Bunit.IRenderedComponentBase`1"/> types.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.IRenderedComponentActivator.CreateRenderedFragment(System.Int32)">
+            <summary>
+            Creates an <see cref="T:Bunit.IRenderedFragmentBase"/> with the specified <paramref name="componentId"/>.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.IRenderedComponentActivator.CreateRenderedComponent``1(System.Int32)">
+            <summary>
+            Creates an <see cref="T:Bunit.IRenderedComponentBase`1"/> with the specified <paramref name="componentId"/>.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.IRenderedComponentActivator.CreateRenderedComponent``1(System.Int32,``0,Bunit.Rendering.RenderTreeFrameDictionary)">
+            <summary>
+            Creates an <see cref="T:Bunit.IRenderedComponentBase`1"/> with the specified <paramref name="componentId"/>,
+            <paramref name="component"/>, and <paramref name="componentFrames"/>.
+            </summary>
+        </member>
+        <member name="T:Bunit.Rendering.ITestRenderer">
+            <summary>
+            Represents a generalized Blazor renderer for testing purposes.
+            </summary>
+        </member>
+        <member name="P:Bunit.Rendering.ITestRenderer.UnhandledException">
+            <summary>
+            Gets a <see cref="T:System.Threading.Tasks.Task`1"/>, which completes when an unhandled exception
+            is thrown during the rendering of a component, that is caught by the renderer.
+            </summary>
+        </member>
+        <member name="P:Bunit.Rendering.ITestRenderer.Dispatcher">
+            <summary>
+            Gets the <see cref="P:Bunit.Rendering.ITestRenderer.Dispatcher"/> associated with this <see cref="T:Bunit.Rendering.ITestRenderer"/>.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.ITestRenderer.DispatchEventAsync(System.UInt64,Microsoft.AspNetCore.Components.RenderTree.EventFieldInfo,System.EventArgs)">
+            <summary>
+            Notifies the renderer that an event has occurred.
+            </summary>
+            <param name="eventHandlerId">The <see cref="F:Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame.AttributeEventHandlerId"/> value from the original event attribute.</param>
+            <param name="fieldInfo">Information that the renderer can use to update the state of the existing render tree to match the UI.</param>
+            <param name="eventArgs">Arguments to be passed to the event handler.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> which will complete once all asynchronous processing related to the event has completed.</returns>
+        </member>
+        <member name="M:Bunit.Rendering.ITestRenderer.RenderFragment(Microsoft.AspNetCore.Components.RenderFragment)">
+            <summary>
+            Renders the <paramref name="renderFragment"/>.
+            </summary>
+            <param name="renderFragment">The <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
+            <returns>A <see cref="T:Bunit.IRenderedFragmentBase"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
+        </member>
+        <member name="M:Bunit.Rendering.ITestRenderer.RenderComponent``1(Bunit.ComponentParameterCollection)">
+            <summary>
+            Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
+            </summary>
+            <typeparam name = "TComponent" > The type of component to render.</typeparam>
+            <param name="parameters">The parameters to pass to the component.</param>
+            <returns>A <see cref="T:Bunit.IRenderedComponentBase`1"/> that provides access to the rendered component.</returns>
+        </member>
+        <member name="M:Bunit.Rendering.ITestRenderer.FindComponent``1(Bunit.IRenderedFragmentBase)">
+            <summary>
+            Performs a depth-first search for the first <typeparamref name="TComponent"/> child component of the <paramref name="parentComponent"/>.
+            </summary>
+            <typeparam name="TComponent">Type of component to find.</typeparam>
+            <param name="parentComponent">Parent component to search.</param>
+        </member>
+        <member name="M:Bunit.Rendering.ITestRenderer.FindComponents``1(Bunit.IRenderedFragmentBase)">
+            <summary>
+            Performs a depth-first search for all <typeparamref name="TComponent"/> child components of the <paramref name="parentComponent"/>.
+            </summary>
+            <typeparam name="TComponent">Type of components to find.</typeparam>
+            <param name="parentComponent">Parent component to search.</param>
+        </member>
+        <member name="T:Bunit.Rendering.RenderEvent">
+            <summary>
+            Represents an render event from a <see cref="T:Bunit.Rendering.ITestRenderer"/>.
+            </summary>
+        </member>
+        <member name="P:Bunit.Rendering.RenderEvent.Frames">
+            <summary>
+            Gets a collection of <see cref="T:Microsoft.AspNetCore.Components.RenderTree.ArrayRange`1"/>, accessible via the ID
+            of the component they are created by.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.RenderEvent.#ctor(Microsoft.AspNetCore.Components.RenderTree.RenderBatch,Bunit.Rendering.RenderTreeFrameDictionary)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Rendering.RenderEvent"/> class.
+            </summary>
+            <param name="renderBatch">The <see cref="T:Microsoft.AspNetCore.Components.RenderTree.RenderBatch"/> update from the render event.</param>
+            <param name="frames">The <see cref="T:Bunit.Rendering.RenderTreeFrameDictionary"/> from the current render.</param>
+        </member>
+        <member name="M:Bunit.Rendering.RenderEvent.GetRenderStatus(Bunit.IRenderedFragmentBase)">
+            <summary>
+            Gets the render status for a <paramref name="renderedComponent"/>.
+            </summary>
+            <param name="renderedComponent">The <paramref name="renderedComponent"/> to get the status for.</param>
+            <returns>A tuple of statuses indicating whether the rendered component rendered during the render cycle, if it changed or if it was disposed.</returns>
+        </member>
+        <member name="M:Bunit.Rendering.RenderEvent.GetRenderAndChangeStatus(Bunit.IRenderedFragmentBase)">
+             <summary>
+             This method determines if the <paramref name="renderedComponent"/> or any of the
+             components underneath it in the render tree rendered and whether they they changed
+             their render tree during render.
+            
+             It does this by getting the status from the <paramref name="renderedComponent"/>,
+             then from all its children, using a recursive pattern, where the internal methods
+             GetStatus and GetStatusFromChildren call each other until there are no more children,
+             or both a render and a change is found.
+             </summary>
+        </member>
+        <member name="T:Bunit.Rendering.RenderTreeFrameDictionary">
+            <summary>
+            Represents a dictionary of <see cref="T:Microsoft.AspNetCore.Components.RenderTree.ArrayRange`1"/> keyed by the owning component's component id.
+            </summary>
+        </member>
+        <member name="P:Bunit.Rendering.RenderTreeFrameDictionary.Count">
+            <inheritdoc/>
+        </member>
+        <member name="P:Bunit.Rendering.RenderTreeFrameDictionary.Keys">
+            <inheritdoc/>
+        </member>
+        <member name="P:Bunit.Rendering.RenderTreeFrameDictionary.Values">
+            <inheritdoc/>
+        </member>
+        <member name="P:Bunit.Rendering.RenderTreeFrameDictionary.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:Microsoft.AspNetCore.Components.RenderTree.ArrayRange`1"/> associated with the <paramref name="componentId"/>.
+            </summary>
+            <param name="componentId">Id of the component whose <see cref="T:Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame"/> to get.</param>
+            <returns>The <see cref="T:Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame"/> for the component with <paramref name="componentId"/>.</returns>
+        </member>
+        <member name="M:Bunit.Rendering.RenderTreeFrameDictionary.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Rendering.RenderTreeFrameDictionary"/> class.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.RenderTreeFrameDictionary.Contains(System.Int32)">
+            <summary>
+            Checks whether the collection contains a <see cref="T:Microsoft.AspNetCore.Components.RenderTree.ArrayRange`1"/> for the <paramref name="componentId"/>.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.RenderTreeFrameDictionary.ContainsKey(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.RenderTreeFrameDictionary.TryGetValue(System.Int32,Microsoft.AspNetCore.Components.RenderTree.ArrayRange{Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame}@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.RenderTreeFrameDictionary.GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.RenderTreeFrameDictionary.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="T:Bunit.Rendering.RootRenderTree">
+            <summary>
+            Represents a root render tree, wherein components under tests will be rendered.
+            Components added to the render tree must have either a <c>ChildContent</c> or
+            <c>Body</c> parameter.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.RootRenderTree.Add``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})">
+            <summary>
+            Adds a component to the render tree. This method can
+            be called multiple times, with each invocation adding a component
+            to the render tree. The <typeparamref name="TComponent"/> must have a <c>ChildContent</c>
+            or <c>Body</c> parameter.
+            </summary>
+            <typeparam name="TComponent">The type of the component to add to the render tree.</typeparam>
+            <param name="parameterBuilder">An optional parameter builder, used to pass parameters to <typeparamref name="TComponent"/>.</param>
+        </member>
+        <member name="M:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})">
+            <summary>
+            Try to add a component to the render tree if it has not already been added. This method can
+            be called multiple times, with each invocation adding a component
+            to the render tree. The <typeparamref name="TComponent"/> must have a <c>ChildContent</c>
+            or <c>Body</c> parameter.
+            </summary>
+            <remarks>
+            This method will only add the component to the render tree if it has not already been added.
+            Use <see cref="M:Bunit.Rendering.RootRenderTree.Add``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})"/> to
+            add the same component multiple times.
+            </remarks>
+            <typeparam name="TComponent">The type of the component to add to the render tree.</typeparam>
+            <param name="parameterBuilder">An optional parameter builder, used to pass parameters to <typeparamref name="TComponent"/>.</param>
+            <returns>True if component was added, false if it was previously added and not added again.</returns>
+        </member>
+        <member name="P:Bunit.Rendering.RootRenderTree.Count">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.RootRenderTree.GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.RootRenderTree.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.RootRenderTree.Wrap(Microsoft.AspNetCore.Components.RenderFragment)">
+            <summary>
+            Creates a new <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> that wraps <paramref name="target"/>
+            inside the components registered in this <see cref="T:Bunit.Rendering.RootRenderTree"/>.
+            </summary>
+            <param name="target"><see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> to render inside the render tree.</param>
+            <returns>A <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> that renders the <paramref name="target"/> inside this <see cref="T:Bunit.Rendering.RootRenderTree"/> render tree.</returns>
+        </member>
+        <member name="M:Bunit.Rendering.RootRenderTree.GetCountOf``1">
+            <summary>
+            Gets the number of registered components of type <typeparamref name="TComponent"/>
+            in the render tree.
+            </summary>
+            <typeparam name="TComponent">Component type to count.</typeparam>
+            <returns>Number of components of type <typeparamref name="TComponent"/> in render tree.</returns>
+        </member>
+        <member name="T:Bunit.Rendering.RootRenderTreeRegistration">
+            <summary>
+            Represents an added component with parameters in an <see cref="T:Bunit.Rendering.RootRenderTree"/>.
+            </summary>
+        </member>
+        <member name="P:Bunit.Rendering.RootRenderTreeRegistration.ComponentType">
+            <summary>
+            Gets the type of component registered.
+            </summary>
+        </member>
+        <member name="P:Bunit.Rendering.RootRenderTreeRegistration.RenderFragmentBuilder">
+            <summary>
+            Gets the render fragment builder that renders the component of type <see cref="P:Bunit.Rendering.RootRenderTreeRegistration.ComponentType"/>
+            with the specified parameters and the provided <see cref="T:Microsoft.AspNetCore.Components.RenderFragment"/> passed to its
+            ChildContent or Body parameter.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.RootRenderTreeRegistration.#ctor(System.Type,Microsoft.AspNetCore.Components.RenderFragment{Microsoft.AspNetCore.Components.RenderFragment})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Rendering.RootRenderTreeRegistration"/> class.
+            </summary>
+        </member>
+        <member name="T:Bunit.Rendering.TestRenderer">
+            <summary>
+            Represents a bUnit <see cref="T:Bunit.Rendering.ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
+            </summary>
+        </member>
+        <member name="P:Bunit.Rendering.TestRenderer.UnhandledException">
+            <inheritdoc/>
+        </member>
+        <member name="P:Bunit.Rendering.TestRenderer.Dispatcher">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.#ctor(Bunit.Rendering.IRenderedComponentActivator,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.Rendering.TestRenderer"/> class.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.RenderFragment(Microsoft.AspNetCore.Components.RenderFragment)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.RenderComponent``1(Bunit.ComponentParameterCollection)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.DispatchEventAsync(System.UInt64,Microsoft.AspNetCore.Components.RenderTree.EventFieldInfo,System.EventArgs)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.FindComponent``1(Bunit.IRenderedFragmentBase)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.FindComponents``1(Bunit.IRenderedFragmentBase)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.ProcessPendingRender">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.HandleException(System.Exception)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.UpdateDisplayAsync(Microsoft.AspNetCore.Components.RenderTree.RenderBatch@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.Dispose(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.LoadRenderTreeFrames(System.Int32,Bunit.Rendering.RenderTreeFrameDictionary)">
+            <summary>
+            Populates the <paramref name="framesCollection"/> with <see cref="T:Microsoft.AspNetCore.Components.RenderTree.ArrayRange`1"/>
+            starting with the one that belongs to the component with ID <paramref name="componentId"/>.
+            </summary>
+        </member>
+        <member name="M:Bunit.Rendering.TestRenderer.GetOrLoadRenderTreeFrame(Bunit.Rendering.RenderTreeFrameDictionary,System.Int32)">
+            <summary>
+            Gets the <see cref="T:Microsoft.AspNetCore.Components.RenderTree.ArrayRange`1"/> from the <paramref name="framesCollection"/>.
+            If the <paramref name="framesCollection"/> does not contain the frames, they are loaded into it first.
+            </summary>
+        </member>
+        <member name="T:Bunit.Rendering.WrapperComponent">
+            <summary>
+            Wrapper class that provides access to a <see cref="T:Microsoft.AspNetCore.Components.RenderHandle"/>.
+            </summary>
+        </member>
+        <member name="T:Bunit.TestContextBase">
+            <summary>
+            A test context is a factory that makes it possible to create components under tests.
+            </summary>
+        </member>
+        <member name="P:Bunit.TestContextBase.Renderer">
+            <summary>
+            Gets the renderer used by the test context.
+            </summary>
+        </member>
+        <member name="P:Bunit.TestContextBase.Services">
+            <summary>
+            Gets the service collection and service provider that is used when a
+            component is rendered by the test context.
+            </summary>
+        </member>
+        <member name="P:Bunit.TestContextBase.RenderTree">
+            <summary>
+            Gets the <see cref="T:Bunit.Rendering.RootRenderTree"/> that all components rendered with the
+            <c>RenderComponent&lt;TComponent&gt;()</c> methods, are rendered inside.
+            </summary>
+            <remarks>
+            Use this to add default layout- or root-components which a component under test
+            should be rendered under.
+            </remarks>
+        </member>
+        <member name="M:Bunit.TestContextBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.TestContextBase"/> class.
+            </summary>
+        </member>
+        <member name="M:Bunit.TestContextBase.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestContextBase.Dispose(System.Boolean)">
+            <summary>
+            Disposes of the test context resources.
+            </summary>
+            <remarks>
+            The disposing parameter should be false when called from a finalizer, and true when called from the
+            <see cref="M:Bunit.TestContextBase.Dispose"/> method. In other words, it is true when deterministically called and false when non-deterministically called.
+            </remarks>
+            <param name="disposing">Set to true if called from <see cref="M:Bunit.TestContextBase.Dispose"/>, false if called from a finalizer.f.</param>
+        </member>
+        <member name="T:Bunit.TestServiceProvider">
+            <summary>
+            Represents a <see cref="T:System.IServiceProvider"/> and <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>
+            as a single type used for test purposes.
+            </summary>
+        </member>
+        <member name="P:Bunit.TestServiceProvider.IsProviderInitialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:Bunit.TestServiceProvider"/> has been initialized, and
+            no longer will accept calls to the <c>AddService</c>'s methods.
+            </summary>
+        </member>
+        <member name="P:Bunit.TestServiceProvider.Count">
+            <inheritdoc/>
+        </member>
+        <member name="P:Bunit.TestServiceProvider.IsReadOnly">
+            <inheritdoc/>
+        </member>
+        <member name="P:Bunit.TestServiceProvider.Item(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.#ctor(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Bunit.TestServiceProvider"/> class
+            and sets its service collection to the provided <paramref name="initialServiceCollection"/>, if any.
+            </summary>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.AddFallbackServiceProvider(System.IServiceProvider)">
+            <summary>
+            Add a fall back service provider that provides services when the default returns null.
+            </summary>
+            <param name="serviceProvider">The fallback service provider.</param>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.GetService``1">
+            <summary>
+            Get service of type T from the test provider.
+            </summary>
+            <typeparam name="TService">The type of service object to get.</typeparam>
+            <returns>A service object of type T or null if there is no such service.</returns>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.GetService(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.IndexOf(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.Insert(System.Int32,Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.RemoveAt(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.Add(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.Contains(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.CopyTo(Microsoft.Extensions.DependencyInjection.ServiceDescriptor[],System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Bunit.TestServiceProvider.Remove(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

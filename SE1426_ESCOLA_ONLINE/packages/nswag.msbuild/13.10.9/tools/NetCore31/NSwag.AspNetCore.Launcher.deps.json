@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v1.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v1.0": {
+      "NSwag.AspNetCore.Launcher/13.10.9": {
+        "runtime": {
+          "NSwag.AspNetCore.Launcher.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NSwag.AspNetCore.Launcher/13.10.9": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,433 @@
+﻿{
+   "ContextClassName": "SH0891Context",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Entities",
+   "ProjectRootNamespace": "ProdamSP.Domain",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 2,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[andamento_solicitacao_acesso]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[api]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ApiClaims]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ApiProperties]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ApiResources]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ApiScopeClaims]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ApiScopes]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ApiSecrets]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[aplicacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[area_atencao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[area_atuacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AspNetRoleClaims]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AspNetRoles]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AspNetUserClaims]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AspNetUserLogins]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AspNetUserRoles]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AspNetUsers]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AspNetUserTokens]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AuditLog]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[categoria_perfil_acesso]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[categoria_unidade]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[cbo]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[cidade]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClientClaims]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClientCorsOrigins]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClientGrantTypes]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClientIdPRestrictions]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClientPostLogoutRedirectUris]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClientProperties]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClientRedirectUris]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Clients]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClientScopes]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClientSecrets]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[configuracao_fluxo_aprovacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[configuracao_fluxo_liberacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[controlador]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[DataProtectionKeys]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[DeviceCodes]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[estado]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[fluxo_aprovacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[funcionalidade]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[funcionalidade_api]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[funcionalidade_categoria_perfil]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[funcionalidade_perfil]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[hierarquia]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[hierarquia_recursiva]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[IdentityClaims]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[IdentityProperties]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[IdentityResources]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[modulo]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[nacionalidade]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[PasswordHistory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[perfil]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[PersistedGrants]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[pessoa_fisica]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[prefeitura_regional]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[raca_cor]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_carga_estabsus]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_cargo]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_cargo_especialidade]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_cbo]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_conselho_profissional]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_coordenadoria]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_dia_semana]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_distrito_administrativo]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_especialidade]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_grupo_carreira]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_instituicao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_jornada_semanal]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_log_carga]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_nivel_cargo]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_nivel_carreira]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_orgao_contratante]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_orgao_regime_juridico]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_profissional]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_profissional_orgao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_profissional_orgao_situacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_profissional_orgao_unidade]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_profissional_orgao_unidade_horario]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_profissional_orgao_unidade_situacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_regiao_zona]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_regime_juridico]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_situacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_supervisao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_tipo_contratacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_unidade]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[rh_unidade_dimensionamento]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[seguranca]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[seguranca_componente]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[setor_servico]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[sexo]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[solicitacao_acesso]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[solicitacao_acesso_perfil]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[status_solicitacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[tipo_gestao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[tipo_solicitacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[tipo_solicitacao_aplicacao]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[tipo_vinculo]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[unidade]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[unidade_email]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[unidade_telefone]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[vinculo_pessoa_unidade]"
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNodaTime": false,
+   "UseSpatial": false,
+   "UseStoredProcedures": false
+}

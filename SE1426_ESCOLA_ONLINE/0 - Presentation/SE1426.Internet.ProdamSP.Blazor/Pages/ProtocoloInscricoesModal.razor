@@ -1,0 +1,122 @@
+﻿@layout EmptyLayout
+@page "/protocoloInscricoesModal"
+@inject IJSRuntime js
+
+
+@if (ExibirModal)
+{
+<section>
+
+    <div class="modal fade show modal_protocolo" id="myModal" style="display:block" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div id="skipto-content" class="col s12 content-box tamanho_box">
+                    <div id="imprimir">
+                        <div class="row">
+                            <div class="col s12 m3">
+                                <img src="img/logo_Educacao_Protocolo.png" alt="PMSP">
+                            </div>
+                            <div class="col s12 m6">
+                                <p>
+                                    <span>Prefeitura do Município de São Paulo</span><br>
+                                    Secretaria Municipal de Educação - SME <br>
+                                    Diretoria Regional de Educação
+                                </p>
+                            </div>
+                            <div class="col s12 m3">
+                                <p>Protocolo emitido em: <br> <strong>@DateTime.Today.ToString("dd/MM/yyyy")</strong></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 center-align">
+                                <h3>Protocolo de inscrição</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m6">
+                                <label>Nome da mãe</label>
+                                <p>@listaPreNatal[0].Responsavel.NmResponsavel.ToString().Trim()<span class="transparent-text">.</span></p>
+                            </div>
+                            <div class="col s12 m3">
+                                <label>Nº CNS (Nº SUS)</label>
+                                <p>@listaPreNatal[0].MatriculaPreNatal.NrCnsResponsavel<span class="transparent-text">.</span></p>
+                            </div>
+                            <div class="col s12 m3">
+                                <label>Nº cartão pré-natal</label>
+                                <p>@listaPreNatal[0].MatriculaPreNatal.NrPreNatal<span class="transparent-text">.</span></p>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col s12 m4">
+                                <label>Tipo de gestação</label>
+                                @if (@listaPreNatal.Count() == 1)
+                                {
+                <p>Única</p> }
+            else
+            {
+<p>Múltipla (@listaPreNatal.Count() gêmeos)</p>}
+                            </div>
+                            <div class="col s12 m4">
+                                <label>Nascimento previsto</label>
+                                <p>@listaPreNatal[0].MatriculaPreNatal.DtNascimentoPrevistaFormatada<span class="transparent-text">.</span></p>
+                            </div>
+                            <div class="col s12 m4">
+                                <label>Desejado p/ matrícula</label>
+                                <p>@listaPreNatal[0].MatriculaPreNatal.DtIntencaoMatriculaFormatada<span class="transparent-text">.</span></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12 m4">
+                                <p>Nº de protocolos relacionados</p>
+                            </div>
+                            <div class="col s12 m8">
+
+                                @foreach (var item in listaPreNatal)
+                                {
+                                <p>@item.MatriculaPreNatal.CdSolicitacaoMatriculaFormatado<span class="transparent-text">.</span></p>}
+                                <p>(Gerado após data original)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 info-protocolo">
+                                <p>Em caso de necessidade de alteração de data desejada para matrícula, procure a escola mais próxima.</p>
+                                <p><strong>Observação:</strong> Alteração de data pode ocasionar a perda da garantia de matrícula.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row notprint">
+                        <div class="col s12 center-align">
+                            <button class="btn-flat btn-voltar" type="button" @onclick="@Fechar">Fechar</button>
+                            <button class="btn-flat btn-eol" type="button" @onclick="@Imprimir">Imprimir</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>}
+
+@code { [Parameter] public bool ExibirModal { get; set; } = false;
+    [Parameter] public List<PreNatalModel> listaPreNatal { get; set; }
+
+
+    public void Exibir() => ExibirModal = true;
+    public void Ocultar() => ExibirModal = false;
+
+
+    private async Task Imprimir()
+    {
+        await js.InvokeVoidAsync("funcoes.imprimir");
+        Ocultar();
+    }
+    private void Fechar()
+    {
+        Ocultar();
+    } }

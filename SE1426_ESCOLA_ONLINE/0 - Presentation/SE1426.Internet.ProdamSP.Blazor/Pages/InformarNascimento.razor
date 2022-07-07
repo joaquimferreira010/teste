@@ -1,0 +1,1196 @@
+﻿@page "/informarNascimento"
+@inject HttpClient Http;
+@inject IJSRuntime JSRuntime;
+@inject IConfiguration Configuration
+@inject RestService restService
+@inject NavigationManager NavigationManager
+
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@using System.Linq;
+
+<!--modal confirmacao navegacao-------------------------------------------->
+<div id="modal_confirmacao_navegacao" class="modal modal_confirmacao">
+    <div class="modal-content">
+        <div class="row no-margin-bottom">
+            <div class="col s12 texto_centralizado texto_modal">
+                <p><strong>As informações serão perdidas, deseja prosseguir?</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer center-align">
+        <button class="btn-flat modal-close cancelar" type="button" title="Cancelar">Não</button>
+        <button class="btn-flat btn-eol modal-close" @onclick="() => ProsseguirNavegacao()" title="Confirmar">Sim</button>
+    </div>
+</div>
+<!-- fim modal confirmacao------------------------------------------------------->
+<!--modal confirmacao solicitacao vaga-------------------------------------------->
+<div id="modal_confirmacao_solicitacao" class="modal modal_confirmacao">
+    <div class="modal-content">
+        <div class="row no-margin-bottom">
+            <div class="col s12 texto_centralizado texto_modal">
+                <p><strong>Após a confirmação, não será possível desfazer a solicitação. Deseja continuar?</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer center-align">
+        <button class="btn-flat modal-close cancelar" type="button" title="Cancelar">Não</button>
+        <button class="btn-flat btn-eol modal-close" @onclick="() => SolicitarVaga()" title="Confirmar">Sim</button>
+
+    </div>
+</div>
+<!-- fim modal confirmacao------------------------------------------------------->
+<!-- modal erro de dados cadastrais -->
+<div id="modalCadastroErro" class="modal modal_mensagem notprint">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s3 m1">
+                <img src="img/icone_Erro.png" title="Atenção"  alt="Atenção."/>
+            </div>
+            <div class="col s7 m11 cabecalho_atencao">
+                <p>Atenção</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12" id="contentModalCadastroErro">
+                <p>@mensagem_retorno<span class="transparent-text">.</span></p>
+            </div>
+        </div>
+        <div class="center">
+            <button class="btn-flat btn-eol modal-close" @onclick="() => RedirecionarParaCadastro()">OK</button>
+        </div>
+    </div>
+</div>
+
+<!--modal cadastro solicitacao vaga sucesso -->
+<div id="modalCadastroSucesso" class="modal modal_mensagem notprint">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s3 m1">
+                <img src="img/icone_Erro.png" title="Atenção"  alt="Atenção."/>
+            </div>
+            <div class="col s7 m11 cabecalho_atencao">
+                <p>Atenção</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12" id="contentModalCadastroSucesso">
+                <p>@((MarkupString)mensagem_retorno)<span class="transparent-text">.</span></p>
+            </div>
+        </div>
+        <div class="center">
+            <button class="btn-flat btn-eol modal-close" @onclick="() => RecarregarConsulta()">OK</button>
+        </div>
+    </div>
+</div>
+<!--fim modal sucesso solicitacao vaga-->
+@*modal cns crianca ------------------------------------------------------------*@
+<div id="cns-crianca-cep-inscricao-modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m8">
+                <div class="form-item readonly" title="Nome da criança">
+                    <label for="nome-crianca-modal-1">Nome da criança</label>
+                    <input readonly aria-readonly="true" id="nome-crianca-modal-1" type="text" @bind="@nmCrianca">
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <div class="form-item readonly" title="Data de nascimento">
+                    <label for="cns-data-modal-1">Data de nascimento</label>
+                    <input readonly aria-readonly="true" id="cns-data-modal-1" type="text" @bind="@dtNascimentoCrianca">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m5">
+                <div class="form-item readonly" title="Nº CNS (Nº SUS) da mãe">
+                    <label for="cns-mae-modal-1">Nº CNS (Nº SUS) da mãe</label>
+                    <input readonly aria-readonly="true" id="cns-mae-modal-1" type="text" @bind="@nrCNSMaeCrianca">
+                </div>
+            </div>
+            <div class="col s12 m7">
+                <div class="form-item readonly" title="Nome da mãe">
+                    <label for="nome-mae-modal-1">Nome da mãe</label>
+                    <input readonly aria-readonly="true" id="nome-mae-modal-1" type="text" @bind="@nmMaeCrianca">
+                </div>
+            </div>
+        </div>
+
+
+
+        @if (string.IsNullOrEmpty(CdCepCrianca) || InNascimentoAnteriorInscricao == true)
+        {
+<div class="row">
+    <div class="col s12">
+        <p>
+            <span>
+                Endereço:    @NmLogradouroCrianca  @CdNrEnderecoCrianca - @DcComplementoEnderecoCrianca
+                CEP: @CdCepCrianca
+            </span>
+        </p>
+    </div>
+    @if (string.IsNullOrEmpty(CdCepCrianca))
+    {@*<div id="mensagem-cep-nao-cadastrado" class="aviso">*@
+                        <div class="row">
+                            <div class="col s12 fundo-rosa">
+                                <p>No cadastro da criança não consta o CEP ou está inválido.</p>
+                                <p>Favor procurar a Unidade Básica de Saúde mais próxima ou use o aplicativo Busca Saúde para atualizar o cadastro.</p>
+                            </div>
+                        </div> @*</div>*@ <!----> }
+    else
+    {
+                        @if (InNascimentoAnteriorInscricao == true)
+                        {@*<div id="mensagem-cep-nao-cadastrado" class="aviso">*@
+                                                <div class="row">
+                                                    <div class="col s12 fundo-rosa">
+                                                        <p>A data de nascimento no cadastro da criança consta como anterior à inscrição no Mãe Paulistana Creche. 
+                                                        Caso a data de nascimento da criança esteja incorreta, por favor, procure a unidade de saúde onde realizou
+                                                        o pré-natal para realizar a correção. Caso a data de nascimento da criança esteja correta, por favor, 
+                                                        procure a escola mais próxima para orientações sobre vagas em creche.</p>
+                                                    </div>
+                                                </div> @*</div>*@                    }                }
+
+    @*</div>*@
+
+</div> <!-- botão 'Entendi' -->
+                                <div class="modal-footer center-align modal-footer-informar-nascimento">
+                                    <div id="cep-nao-confere">
+                                        <button type="button" class="btn-flat btn-eol modal-close" title="Entendi" @onclick="@(e => SetarFocus(@IdCampoCnsCrianca))">Entendi</button>
+                                    </div>
+                                </div>}
+
+    </div>
+</div>
+@*fim modal cns crianca cep ou inscricao invalida------------------------------------------------------------*@
+
+
+
+@*modal cns crianca ------------------------------------------------------------*@
+<div id="cns-crianca-modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 m8">
+                <div class="form-item readonly" title="Nome da criança">
+                    <label for="nome-crianca-modal-1">Nome da criança</label>
+                    <input readonly aria-readonly="true" id="nome-crianca-modal-1" type="text" @bind="@nmCrianca">
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <div class="form-item readonly" title="Data de nascimento">
+                    <label for="cns-data-modal-1">Data de nascimento</label>
+                    <input readonly aria-readonly="true" id="cns-data-modal-1" type="text" @bind="@dtNascimentoCrianca">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m5">
+                <div class="form-item readonly" title="Nº CNS (Nº SUS) da mãe">
+                    <label for="cns-mae-modal-1">Nº CNS (Nº SUS) da mãe</label>
+                    <input readonly aria-readonly="true" id="cns-mae-modal-1" type="text" @bind="@nrCNSMaeCrianca">
+                </div>
+            </div>
+            <div class="col s12 m7">
+                <div class="form-item readonly" title="Nome da mãe">
+                    <label for="nome-mae-modal-1">Nome da mãe</label>
+                    <input readonly aria-readonly="true" id="nome-mae-modal-1" type="text" @bind="@nmMaeCrianca">
+                </div>
+            </div>
+        </div>
+
+
+
+
+        @if (InEnderecoDiferente == true)
+        {
+<div id="mensagem-nao-confere aviso">
+    <div class="row">
+        <div class="col s12 fundo-rosa">
+            @if (InNomeMaeDiferente == true)
+            {
+<p>Foram encontradas diferenças no cadastro da criança</p> }
+else
+{
+<p>Foi encontrada uma diferença no cadastro da criança</p>}
+        </div>
+    </div>
+</div>}
+
+        @if (InNomeMaeDiferente == true)
+        {
+<div id="dado-nao-confere">
+    <div class="row">
+        <div class="col s12">
+            <p><strong>O nome da mãe não confere com o nome cadastrado na inscrição. Deseja continuar mesmo assim?</strong></p>
+            <p>
+                <strong>Nome informado no cadastro do pré-natal:</strong><br />
+                * @nmResponsavel
+            </p>
+
+            <p>
+                <strong>Nome que consta no CNS da criança:</strong><br />
+                * @nmMaeCrianca
+            </p>
+
+            <p>
+                <label for="chkManterNomeMaeDiferente" title="Estou ciente e desejo prosseguir mesmo assim.">
+                    <input type="checkbox" value="confirmar-nome" id="chkManterNomeMaeDiferente" @bind="@InManterNomeDiferenteMae" />
+                    <span><strong>Estou ciente e desejo prosseguir mesmo assim.</strong></span>
+                </label>
+            </p>
+        </div>
+    </div>
+</div>}
+
+        @if (InEnderecoDiferente == true)
+        {
+            if (InNomeMaeDiferente)
+            {<hr />}
+<div id="endereco-nao-confere">
+    <div class="row">
+        <div class="col s12">
+            <p><strong>O endereço do responsável é diferente do da criança</strong></p>
+            <p>
+                Endereço do responsável (@nmResponsavel)<br />
+                <span>
+                    @DcTpLogradouroEol @NmLogradouroEol  @CdNrEnderecoEol - @DcComplementoEnderecoEol
+                    CEP: @CdCepEol
+                </span>
+            </p>
+            <p>
+                Endereço da criança informado na Unidade de Saúde<br />
+                <span>
+                    @DcTpLogradouroCrianca @NmLogradouroCrianca  @CdNrEnderecoCrianca - @DcComplementoEnderecoCrianca
+                    CEP: @CdCepCrianca
+                </span>
+            </p>
+
+            <p>
+                @*<label for="chkAlterarEnderecoDiferente" title="Desejo alterar o endereço do responsável pelo endereço da criança">
+            <input type="checkbox" value="confirmar-endereco" id="chkAlterarEnderecoDiferente" @bind="@InAtualizarEndereco" />
+            <span>Desejo alterar o endereço do responsável pelo endereço da criança</span>
+        </label><br />*@
+
+                <label for="optEnderecoResponsavel" title="Desejo manter o endereço do responsável.">
+                    <input id="optEnderecoResponsavel" name="optEndereco" type="radio" value="0" checked="@isEnderecoManter" @onchange="() => { isEnderecoManter = true; isEnderecoAtualizar = false; InAtualizarEndereco = false; }" />
+                    <span>Desejo manter o endereço do responsável.</span>
+                </label><br />
+                <label for="optEnderecoCrianca" title="Desejo atualizá-lo a partir do endereço da criança.">
+                    <input id="optEnderecoCrianca" name="optEndereco" type="radio" value="0" checked="@isEnderecoAtualizar" @onchange="() => { isEnderecoManter = false;  isEnderecoAtualizar = true; InAtualizarEndereco = true; }" />
+                    <span>Desejo atualizá-lo a partir do endereço da criança.</span>
+                </label><br />
+
+                <label title="A alteração de endereço implica na perda de prioridade do protocolo." class="label_vermelho_italico">
+                    *A alteração de endereço implica na perda de prioridade do protocolo.
+                </label>
+            </p>
+
+        </div>
+    </div>
+</div>}
+        <div class="modal-footer center-align modal-footer-informar-nascimento">
+            <div id="modal-confere">
+                <button class="btn-flat modal-close cancelarCNS" type="button" @onclick="@(e => SetarFocus(@IdCampoCnsCrianca))" title="Cancelar">Cancelar</button>
+                @if (InNomeMaeDiferente && !InManterNomeDiferenteMae)
+                {
+                <button type="button" class="btn-flat btn-eol"
+                        @onclick="@(e => ExibirMensagem("Para prosseguir, você deve concordar com o nome da mãe que consta no CNS da criança."))"
+                        title="Confirmar">
+                    Confirmar
+                </button> }
+
+                else
+                {
+                    @if (InEnderecoDiferente && !isEnderecoManter && !isEnderecoAtualizar)
+                    {
+                        <button type="button" class="btn-flat btn-eol"
+                                @onclick="@(e => ExibirMensagem("Para prosseguir, você deve indicar se deseja manter ou atualizar o endereço do responsável."))"
+                                title="Confirmar">
+                            Confirmar
+                        </button>}
+                    else
+                    {
+                        <button type="button" class="btn-flat btn-eol modal-close"
+                                @onclick="() => ConfirmarCNSCrianca()"
+                                title="Confirmar">
+                            Confirmar
+                        </button>
+                     }
+                }
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+@*fim modal cns crianca nome / endereco /sem inconsistencias ------------------------------------------------------------*@
+
+
+
+@*pagina --------------------------------------------------------------------------*@
+<fieldset class="fieldset_border">
+    <section>
+
+        @if (loading == true)
+        {
+<div id="spinner"><div class="spinner" title="Carregando"></div></div>}
+
+        <div id="skipto-content" class="col s12 m8 l9 content-box tamanho_box">
+            <div class="row hide-on-small-only">
+                <div class="col s12 right-align">
+                    <a href="" @onclick="@(e => ConfirmarNavegacao(""))" @onclick:preventDefault title="Botão Sair" alt="Botão Sair" tabindex="20"><img src="assets/img/btn_Sair.png" alt="Botão de sair" title="Botão Sair"></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <h3>Informar nascimento</h3>
+                </div>
+            </div>
+            @if (listaPreNatal != null && listaPreNatal.Count > 0)
+            {
+<form>
+    <div class="row">
+        <div class="col s12 m4">
+            <div class="form-item readonly">
+                <label for="cns">Nº CNS (Nº SUS)</label>
+                <input readonly aria-readonly="true" placeholder="000 0000 0000 0000" id="cns"
+                       type="text"
+                       value="@listaPreNatal[0].MatriculaPreNatal.NrCnsResponsavelFormatado"
+                       tabindex="21"
+                       title="Nº CNS (Nº SUS)">
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="form-item readonly">
+                <label for="cpn">Nº SISPRENATAL</label>
+                <input readonly aria-readonly="true" placeholder="00000000000000" id="cpn" type="text"
+                       value="@listaPreNatal[0].MatriculaPreNatal.NrPreNatalFormatado"
+                       tabindex="22"
+                       title="Número SIS Pré-natal">
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="form-item readonly">
+                <label for="nome-mae">Nome da mãe</label>
+                <input readonly aria-readonly="true" placeholder="000 0000 0000 0000" id="nome-mae" type="text"
+                       value="@listaPreNatal[0].Responsavel.NmResponsavel.ToString().Trim()"
+                       tabindex="23"
+                       title="Nome da mãe">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <p><span class="aviso-vaga">Para solicitar vaga na creche informe o nascimento da criança digitando o número CNS (número SUS) e confirmando seus dados</span></p>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+
+        @foreach (var item in listaPreNatal)
+        {
+
+@if (!string.IsNullOrEmpty(item.Transformacao.NrCnsCrianca) && item.Transformacao.InCnsCriancaPreenchida == true)
+{
+    //Criança já possui cns ou já confirmou no popup de confirmacao
+<div class="col s12 protocolo-box">
+    <div class="protocolo-item">
+        <div class="row">
+            <div class="col s12 protocolo-header">
+                <p><strong>Nº protocolo @item.Transformacao.CdSolicitacaoMatriculaFormatado</strong></p>
+                <div class="line"></div>
+            </div>
+            <div class="col s12 protocolo-body">
+                <div class="row">
+                    <div class="col s12 m4 l3">
+                        <div class="form-item readonly">
+                            <label for="cns-01">Nº CNS (Nº SUS) criança @item.Transformacao.NrCrianca</label>
+                            <input class="cns-crianca" readonly aria-readonly="true" placeholder="000 0000 0000 0000"
+                                   id="cns-01" type="text"
+                                   value="@item.Transformacao.NrCnsCrianca"
+                                   tabindex="@tab"
+                                   title="Nº CNS (Nº SUS) criança">
+                        </div>
+                    </div>
+
+                    @if (item.Transformacao.DtTransformacaoCandidato == null)
+                    {
+            <div class="col s12 m4 l3">
+                <button class="btn-flat" type="button" id="editar-cns"
+                        @onclick="@(e => CancelarCNS(item.MatriculaPreNatal.CdSolicitacaoMatriculaPreNatal, item.Transformacao.NrCrianca))"
+                        tabindex="@tab"
+                        title="Alterar CNS">
+                    Alterar CNS
+                </button>
+            </div>}
+                </div>
+
+                <p><strong>Dados da criança @item.Transformacao.NrCrianca.ToString().Trim()</strong></p>
+                <div class="row">
+                    <div class="col s12 m4">
+                        <label>Nome da criança</label>
+                        <p>@item.Transformacao.DadosCrianca.NmCrianca.ToString().Trim()<span class="transparent-text">.</span></p>
+                    </div>
+                    <div class="col s12 m4">
+                        <label>Data de nascimento</label>
+                        <p>@item.Transformacao.DadosCrianca.DtNascimentoCriancaFormatada<span class="transparent-text">.</span></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m4">
+                        <label>Nº CNS (Nº SUS) da mãe</label>
+                        <p>@item.Transformacao.NrCnsResponsavelFormatado<span class="transparent-text">.</span></p>
+                    </div>
+                    <div class="col s12 m4">
+                        <label>Nome da mãe</label>
+                        <p>@item.Transformacao.DadosCrianca.NmMae.ToString().Trim()<span class="transparent-text">.</span></p>
+                    </div>
+                </div>
+
+                @if (item.Transformacao.DtTransformacaoCandidato == null)
+                {
+            <div class="row">
+                <div class="col s12">
+                    <button type="button" class="btn-flat btn-eol"
+                            title="Solicitar vaga para creche"
+                            @onclick="@(e => ExibirModalConfirmacaoSolicitacao(item.Transformacao.CdSolicitacaoMatriculaPreNatal, item.Transformacao.CdSolicitacaoMatriculaFormatado))"
+                            tabindex="@tab">
+                        Solicitar vaga para creche
+                    </button>
+                </div>
+            </div>}
+            </div>
+        </div>
+    </div>
+</div> }
+
+
+else
+{
+//Criança nao possui cns
+<div class="col s12 protocolo-box">
+    <div class="protocolo-item">
+        <div class="row">
+            <div class="col s12 protocolo-header">
+                <p><strong>Nº protocolo @item.Transformacao.CdSolicitacaoMatriculaFormatado</strong></p>
+                <div class="line"></div>
+            </div>
+            <div class="col s12 protocolo-body">
+                <div class="row">
+                    <div class="col s12 m4">
+                        <div class="form-item search-cns">
+                            <label for=@("cns_crianca" + @item.Transformacao.NrCrianca.ToString())
+                                   title="Nº CNS (Nº SUS) criança">Nº CNS (Nº SUS) criança </label>
+
+                            <input class="cns-crianca"
+                                   placeholder="000 0000 0000 0000"
+                                   id=@("cns_crianca" + @item.Transformacao.NrCrianca.ToString())
+                                   type="text"
+                                   title=" Número do cns da criança"
+                                   @bind=@item.Transformacao.NrCnsCriancaFormatado
+                                   tabindex="@tab"
+                                   disabled="@InPermitePesquisarCnsCrianca">
+
+                            <button type="button" class="btn-flat btn-informar"
+                                    title="Buscar dados da criança"
+                                    @onclick="@(e => ConsultarCrianca(item.Transformacao.NrCnsCriancaFormatado, item.MatriculaPreNatal.CdSolicitacaoMatriculaPreNatal, item.Transformacao.NrCrianca))"
+                                    tabindex="@tab"
+                                    disabled="@InPermitePesquisarCnsCrianca">
+                                Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>}}
+    </div>
+
+</form>}
+        </div>
+    </section>
+</fieldset>
+
+
+@code { //
+    private string codEOLPreNatal { get; set; }
+    private string numeroCns { get; set; }
+    private string numeroSisPreNatal { get; set; }
+    private string nmResponsavel { get; set; }
+
+
+    private bool exibir_mensagem { get; set; } = false;
+    private string mensagem_retorno { get; set; }
+    private bool loading = false;
+    private int tab = 24;
+
+    private List<PreNatalTransformacaoModel> listaPreNatal;
+
+    //dados da criança-SIGA- campos do popup
+    private TransformacaoConsultaCriancaRetornoModel transformacaoCriancaRetorno;
+
+    private string NrCnsCriancaPesquisa { get; set; }
+    private string nmCrianca { get; set; }
+    private string dtNascimentoCrianca { get; set; }
+    private string nrCNSMaeCrianca { get; set; }
+    private string nmMaeCrianca { get; set; }
+
+    private string CdCepCrianca { get; set; }
+    private string DcTpLogradouroCrianca { get; set; }
+    private string NmLogradouroCrianca { get; set; }
+    private string CdNrEnderecoCrianca { get; set; }
+    private string DcComplementoEnderecoCrianca { get; set; }
+    private string IdCampoCnsCrianca { get; set; }
+    private bool InNomeMaeDiferente { get; set; } = false;
+    private bool InEnderecoDiferente { get; set; } = false;
+    private bool InNascimentoAnteriorInscricao { get; set; } = false;
+
+    private bool InManterNomeDiferenteMae { get; set; } = false;
+    private bool InAtualizarEndereco { get; set; } = false;
+
+    private bool isEnderecoManter { get; set; } = false;
+    private bool isEnderecoAtualizar { get; set; } = false;
+
+    private int cdSolicitacaoMatriculaPreNatalCrianca { get; set; }
+    private bool exibir_modal_cns_crianca { get; set; } = false;
+
+
+
+    //dados da crianca - EOL - campos do popup
+    private string NmResponsavelEol { get; set; }
+
+    private string CdCepEol { get; set; }
+    private string DcTpLogradouroEol { get; set; }
+    private string NmLogradouroEol { get; set; }
+    private string CdNrEnderecoEol { get; set; }
+    private string DcComplementoEnderecoEol { get; set; }
+
+
+    //dados solicitar matricula-gravacao
+    private int CdSolicitacaoMatriculaPreNatalGravar { get; set; }
+    private string CdSolicitacaoMatriculaFormatadoGravar { get; set; }
+
+    //campo para permitir ou nao pesquisa de cns
+    private bool InPermitePesquisarCnsCrianca { get; set; }
+
+    //guardar em sessao para saber se a solicitacao nao foi salva
+    const string sessionSolicVagaPendente = "solicVagaPendente";
+    private string pagina { get; set; } = "";
+    private string solicVagaPendente { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+            codEOLPreNatal = await sessionStorage.GetItemAsync<string>("codEOLPreNatal");
+            codEOLPreNatal = Util.Decriptar(codEOLPreNatal);
+        }
+        catch (Exception)
+        {
+            //redirecionar para a tela inicial se nao conseguir recuperar dado da sessao
+            NavigationManager.NavigateTo("");
+            return;
+        }
+
+
+        exibir_modal_cns_crianca = false;
+        loading = true;
+
+
+        if (!string.IsNullOrEmpty(codEOLPreNatal))
+        {
+            numeroCns = await sessionStorage.GetItemAsync<string>("numeroCns");
+            numeroCns = Util.Decriptar(numeroCns);
+
+            numeroSisPreNatal = await sessionStorage.GetItemAsync<string>("numeroSisPreNatal");
+            numeroSisPreNatal = Util.Decriptar(numeroSisPreNatal);
+
+            await Consultar();
+
+            exibir_mensagem = !string.IsNullOrEmpty(mensagem_retorno);
+        }
+        else
+        {
+            mensagem_retorno = "Acesso inválido.";
+            exibir_mensagem = true;
+            loading = false;
+            await ExibirMensagem(mensagem_retorno);
+            NavigationManager.NavigateTo("");
+        }
+        loading = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("ativarMascarasCamposInformarNascimento");
+        await JSRuntime.InvokeVoidAsync("setTitle", "Informar Nascimento"); ;
+        await JSRuntime.InvokeVoidAsync("funcoes.ativarNavItemMenu", "navInformarNascimento");
+    }
+
+
+    //consultar lista de pre-natal - dados do responsavel
+    private async Task Consultar()
+    {
+        try
+        {
+            mensagem_retorno = "";
+
+            await AtualizarSessionSolicVagaPendente("N");
+
+            if (string.IsNullOrEmpty(numeroCns) && string.IsNullOrEmpty(numeroSisPreNatal))
+            {
+                mensagem_retorno = "Campo(s) obrigatório(s) não informado(s).";
+                await ExibirMensagem(mensagem_retorno);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(numeroCns) || numeroCns.Replace(" ", "").Trim() == "")
+            {
+                mensagem_retorno = "Número do CNS é obrigatório.";
+                await ExibirMensagem(mensagem_retorno);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(numeroSisPreNatal) || numeroSisPreNatal.Replace(" ", "").Trim() == "")
+            {
+                mensagem_retorno = "Número do cartão Pré-natal é obrigatório.";
+                await ExibirMensagem(mensagem_retorno);
+                return;
+            }
+
+
+            //var listaPreNatalRetorno = await restService.BuscarSolicitacoesPreNatal(numeroCns, numeroSisPreNatal);
+            var listaPreNatalRetorno = await restService.BuscarSolicitacoesPreNatalTransformacao(numeroCns, numeroSisPreNatal);
+            if (listaPreNatalRetorno.Count() > 0)
+            {
+
+                //verificacao do nr_cns_crianca e dt_transformacao
+
+                //caso numero do cns da crianca preenchido e data de transformacao nao preenchido ou
+                //caso numero do cns da crianca nao preenchido e data de transformacao preenchido
+                //ERRO de cadastro
+                var listaPreNataisInvalidos = listaPreNatalRetorno
+                                          .Where(x => (string.IsNullOrEmpty(x.MatriculaPreNatal.NrCnsCrianca) && (x.MatriculaPreNatal.DtTansformacaoCandidato.HasValue))
+                                                   || (!string.IsNullOrEmpty(x.MatriculaPreNatal.NrCnsCrianca) && (!x.MatriculaPreNatal.DtTansformacaoCandidato.HasValue)));
+
+                if (listaPreNataisInvalidos != null && listaPreNataisInvalidos.Count() > 0)
+                {
+                    //mostrar mensagem e redirecionar para cadastro
+                    loading = false;
+                    mensagem_retorno = "Identificamos um erro no cadastro. Por favor, atualize os dados do responsável!";
+                    await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modalCadastroErro");
+                    return;
+                }
+
+
+                //verifica se possui algum pre-natal a ser transformado
+                var listaPreNataisNaoTransformados = listaPreNatalRetorno
+                                                     .Where(x => (string.IsNullOrEmpty(x.MatriculaPreNatal.NrCnsCrianca) && (!x.MatriculaPreNatal.DtTansformacaoCandidato.HasValue)));
+
+                if (listaPreNataisNaoTransformados == null || listaPreNataisNaoTransformados.Count() == 0)
+                {
+                    //nao tem nenhum pre-natal a ser transformado
+                    loading = false;
+                    await RedirecionarParaConsulta();
+                    return;
+                }
+
+                listaPreNatal = listaPreNatalRetorno;
+
+                await HabilitarDesabilitarPesquisaCnsCrianca();
+
+            }
+            else
+            {
+                //mostrar mensagem e redirecionar para cadastro
+                loading = false;
+                mensagem_retorno = "O sistema não localizou os dados solicitados.";
+                await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modalCadastroErro");
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            //ver mensagem de exception
+            mensagem_retorno = "Ocorreu um erro na consulta de inscrições Pré-Natal." + ex.Message;
+            await ExibirMensagem(mensagem_retorno);
+        }
+    }
+
+
+    //Consultar dados da criança
+    private async Task ConsultarCrianca(string NrCnsCrianca, int CdSolicitacaoMatriculaPreNatal, int NrCrianca)
+    {
+        try
+        {
+
+            IdCampoCnsCrianca = "cns_crianca" + NrCrianca.ToString();
+            if (string.IsNullOrEmpty(NrCnsCrianca))
+            {
+                mensagem_retorno = "Número de CNS inválido.";
+                await ExibirMensagemFocus(mensagem_retorno, IdCampoCnsCrianca);
+                return;
+            }
+
+            mensagem_retorno = "";
+            exibir_modal_cns_crianca = false;
+
+            //fim dados originais para comparacao
+            NrCnsCriancaPesquisa = NrCnsCrianca.Replace(" ", "");
+
+            var preNatalCrianca = listaPreNatal.Where(x => x.MatriculaPreNatal.CdSolicitacaoMatriculaPreNatal == CdSolicitacaoMatriculaPreNatal);
+            TransformacaoModel transformacaoCrianca = null;
+            if (preNatalCrianca != null && preNatalCrianca.Count() > 0)
+            {
+                transformacaoCrianca = preNatalCrianca.FirstOrDefault().Transformacao;
+            }
+
+            if (transformacaoCrianca == null)
+            {
+                mensagem_retorno = "Não foram encontrados dados do cns do responsável.";
+                await ExibirMensagem(mensagem_retorno);
+                return;
+            }
+
+            //verificar se o cns da crianca foi selecionado
+
+            var dadosCNSCriancaCadastrado = listaPreNatal.Where(x => x.Transformacao.NrCnsCrianca == NrCnsCriancaPesquisa);
+            if (dadosCNSCriancaCadastrado != null && dadosCNSCriancaCadastrado.Count() > 0)
+            {
+                mensagem_retorno = "Número do cns da criança já foi selecionado.";
+                await ExibirMensagemFocus(mensagem_retorno, IdCampoCnsCrianca);
+                return;
+            }
+
+
+            //Consultar dados da crianca
+            TransformacaoConsultaCriancaModel transformacaoConsultaCriancaModel = new TransformacaoConsultaCriancaModel();
+            transformacaoConsultaCriancaModel.NrCnsResponsavel = transformacaoCrianca.NrCnsResponsavel;
+            transformacaoConsultaCriancaModel.NrPreNatal = transformacaoCrianca.NrPreNatal;
+            transformacaoConsultaCriancaModel.CdSolicitacaoMatricula = transformacaoCrianca.CdSolicitacaoMatricula.ToString();
+            transformacaoConsultaCriancaModel.NrCnsCrianca = NrCnsCriancaPesquisa;
+
+            loading = true;
+            transformacaoCriancaRetorno = await restService.ConsultarDadosCrianca(transformacaoConsultaCriancaModel);
+            loading = false;
+            if (transformacaoCriancaRetorno != null)
+            {
+                if (transformacaoCriancaRetorno.CodRetorno == 99)
+                {
+                    mensagem_retorno = string.IsNullOrEmpty(transformacaoCriancaRetorno.MsgRetorno) ? "" : transformacaoCriancaRetorno.MsgRetorno;
+                    //await ExibirMensagem(mensagem_retorno);
+                    await ExibirMensagemFocus(mensagem_retorno, IdCampoCnsCrianca);
+                    return;
+                }
+                else
+                {
+                    exibir_modal_cns_crianca = true;
+                    cdSolicitacaoMatriculaPreNatalCrianca = CdSolicitacaoMatriculaPreNatal;
+
+                    //eol - preencher campos do popup
+                    nrCNSMaeCrianca = transformacaoCrianca.NrCnsResponsavelFormatado;
+
+                    nmResponsavel = transformacaoCriancaRetorno.DadosMae.NmMaeCrianca;
+
+                    try
+                    {
+                        CdCepEol = (transformacaoCriancaRetorno.DadosMae.CdCep.HasValue) ?
+                         Convert.ToInt32(transformacaoCriancaRetorno.DadosMae.CdCep).ToString("00000-000") : "";
+                    }
+                    catch (Exception)
+                    {
+                        mensagem_retorno = "CEP do logradouro (dados da mãe) possui letras.";
+                        await ExibirMensagemFocus(mensagem_retorno, IdCampoCnsCrianca);
+                        return;
+                    }
+
+
+
+                    DcTpLogradouroEol = transformacaoCriancaRetorno.DadosMae.DcTpLogradouro;
+                    NmLogradouroEol = string.IsNullOrEmpty(transformacaoCriancaRetorno.DadosMae.NmLogradouro) ? "" : transformacaoCriancaRetorno.DadosMae.NmLogradouro.Trim();
+                    if (NmLogradouroEol != "")
+                    {
+                        if (NmLogradouroEol.Length > 3)
+                        {
+                            string digito = new string('*', NmLogradouroEol.Length - 3);
+                            NmLogradouroEol = NmLogradouroEol.Substring(0, 3) + digito;
+                        }
+                        else
+                        {
+                            string digito = new string('*', NmLogradouroEol.Length);
+                            NmLogradouroEol = NmLogradouroEol.Substring(0, 1) + digito;
+                        }
+                    }
+
+                    CdNrEnderecoEol = transformacaoCriancaRetorno.DadosMae.CdNrEndereco.Trim();
+                    if (CdNrEnderecoEol != "")
+                    {
+                        if (CdNrEnderecoEol.Length > 1)
+                        {
+                            string digito = new string('*', CdNrEnderecoEol.Length - 1);
+                            if (NmLogradouroEol != "") { NmLogradouroEol = NmLogradouroEol + ", "; }
+                            CdNrEnderecoEol = " Nº " + digito + CdNrEnderecoEol.Substring(CdNrEnderecoEol.Length - 1, 1);
+                        }
+                        else
+                        {
+                            if (NmLogradouroEol != "") { NmLogradouroEol = NmLogradouroEol + ", "; }
+                            CdNrEnderecoEol = " Nº *";
+                        }
+                    }
+
+
+
+                    DcComplementoEnderecoEol = transformacaoCriancaRetorno.DadosMae.DcComplementoEndereco;
+
+
+                    //siga - preencher campos do popup
+                    nmCrianca = transformacaoCriancaRetorno.DadosCrianca.NmCrianca.Trim();
+                    dtNascimentoCrianca = Convert.ToDateTime(transformacaoCriancaRetorno.DadosCrianca.DtNascimentoCrianca).ToString("dd/MM/yyyy");
+                    nmMaeCrianca = transformacaoCriancaRetorno.DadosCrianca.NmMae.Trim();
+
+                    if (transformacaoCriancaRetorno.DadosCrianca.CdCepCrianca.HasValue && transformacaoCriancaRetorno.DadosCrianca.CdCepCrianca.Value != 0)
+                    {
+
+                        try
+                        {
+                            CdCepCrianca = Convert.ToInt32(transformacaoCriancaRetorno.DadosCrianca.CdCepCrianca).ToString("00000-000");
+                        }
+                        catch (Exception)
+                        {
+                            mensagem_retorno = "CEP do logradouro (dados da criança) possui letras.";
+                            await ExibirMensagemFocus(mensagem_retorno, IdCampoCnsCrianca);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        CdCepCrianca = "";
+                    }
+
+                    DcTpLogradouroCrianca = string.IsNullOrEmpty(transformacaoCriancaRetorno.DadosCrianca.DcTpLogradouroCrianca) ? "" : transformacaoCriancaRetorno.DadosCrianca.DcTpLogradouroCrianca.Trim();
+                    NmLogradouroCrianca = string.IsNullOrEmpty(transformacaoCriancaRetorno.DadosCrianca.NmLogradouroCrianca) ? "" : transformacaoCriancaRetorno.DadosCrianca.NmLogradouroCrianca.Trim();
+                    if (NmLogradouroCrianca != "")
+                    {
+                        if (NmLogradouroCrianca.Length > 3)
+                        {
+                            string digito = new string('*', NmLogradouroCrianca.Length - 3);
+                            NmLogradouroCrianca = NmLogradouroCrianca.Substring(0, 3) + digito;
+                        }
+                        else
+                        {
+                            string digito = new string('*', NmLogradouroCrianca.Length);
+                            NmLogradouroCrianca = NmLogradouroCrianca.Substring(0, 1) + digito;
+                        }
+                    }
+
+                    CdNrEnderecoCrianca = string.IsNullOrEmpty(transformacaoCriancaRetorno.DadosCrianca.CdNrEnderecoCrianca) ? "" : transformacaoCriancaRetorno.DadosCrianca.CdNrEnderecoCrianca.Trim();
+                    if (CdNrEnderecoCrianca != "")
+                    {
+                        if (CdNrEnderecoCrianca.Length > 1)
+                        {
+                            string digito = new string('*', CdNrEnderecoCrianca.Length - 1);
+                            if (NmLogradouroCrianca != "") { NmLogradouroCrianca = NmLogradouroCrianca + ", "; }
+                            CdNrEnderecoCrianca = " Nº " + digito + CdNrEnderecoCrianca.Substring(CdNrEnderecoCrianca.Length - 1, 1);
+                        }
+                        else
+                        {
+                            if (NmLogradouroCrianca != "") { NmLogradouroCrianca = NmLogradouroCrianca + ", "; }
+                            CdNrEnderecoCrianca = " Nº *";
+                        }
+                    }
+
+                    DcComplementoEnderecoCrianca = string.IsNullOrEmpty(transformacaoCriancaRetorno.DadosCrianca.DcComplementoEnderecoCrianca) ? "" : transformacaoCriancaRetorno.DadosCrianca.DcComplementoEnderecoCrianca.Trim();
+
+                    //consistencia de diferenca de endereco e nome da mae
+                    InEnderecoDiferente = transformacaoCriancaRetorno.InEnderecoDiferente;
+                    InNomeMaeDiferente = transformacaoCriancaRetorno.InNomeMaeDiferente;
+                    InNascimentoAnteriorInscricao = transformacaoCriancaRetorno.InNascimentoAnteriorInscricao;
+
+                    //dados checkbox / radio button
+                    InManterNomeDiferenteMae = false;
+                    InAtualizarEndereco = false;
+                    isEnderecoManter = false;
+                    isEnderecoAtualizar = false;
+
+
+                    //abrir modal com as informacoes do cns pesquisado
+
+
+                    if (string.IsNullOrEmpty(CdCepCrianca) || InNascimentoAnteriorInscricao == true)
+                    {
+                        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalEstatico", "cns-crianca-cep-inscricao-modal");
+                    }
+                    else
+                    {
+                        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalEstatico", "cns-crianca-modal");
+                    }
+
+                }
+            }
+            else
+            {
+                mensagem_retorno = "Não foram encontrados dados do cns da criança.";
+                await ExibirMensagemFocus(mensagem_retorno, IdCampoCnsCrianca);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            //ver mensagem de exception
+            loading = false;
+            mensagem_retorno = "Ocorreu um erro na consulta de cns da criança." + ex.Message;
+            await ExibirMensagem(mensagem_retorno);
+        }
+    }
+
+
+    private async Task ConfirmarCNSCrianca()
+    {
+        //-somente se confirmar o cns desejado , atualizará dados de transformacao da criança
+        //da lista de pre-natais
+        //-atualizar model do pre-natal/transformacao
+        var preNatalCrianca = listaPreNatal.Where(x => x.MatriculaPreNatal.CdSolicitacaoMatriculaPreNatal == cdSolicitacaoMatriculaPreNatalCrianca).FirstOrDefault();
+        if (preNatalCrianca != null)
+        {
+            preNatalCrianca.Transformacao.DadosMae = transformacaoCriancaRetorno.DadosMae;
+            preNatalCrianca.Transformacao.DadosCrianca = transformacaoCriancaRetorno.DadosCrianca;
+
+            preNatalCrianca.Transformacao.NrCnsCrianca = transformacaoCriancaRetorno.DadosCrianca.NrCnsCrianca;
+
+            preNatalCrianca.Transformacao.InCnsCriancaPreenchida = true;
+            preNatalCrianca.Transformacao.InAtualizarNomeMae = !InManterNomeDiferenteMae;
+            preNatalCrianca.Transformacao.InAtualizarEndereco = InAtualizarEndereco;
+
+            preNatalCrianca.Transformacao.InNomeMaeDiferente = transformacaoCriancaRetorno.InNomeMaeDiferente;
+            preNatalCrianca.Transformacao.InEnderecoDiferente = transformacaoCriancaRetorno.InEnderecoDiferente;
+
+            //nao atualizara nome da mae
+            //if (preNatalCrianca.Transformacao.InAtualizarNomeMae)
+            //{
+            //    preNatalCrianca.Transformacao.DadosMae.NmMaeCrianca = transformacaoCriancaRetorno.DadosCrianca.NmMae;
+            //}
+
+            if (preNatalCrianca.Transformacao.InAtualizarEndereco)
+            {
+                preNatalCrianca.Transformacao.DadosMae.DcTpLogradouro = transformacaoCriancaRetorno.DadosCrianca.DcTpLogradouroCrianca;
+                preNatalCrianca.Transformacao.DadosMae.NmLogradouro = transformacaoCriancaRetorno.DadosCrianca.NmLogradouroCrianca;
+                preNatalCrianca.Transformacao.DadosMae.CdNrEndereco = transformacaoCriancaRetorno.DadosCrianca.CdNrEnderecoCrianca;
+                preNatalCrianca.Transformacao.DadosMae.DcComplementoEndereco = transformacaoCriancaRetorno.DadosCrianca.DcComplementoEnderecoCrianca;
+                preNatalCrianca.Transformacao.DadosMae.NmBairro = transformacaoCriancaRetorno.DadosCrianca.NmBairroCrianca;
+                preNatalCrianca.Transformacao.DadosMae.CdCep = transformacaoCriancaRetorno.DadosCrianca.CdCepCrianca;
+                preNatalCrianca.Transformacao.DadosMae.NmMunicipio = transformacaoCriancaRetorno.DadosCrianca.NmMunicipioCrianca;
+            }
+            await AtualizarSessionSolicVagaPendente("S");
+
+
+        }
+        await HabilitarDesabilitarPesquisaCnsCrianca();
+    }
+
+
+    private async Task CancelarCNS(int cdSolicitacaoMatriculaPreNatalCrianca, int nrCrianca)
+    {
+        //-cancelar numero do cns da criança
+        //-botao que limpa dados do cns da criança que ainda nao solicitou a vaga
+
+
+        var preNatalCrianca = listaPreNatal.Where(x => x.MatriculaPreNatal.CdSolicitacaoMatriculaPreNatal == cdSolicitacaoMatriculaPreNatalCrianca).FirstOrDefault();
+        if (preNatalCrianca != null)
+        {
+            preNatalCrianca.Transformacao.NrCnsCriancaFormatado = "";
+            preNatalCrianca.Transformacao.NrCnsCrianca = "";
+            preNatalCrianca.Transformacao.DadosCrianca = null;
+            preNatalCrianca.Transformacao.DadosMae = null;
+            preNatalCrianca.Transformacao.InCnsCriancaPreenchida = false;
+            preNatalCrianca.Transformacao.InAtualizarEndereco = false;
+            preNatalCrianca.Transformacao.InAtualizarNomeMae = false;
+            preNatalCrianca.Transformacao.InNomeMaeDiferente = false;
+            preNatalCrianca.Transformacao.InEnderecoDiferente = false;
+
+        }
+
+        await AtualizarSessionSolicVagaPendente("N");
+        await HabilitarDesabilitarPesquisaCnsCrianca();
+
+        //await FocusElement("cns_crianca" + nrCrianca.ToString());
+
+    }
+
+    protected async void ExibirModalConfirmacaoSolicitacao(int cdSolicitacaoMatriculaPreNatal, string cdSolicitacaoMatriculaFormatado)
+    {
+        try
+        {
+            CdSolicitacaoMatriculaPreNatalGravar = cdSolicitacaoMatriculaPreNatal;
+            CdSolicitacaoMatriculaFormatadoGravar = cdSolicitacaoMatriculaFormatado;
+
+            await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modal_confirmacao_solicitacao");
+        }
+        catch (FormatException e)
+        {
+            mensagem_retorno = "Ocorreu um erro durante a execução";
+            await ExibirMensagem(mensagem_retorno);
+        }
+    }
+
+
+    protected async Task SolicitarVaga()
+    {
+        try
+        {
+            //chamar rotina para solicitar vaga
+            var preNatalCrianca = listaPreNatal.Where(x => x.MatriculaPreNatal.CdSolicitacaoMatriculaPreNatal == CdSolicitacaoMatriculaPreNatalGravar);
+            TransformacaoModel transformacaoCrianca = null;
+            if (preNatalCrianca != null && preNatalCrianca.Count() > 0)
+            {
+                transformacaoCrianca = preNatalCrianca.FirstOrDefault().Transformacao;
+                if (string.IsNullOrEmpty(transformacaoCrianca.NrCnsCrianca) ||
+                    transformacaoCrianca.InCnsCriancaPreenchida == false)
+                {
+                    mensagem_retorno = "Por favor, informe o número do CNS da criança e realize a confirmação dos dados.";
+                    await ExibirMensagem(mensagem_retorno);
+                    return;
+                }
+
+                SolicitacaoVagaModel solicitacaoVagaModel = new SolicitacaoVagaModel();
+                solicitacaoVagaModel.NrCnsResponsavel = transformacaoCrianca.NrCnsResponsavel;
+                solicitacaoVagaModel.NrPreNatal = transformacaoCrianca.NrPreNatal;
+                solicitacaoVagaModel.CdSolicitacaoMatricula = transformacaoCrianca.CdSolicitacaoMatricula.ToString();
+                solicitacaoVagaModel.DadosMae = transformacaoCrianca.DadosMae;
+                solicitacaoVagaModel.DadosCrianca = transformacaoCrianca.DadosCrianca;
+
+
+                // transformacaoCrianca.DtTransformacaoCandidato = DateTime.Now;
+
+                //mensagem_retorno = "Sua solicitação foi realizada com sucesso! <br>IMPORTANTE: Mantenha seu endereço e contatos(telefones) sempre atualizados. <br>Em caso de necessidade de alteração, procure a Unidade Básica de Saúde(UBS).";
+                //await HabilitarDesabilitarPesquisaCnsCrianca();
+                //await ExibirMensagem(mensagem_retorno);
+
+                //return;
+
+
+                //chamar o restservice para gravacao
+                loading = true;
+                var dadosRetorno = await restService.SolicitarVaga(solicitacaoVagaModel);
+                loading = false;
+
+                if (dadosRetorno != null)
+                {
+                    mensagem_retorno = dadosRetorno.Mensagem;
+                    if (dadosRetorno.Retorno == "TRUE")
+                    {
+                        mensagem_retorno = dadosRetorno.Mensagem;
+                        await HabilitarDesabilitarPesquisaCnsCrianca();
+                        //recarregar pre-natal da solicitacao
+                        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalEstatico", "modalCadastroSucesso");
+                    }
+                    else
+                    {
+                        await ExibirMensagem(mensagem_retorno);
+                    }
+                }
+                else
+                {
+                    mensagem_retorno = "Ocorreu um erro na solicitação de vaga da criança.";
+                    await ExibirMensagem(mensagem_retorno);
+                }
+            }
+        }
+        catch (Exception)
+        {
+            loading = false;
+            mensagem_retorno = "Ocorreu um erro durante a execução";
+            await ExibirMensagem(mensagem_retorno);
+        }
+    }
+
+
+    protected async Task ExibirMensagem(string mensagem)
+    {
+        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalMensagem", mensagem);
+        return;
+    }
+
+    protected async Task ExibirMensagemFocus(string mensagem, string id_campo_focus)
+    {
+        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalMensagemFocus", mensagem_retorno, id_campo_focus);
+        return;
+    }
+
+
+
+    protected async Task RedirecionarParaConsulta()
+    {
+        NavigationManager.NavigateTo("consultaInscricoes");
+    }
+
+    protected async Task RedirecionarParaCadastro()
+    {
+        NavigationManager.NavigateTo("cadastro");
+    }
+
+    protected async Task HabilitarDesabilitarPesquisaCnsCrianca()
+    {
+        var listaPreNatalParaSolicitarVaga = listaPreNatal.Where(x => !string.IsNullOrEmpty(x.Transformacao.NrCnsCrianca)
+                                             && x.Transformacao.InCnsCriancaPreenchida == true
+                                             && x.Transformacao.DtTransformacaoCandidato == null)
+                                             .ToList();
+
+        InPermitePesquisarCnsCrianca = false;
+        if (listaPreNatalParaSolicitarVaga != null && listaPreNatalParaSolicitarVaga.Count() > 0)
+        {
+            InPermitePesquisarCnsCrianca = true;
+        }
+    }
+
+    protected async Task RecarregarConsulta()
+    {
+        await Consultar();
+    }
+
+    protected async Task FocusElement(string id)
+    {
+        await JSRuntime.InvokeVoidAsync("funcoes.focusElement", id);
+        return;
+    }
+
+    protected async Task AtualizarSessionSolicVagaPendente(string status)
+    {
+        await sessionStorage.SetItemAsync(sessionSolicVagaPendente, Util.Encriptar(status));
+        return;
+    }
+    protected async Task ConfirmarNavegacao(string paginaNavegacao)
+    {
+        pagina = paginaNavegacao;
+        solicVagaPendente = await sessionStorage.GetItemAsync<string>("solicVagaPendente");
+        solicVagaPendente = Util.Decriptar(solicVagaPendente);
+
+        if (solicVagaPendente == "N")
+        {
+            NavigationManager.NavigateTo(pagina);
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modal_confirmacao_navegacao");
+        }
+    }
+
+    protected async Task ProsseguirNavegacao()
+    {
+
+        await sessionStorage.SetItemAsync(sessionSolicVagaPendente, Util.Encriptar("N"));
+        NavigationManager.NavigateTo(pagina);
+    }
+
+    protected async Task SetarFocus(string id_campo_focus)
+    {
+        await JSRuntime.InvokeVoidAsync("window.funcoes.focusElement", id_campo_focus);
+        return;
+    }
+
+    //fim
+    }
+    

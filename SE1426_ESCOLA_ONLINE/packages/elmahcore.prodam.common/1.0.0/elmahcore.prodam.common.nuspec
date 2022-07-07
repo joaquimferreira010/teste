@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>ElmahCore.Prodam.Common</id>
+    <version>1.0.0</version>
+    <authors>p017114</authors>
+    <owners>p017114</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/ElmahCore/ElmahCore</projectUrl>
+    <description>ELMAHCore para .NET Core  customizado Prodam</description>
+    <copyright>ElmahCore</copyright>
+    <tags>net-core elmah mvc-core asp-net-core asp-net-core-mvc elmah-core netcore netcore2 netcore20 mvc mvc6 aspnetcore aspnetcoremvc</tags>
+    <repository url="https://www.nuget.org/packages/ElmahCore" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.AspNetCore.Hosting.Abstractions" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.WebUtilities" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options" version="2.1.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

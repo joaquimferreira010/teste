@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.JSInterop.WebAssembly</name>
+    </assembly>
+    <members>
+        <member name="T:WebAssembly.JSInterop.InternalCalls">
+            <summary>
+            Methods that map to the functions compiled into the Mono WebAssembly runtime,
+            as defined by 'mono_add_internal_call' calls in driver.c.
+            </summary>
+        </member>
+        <member name="M:WebAssembly.JSInterop.InternalCalls.InvokeJSMarshalled(System.String@,System.Int64@,System.String,System.String)">
+            See: https://github.com/mono/mono/blob/90574987940959fe386008a850982ea18236a533/sdks/wasm/src/driver.c#L318-L319
+        </member>
+        <member name="T:Microsoft.JSInterop.WebAssembly.WebAssemblyJSRuntime">
+            <summary>
+            Provides methods for invoking JavaScript functions for applications running
+            on the Mono WebAssembly runtime.
+            </summary>
+        </member>
+        <member name="M:Microsoft.JSInterop.WebAssembly.WebAssemblyJSRuntime.InvokeJS(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.JSInterop.WebAssembly.WebAssemblyJSRuntime.BeginInvokeJS(System.Int64,System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.JSInterop.WebAssembly.WebAssemblyJSRuntime.InvokeUnmarshalled``1(System.String)">
+            <summary>
+            Invokes the JavaScript function registered with the specified identifier.
+            </summary>
+            <typeparam name="TResult">The .NET type corresponding to the function's return value type.</typeparam>
+            <param name="identifier">The identifier used when registering the target function.</param>
+            <returns>The result of the function invocation.</returns>
+        </member>
+        <member name="M:Microsoft.JSInterop.WebAssembly.WebAssemblyJSRuntime.InvokeUnmarshalled``2(System.String,``0)">
+            <summary>
+            Invokes the JavaScript function registered with the specified identifier.
+            </summary>
+            <typeparam name="T0">The type of the first argument.</typeparam>
+            <typeparam name="TResult">The .NET type corresponding to the function's return value type.</typeparam>
+            <param name="identifier">The identifier used when registering the target function.</param>
+            <param name="arg0">The first argument.</param>
+            <returns>The result of the function invocation.</returns>
+        </member>
+        <member name="M:Microsoft.JSInterop.WebAssembly.WebAssemblyJSRuntime.InvokeUnmarshalled``3(System.String,``0,``1)">
+            <summary>
+            Invokes the JavaScript function registered with the specified identifier.
+            </summary>
+            <typeparam name="T0">The type of the first argument.</typeparam>
+            <typeparam name="T1">The type of the second argument.</typeparam>
+            <typeparam name="TResult">The .NET type corresponding to the function's return value type.</typeparam>
+            <param name="identifier">The identifier used when registering the target function.</param>
+            <param name="arg0">The first argument.</param>
+            <param name="arg1">The second argument.</param>
+            <returns>The result of the function invocation.</returns>
+        </member>
+        <member name="M:Microsoft.JSInterop.WebAssembly.WebAssemblyJSRuntime.InvokeUnmarshalled``4(System.String,``0,``1,``2)">
+            <summary>
+            Invokes the JavaScript function registered with the specified identifier.
+            </summary>
+            <typeparam name="T0">The type of the first argument.</typeparam>
+            <typeparam name="T1">The type of the second argument.</typeparam>
+            <typeparam name="T2">The type of the third argument.</typeparam>
+            <typeparam name="TResult">The .NET type corresponding to the function's return value type.</typeparam>
+            <param name="identifier">The identifier used when registering the target function.</param>
+            <param name="arg0">The first argument.</param>
+            <param name="arg1">The second argument.</param>
+            <param name="arg2">The third argument.</param>
+            <returns>The result of the function invocation.</returns>
+        </member>
+    </members>
+</doc>

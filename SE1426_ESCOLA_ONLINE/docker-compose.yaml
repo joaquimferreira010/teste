@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  SE1426.Internet.ProdamSP.MVC:
+    build: ./SE1426.Internet.ProdamSP.MVC
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80

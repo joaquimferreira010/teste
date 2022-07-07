@@ -1,0 +1,92 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "SE1426Context",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": null,
+   "ProjectRootNamespace": "ProdamSP.Domain.Entities",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[aluno]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[aplicacao]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[dispositivo_comunicacao_aluno]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[dispositivo_comunicacao_responsavel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[endereco]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[origem_local_alteracao]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[responsavel_aluno]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[responsavel_cns]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[responsavel_geral]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[responsavel_geral_aluno]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[solicitacao_matricula]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[solicitacao_matricula_pre_natal]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tipo_documento_estrangeiro]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tipo_logradouro]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tipo_pessoa_responsavel]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "db_desenvolvimento.prodam.se1426",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}

@@ -1,0 +1,42 @@
+﻿@inherits LayoutComponentBase
+<Header />
+@Body
+<Footer />
+
+<!--Modal da Mensagem Esse modal passa a ser carregada quando uma há uma mensagem vinda do Server, e também pode ser chamada pelo javascript ex:AbrirModalErro(mensagem); -->
+<div id="modalFracasso" class="modal modal_mensagem notprint">
+    <input type="hidden" id="hdnMensagemErro" value="" />
+    <input type="hidden" id="hdnCampoFoco" value="" />
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s3 m1">
+                <img src="img/icone_Erro.png" title="Atenção"  alt="Atenção."/>
+            </div>
+            <div class="col s7 m11 cabecalho_atencao">
+                <p>Atenção</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12" id="contentModalErro">
+            </div>
+        </div>
+        <div class="center">
+            <button class="btn-flat btn-eol btn-eol-width-100" id="btnFecharModalErro" title="OK">OK</button>
+        </div>
+    </div>
+</div>
+
+
+
+@code { [Inject]
+    protected IJSRuntime JsRuntime { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+        JsRuntime.InvokeVoidAsync("onBlazorReady");
+        JsRuntime.InvokeVoidAsync("onBlazorDatePicker");
+        JsRuntime.InvokeVoidAsync("onBlazorAcessibilidadeReady");
+    } }

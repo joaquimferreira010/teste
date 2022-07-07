@@ -1,0 +1,428 @@
+/*CABEÇALHO PREFEITURA/SECRETARIA*/
+.cabecalhoSecretaria{
+    height: 26px;
+    background-color: #bdbdbd;
+    padding-left: 8px !important;
+    font-size: 0.9rem;
+    line-height: 26px;
+    text-transform: uppercase;
+    color: #000 !important;
+}
+.cabecalhoSecretaria a{
+    color: #000;
+}
+
+header .cabecalhoPMSP{
+    height: 28px;
+    line-height: 28px;
+    background-color: #424242;
+    display: block;
+    width: 100%;
+}
+header .cabecalhoPMSP .nomePMSP{
+    font-size: 0.9rem;
+    display: inline;
+    text-transform: uppercase;
+}
+header .cabecalhoPMSP .acesso-info{
+    font-size: 0.9rem;
+    display: inline;
+    text-transform: uppercase;
+    padding: 0 4rem;
+}
+header .cabecalhoPMSP .acesso-info a img{
+    position: absolute;
+}
+header .cabecalhoPMSP .transparenciaSP{
+    font-size: 0.9rem;
+    display: inline;
+    text-transform: uppercase;
+}
+header .cabecalhoPMSP .nomePMSP a, 
+header .cabecalhoPMSP .acesso-info a, 
+header .cabecalhoPMSP .transparenciaSP a{
+    color: #e6e6e6 !important;
+}
+
+
+
+/*MENU ACESSIBILIDADE*/
+.menu-acessivel-teclado .menu-acess{
+    position: absolute;
+    top: -1300px;
+    margin: 0;
+    padding: 2px 0px 0px 0px;
+}
+.menu-acessivel-teclado .menu-acess li{
+    display: inline;
+    list-style: none;
+    float: left;
+    padding-left: 0px;
+    font-size: 1em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.menu-acessivel-teclado .menu-acess li a{
+    color: #000;
+    text-decoration: none;
+    float: left;
+    font-size: 0.7rem;
+    padding: 0 6px 0 0;
+}
+.menu-acessivel-teclado .menu-acess li span {
+    color: #000;
+    background-color: transparent;
+    text-decoration: none;
+    float: left;
+    font-size: 1rem;
+    padding: 0.25em 0.55em;
+    display: inline;
+    line-height: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+header .cabecalhoPMSP .acessibilidade-opt{
+    text-align: right;
+    color: #fff;
+}
+header .cabecalhoPMSP .acessibilidade-opt a{
+    border: 1px solid #fff;
+    border-radius: 4px;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 1px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 20px;
+    color: #fff;
+    font-size: 0.9rem;
+    display: block;
+}
+header .cabecalhoPMSP .acessibilidade-opt ul {
+    margin: 0px;
+    padding: 0px;
+}
+header .cabecalhoPMSP .acessibilidade-opt ul li{
+    display: inline-flex;
+}
+header .cabecalhoPMSP .acessibilidade-opt .fontResizer_add{
+    color:#fff;
+    text-decoration:none;
+    font-size: 1rem;
+}
+header .cabecalhoPMSP .acessibilidade-opt .fontResizer_minus{
+    color:#fff;
+    text-decoration:none;
+    font-size: 1rem;
+}
+header .cabecalhoPMSP .acessibilidade-opt .fontResizer_minus sup{
+    line-height: 0.5em;
+    margin: 0;
+    font-weight: normal;
+}
+header .cabecalhoPMSP .acessibilidade-opt .fontResizer_reset{
+    color:#fff;
+    text-decoration:none;
+    font-size: 1rem;
+}
+header .cabecalhoPMSP .acessibilidade-opt .txtAcessibilidade{
+    font-size: 1rem;
+    font-weight: normal;
+    border: none;
+    display: inline-flex;
+    text-transform: uppercase;
+}
+header .cabecalhoPMSP .acessibilidade-opt a.btn-contraste i{
+    font-size: 1rem;
+    line-height: 21px;
+    display: inline-flex;    
+}
+header .cabecalhoPMSP .acessibilidade-opt a.btn-contraste{
+    color:#fff;
+    text-decoration:none;
+    font-size: 1rem;
+}
+
+header .cabecalhoPMSP button:focus {
+    outline: none;
+    background-color: #000;
+}
+/*CONSTRATE*/
+
+
+/*FOOTER PREFEITURA/SECRETARIA*/
+
+footer {
+    box-shadow: 0px -4px 7px 0px rgba(0,0,0,0.25);
+}
+
+.page-footer{
+    background-color: #FFF;
+    padding: 0;
+}
+.page-footer p{
+}
+
+.logo-pmsp-footer {
+    background-repeat: no-repeat;
+    background-size: contain; 
+    background-position: 0% 0%;
+    text-indent: -9999px;
+    width: 100%;
+    min-height: 52px;
+    height: auto;
+    overflow: hidden;
+    display: block;
+}
+
+.footer-content {
+    padding: 1rem 0 0 0;
+}
+
+footer.page-footer .footer-copyright {
+    padding: 0 0 0 0;
+    min-height: 1rem;
+    line-height: 1rem;
+    height: 2rem;
+    font-size: 0.8rem;
+    background-color: #141414;
+}
+footer.page-footer .footer-copyright .row{
+    margin: 0;
+}
+footer .txt-legal{
+    color: #ccc;
+}
+footer .prodam{
+    background: url(../img/prodam.png) no-repeat 100% 12px;
+    background-size: auto 1rem;
+    height: 2rem;
+}
+
+
+
+.menu-acess{
+    position: absolute;
+    top: -1300px;
+    margin: 0;
+    padding: 2px 0px 0px 0px;
+}
+
+.menu-acess li{
+    display: inline !important;
+    list-style: none;
+    float: left !important;
+    padding-left: 0px;
+    font-size: 1em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.menu-acess li a{
+    color: #000;
+    text-decoration: none;
+    float: left;
+    font-size: 0.7rem;
+    padding: 0 6px 0 0;
+}
+
+.menu-acess li span{
+    color: #fff;
+    text-decoration: none;
+    float: left;
+    font-size: 0.4rem;
+    padding: 0.05rem 0.55rem 0.4rem 0.55rem !important;
+    display: inline;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.fontResizer{
+    padding: 0 !important;
+    width: 250px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    float: right;
+    text-align: right !important;
+}
+
+.fontResizer a{
+    border: 1px solid #000;
+    border-radius: 4px;
+    width: 24px;
+    height: 23px;
+    padding: 1px 1px 2px 1px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 20px;
+    color: #000;
+    font-size: 14px;
+}
+
+
+.fontResizer .txtAcess{
+    float: left;
+    line-height: 28px;
+    text-align: right;
+    background-color: #ffc;
+    margin-top: 0px !important;
+}
+
+.fontResizer ul {
+    margin: 0px;
+    padding: 0px;
+}
+
+.fontResizer ul li{
+    float: left;
+}
+
+.fontResizer_add{
+    color:#454545;
+    text-decoration:none;
+/*  font-size: 1.1rem;  */
+    font-size: 14px;
+    float:left;
+    margin:0 0 0 6px;
+    background: transparent;
+    color: #fff;
+    line-height: 1rem;
+    margin: 1px 2px 1px 2px;
+    padding: 0 0.5rem;
+    height: 26px;
+}
+
+.fontResizer_minus{
+    color:#454545;
+    text-decoration:none;
+/*  font-size: 1.1rem;  */
+    font-size: 14px;
+    float:left;
+    margin:0 0 0 6px;
+    background: transparent;
+    color: #fff;
+    line-height: 1rem;
+    margin: 1px 2px 1px 2px;
+    padding: 0 0.5rem;
+    height: 26px;
+}
+
+.fontResizer_minus sup{
+    line-height: 0.5em;
+    margin: 0;
+    font-weight: normal;
+}
+
+.fontResizer_reset{
+    color:#454545;
+    text-decoration:none;
+/*  font-size: 1.1rem; */
+    font-size: 14px;
+    float:left;
+    margin:0 0 0 6px;
+    background: transparent;
+    color: #fff;
+    line-height: 1rem;
+    margin: 1px 2px 1px 2px;
+    padding: 0 0.5rem;
+    height: 26px;
+}
+
+.txtAcessibilidade{
+    font-size: 11px !important;
+    line-height: 24px !important;
+    font-weight: normal !important;
+    border: none !important;
+    float: left !important;
+    display: block !important;
+    width: auto !important;
+    text-transform: uppercase;
+}
+
+a.btn-contraste1 i{
+    font-size: 14px !important;
+    line-height: 14px !important;
+    color: #000;
+}
+
+body.contraste1 a.btn-contraste1 i{
+    color: #fff;
+}
+
+.btn-contraste1 {
+    float: left;
+    text-decoration: none;
+    font-size: 1.5rem !important;
+    padding: 0px 4px;
+    margin: 0px 6px;
+    border-radius: 4px;
+    background: transparent;
+    color: #fff;
+    line-height: 1rem;
+    margin: 1px 0 1px 2px;
+    padding: 0;
+    height: 26px;
+    padding: 0 0.5rem;
+}
+
+body.contraste1 .btn-contraste1{
+    border: 1px solid #fff;
+}
+
+
+body.contraste1 {
+    background-color: #000 !important;
+    color: #fff;
+}
+body.contraste1 p{
+    color: #fff !important;
+}
+body.contraste1 div {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+body.contraste1 a {
+    color: #fff !important;
+}
+body.contraste1 span {
+    color: #fff !important;
+}
+body.contraste1 h1, body.contraste1 h2, body.contraste1 h3, body.contraste1 h4, body.contraste1 h5, body.contraste1 h6 {
+    color: #fff !important;
+}
+body.contraste1 .page-footer {
+    background-color: #000 !important;
+}
+body.contraste1 header.header-menu {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+body.contraste1 input {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+body.contraste1 .primary-menu .menu-item-has-children:hover {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+body.contraste1:not(.overlay-header) .primary-menu > li > a {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+body.contraste1 .primary-menu li.menu-item-has-children:hover > ul, .primary-menu li.menu-item-has-children:focus > ul, .primary-menu li.menu-item-has-children.focus > ul {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+body.contraste1 .primary-menu ul a {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+

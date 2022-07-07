@@ -1,0 +1,49 @@
+﻿@inject IJSRuntime JSRuntime
+
+@if (ExibirMensagem)
+{
+<div class="modal fade show modal_confirmacao_mensagem" id="myModal" style="display:block" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="row" title="@Mensagem" alt="@Mensagem">
+                <div class="col s12">
+                    <div class="card-panel red white-text">
+                        @Mensagem
+                    </div>
+                </div>
+            </div>
+            <div class="row notprint">
+                <div class="col s12 center-align">
+                    <button class="btn-flat btn-voltar" type="button" @onclick="@Fechar" title="Fechar" alt="Fechar">Fechar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>}
+
+@code { 
+    [Parameter] public bool ExibirMensagem { get; set; } = false;
+    [Parameter] public string Mensagem { get; set; } = "";
+    [Parameter] public Action CallbackMethod { get; set; }
+
+    public void Exibir() => ExibirMensagem = true;
+    public void Ocultar() => ExibirMensagem = false;
+
+    private void Fechar()
+    {
+        Ocultar();
+
+        if (CallbackMethod != null)
+            CallbackMethod?.Invoke();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (ExibirMensagem)
+        {
+            JSRuntime.InvokeVoidAsync("funcoes.focusElement", "btnFecharMensagem");
+        }
+    } 
+}

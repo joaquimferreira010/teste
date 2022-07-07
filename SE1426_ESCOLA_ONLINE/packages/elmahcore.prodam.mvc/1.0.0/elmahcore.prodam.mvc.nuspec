@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>ElmahCore.Prodam.Mvc</id>
+    <version>1.0.0</version>
+    <authors>p017114</authors>
+    <owners>p017114</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>http://tfs.prodam:8080/tfs/TPC_Prodam/PP9038_LogCorporativo</projectUrl>
+    <description>ELMAH para ASP.NET Mvc Core customizado para Log Corporativo Prodam</description>
+    <copyright>ElmahCore</copyright>
+    <tags>net-core elmah mvc-core asp-net-core asp-net-core-mvc elmah-core netcore netcore2 netcore20 mvc mvc6 aspnetcore aspnetcoremvc</tags>
+    <repository url="http://tfs.prodam:8080/tfs/TPC_Prodam/PP9038_LogCorporativo" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="ElmahCore.Prodam.Common" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Authentication.Abstractions" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Http" version="2.1.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

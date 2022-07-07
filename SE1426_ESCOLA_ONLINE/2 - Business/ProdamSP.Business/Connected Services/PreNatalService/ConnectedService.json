@@ -1,0 +1,35 @@
+﻿{
+  "ProviderId": "Microsoft.VisualStudio.ConnectedService.Wcf",
+  "Version": "15.0.40203.910",
+  "GettingStartedDocument": {
+    "Uri": "https://go.microsoft.com/fwlink/?linkid=858517"
+  },
+  "ExtendedData": {
+    "inputs": [
+      "http://10.10.64.117:8080/smsservices/services/PreNatalService?wsdl"
+    ],
+    "collectionTypes": [
+      "System.Collections.Generic.Dictionary`2",
+      "System.Collections.Generic.List`1"
+    ],
+    "messageContract": true,
+    "namespaceMappings": [
+      "*, PreNatalService"
+    ],
+    "references": [
+      "C:\\Users\\Prodam\\source\\repos\\SE1426_ESCOLA_ONLINE\\2 - Business\\ProdamSP.Business\\bin\\Debug\\netstandard2.1\\ProdamSP.CrossCutting.dll",
+      "C:\\Users\\Prodam\\source\\repos\\SE1426_ESCOLA_ONLINE\\2 - Business\\ProdamSP.Business\\bin\\Debug\\netstandard2.1\\ProdamSP.Domain.dll",
+      "Microsoft.CSharp, {Microsoft.CSharp, 4.7.0}",
+      "System.ComponentModel.Annotations, {System.ComponentModel.Annotations, 4.6.0}",
+      "System.Drawing.Common, {System.Drawing.Common, 4.6.0}",
+      "System.ServiceModel, {System.ServiceModel.Primitives, 4.4.4}",
+      "System.ServiceModel.Duplex, {System.ServiceModel.Duplex, 4.4.4}",
+      "System.ServiceModel.Http, {System.ServiceModel.Http, 4.4.4}",
+      "System.ServiceModel.NetTcp, {System.ServiceModel.NetTcp, 4.4.4}",
+      "System.ServiceModel.Primitives, {System.ServiceModel.Primitives, 4.4.4}",
+      "System.ServiceModel.Security, {System.ServiceModel.Security, 4.4.4}"
+    ],
+    "targetFramework": "netstandard2.1",
+    "typeReuseMode": "All"
+  }
+}

@@ -1,0 +1,10 @@
+tlp - cargo não alocado diferente do solicitado
+
+auxiliar de enfermagem
+tecnico de enfermagem
+
+cbo verificar se abrange vários cargos
+
+trocar TLP por Dimensionamento.
+carregar o perfil do usuario
+mostrar a coluna Dimensionamento no grid de unidade, somente se o perfil for administrador.

@@ -1,0 +1,413 @@
+﻿@page "/consultaInscricoes"
+
+@inject HttpClient Http;
+@inject IJSRuntime JSRuntime;
+@inject IConfiguration Configuration
+@inject RestService restService
+@inject NavigationManager NavigationManager
+@*@inject DadosPreNatalEOLSIGAModel dadosPreNatalModel*@
+
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@*<ProtocoloInscricoesModal  @ref="protocolo" ExibirModal="@ExibirProtocolo" listaPreNatal="@listaPreNatal">
+    </ProtocoloInscricoesModal>*@
+
+<fieldset class="fieldset_border">
+    <section id="section_consulta_protocolo" class="notprint">
+
+        <div id="skipto-content" class="col s12 m8 l9 content-box tamanho_box">
+            <div class="row hide-on-small-only">
+                <div class="col s12 right-align">
+                    <a href="#" title="Botão Sair" alt="Botão Sair" tabindex="20"><img src="assets/img/btn_Sair.png" alt="Botão de sair" title="Botão Sair"></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <h3 class="titulo_mobile">
+                        Consulta de inscrições<br />
+                        <button id="btn-ver_aviso" class="ver-aviso"><img src="img/btn_Aviso.png" alt="Abrir Aviso"></button>
+                    </h3>
+                </div>
+            </div>
+
+            @*<MensagemDiv ExibirMensagem="@exibir_mensagem" Mensagem="@mensagem_retorno"></MensagemDiv>*@
+
+            @if (loading == true)
+            {
+<div id="spinner"><div class="spinner" title="Carregando"></div></div>}
+
+            @if (listaPreNatal != null && listaPreNatal.Count() > 0)
+            {
+
+<form>
+    <div class="row">
+        <div class="col s12 m4">
+            <div class="form-item readonly">
+                <label for="cns">Nº CNS (Nº SUS)</label>
+                <input readonly aria-readonly="true" placeholder="000 0000 0000 0000" id="cns" type="text" value="@listaPreNatal[0].MatriculaPreNatal.NrCnsResponsavelFormatado" tabindex="21" title="Nº CNS (Nº SUS)">
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="form-item readonly">
+                <label for="cpn">Nº SISPRENATAL</label>
+                <input readonly aria-readonly="true" placeholder="00000000000000" id="cpn" type="text" value="@listaPreNatal[0].MatriculaPreNatal.NrPreNatalFormatado" tabindex="22" title="Número SIS Pré-natal">
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="form-item readonly">
+                <label for="nome-mae">Nome da mãe</label>
+                <input readonly aria-readonly="true" placeholder="000 0000 0000 0000" id="nome-mae" type="text" value="@listaPreNatal[0].Responsavel.NmResponsavel.ToString().Trim()" tabindex="23" title="Nome da mãe">
+            </div>
+        </div>
+    </div>
+
+
+    <div id="aviso-modal" class="modal">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col s12">
+                    <div class="aviso">
+                        <div class="row">
+                            <div class="col s12">
+                                <h4 alinhamento_mobile_center><img src="img/icone_Aviso.png" alt="Aviso importante">Aviso importante para a mãe</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                @if (isTodasCriancasTransformadas == true)
+                                {
+                <p>
+                    A inscrição no Mãe Paulistana Creche foi realizada e a data prevista para o nascimento do bebê é
+                    @listaPreNatal[0].MatriculaPreNatal.DtNascimentoPrevistaFormatada.
+                </p> }
+            else
+            {
+<p>
+    A inscrição no Mãe Paulistana Creche foi realizada e a data prevista para o nascimento do bebê é
+    @listaPreNatal[0].MatriculaPreNatal.DtNascimentoPrevistaFormatada.
+    É necessário que, <strong>até @listaPreNatal[0].MatriculaPreNatal.DtLimiteInformarNascimentoFormatada</strong>, o nascimento da criança seja informado para obter a prioridade nas matrículas nas creches.
+</p>}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s6 m3 consulta-tipo">
+                                <label>Tipo de gestação</label>
+
+                                @if (@listaPreNatal.Count() == 1)
+                                {
+                <p>Única</p> }
+            else
+            {
+<p>Múltipla (@listaPreNatal.Count() gêmeos)</p>}
+
+                            </div>
+                            @if (isDisabledEditarGestacao == false)
+                            {
+            <div class="col s6 m3">
+                <div class="consulta-editar">
+                    <a href="" @onclick="@EditarTipoGestacao" @onclick:preventDefault class="btn-alerta" tabindex="24">Editar tipo de gestação</a>
+                </div>
+            </div>}
+
+
+                            <div class="col s12 @(isDisabledEditarGestacao == false ? "m3" : "m6") consulta-data">
+                                <p>Data desejada para a matrícula é <strong>@listaPreNatal[0].MatriculaPreNatal.DtIntencaoMatriculaFormatada</strong></p>
+                            </div>
+
+
+                            <div class="col s12 m3">
+                                <label>
+                                    Para alterar a data desejada para matrícula, procure a escola mais próxima.<br />
+                                    <strong>OBS:</strong>Alteração de data pode ocasionar a perda de garantia de matrícula.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close btn-flat btn-eol">Entendi</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div id="aviso" class="aviso">
+                <div class="row">
+                    <div class="col s12">
+                        <h4 alinhamento_mobile_center><img src="img/icone_Aviso.png" alt="Aviso importante">Aviso importante para a mãe</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        @if (isTodasCriancasTransformadas == true)
+                        {
+        <p>
+            A inscrição no Mãe Paulistana Creche foi realizada e a data prevista para o nascimento do bebê é
+            @listaPreNatal[0].MatriculaPreNatal.DtNascimentoPrevistaFormatada.
+        </p> }
+    else
+    {
+<p>
+    A inscrição no Mãe Paulistana Creche foi realizada e a data prevista para o nascimento do bebê é
+    @listaPreNatal[0].MatriculaPreNatal.DtNascimentoPrevistaFormatada. É necessário que, <strong>até @listaPreNatal[0].MatriculaPreNatal.DtLimiteInformarNascimentoFormatada</strong>, o nascimento da criança seja informado para obter a prioridade nas matrículas nas creches.
+</p>}
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m3 consulta-tipo">
+                        <label>Tipo de gestação</label>
+
+                        @if (@listaPreNatal.Count() == 1)
+                        {
+        <p>Única</p> }
+    else
+    {
+<p>Múltipla (@listaPreNatal.Count() gêmeos)</p>}
+                    </div>
+
+                    @if (isDisabledEditarGestacao == false)
+                    {
+
+    <div class="col s12 m3">
+        <div class="consulta-editar">
+            <a href="" @onclick="@EditarTipoGestacao" @onclick:preventDefault class="btn-alerta" tabindex="24">Editar tipo de gestação</a>
+        </div>
+    </div>}
+                    <div class="col s12 @(isDisabledEditarGestacao == false ? "m3" : "m6") consulta-data">
+                        <p>Data desejada para a matrícula é <strong>@listaPreNatal[0].MatriculaPreNatal.DtIntencaoMatriculaFormatada</strong></p>
+                    </div>
+                    <div class="col s12 m3">
+                        <label>
+                            Para alterar a data desejada para matrícula, procure a escola mais próxima.<br />
+                            <strong>OBS:</strong>Alteração de data pode ocasionar a perda de garantia de matrícula.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h5>Protocolos de inscrição</h5>
+        </div>
+    </div>
+
+    <div class="row">
+
+        @foreach (var item in listaPreNatal)
+        {
+<div class="col s12 protocolo-box">
+    <div class="protocolo-item">
+        <div class="row">
+            <div class="col s12 protocolo-header">
+                <p><strong>Nº protocolo @item.MatriculaPreNatal.CdSolicitacaoMatriculaFormatado</strong></p>
+                @*<div class="line"></div>*@
+            </div>
+            @*<div class="col s12 protocolo-body">
+                </div>*@
+        </div>
+    </div>
+</div>}
+
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            @*<button class="btn-flat btn-eol" type="button" @onclick="@MostrarProtocoloModal">Imprimir protocolo Modal</button>*@
+            <button class="btn-flat btn-eol" type="button" @onclick="@MostrarProtocolo" tabindex="25">Imprimir protocolo</button>
+        </div>
+    </div>
+</form>}
+        </div>
+    </section>
+</fieldset>
+
+@*<style>
+
+    @@media print {
+        main {
+            width: 100%;
+            display: block;
+        }
+
+        .imprimir {
+            width: 100%;
+        }
+
+        hr {
+            float: left;
+            width: 100%;
+        }
+
+        .row {
+            width: 100%;
+            float: left;
+            display: block;
+        }
+
+        .col {
+            display: block;
+            float: left;
+            padding: 0 0.75rem;
+        }
+
+        header, footer, .notprint {
+            display: none !important;
+        }
+    }
+</style>*@
+
+
+
+@code { private string codEOLPreNatal { get; set; }
+    private string numeroCns { get; set; }
+    private string numeroSisPreNatal { get; set; }
+    private bool exibir_mensagem { get; set; } = false;
+    private string mensagem_retorno { get; set; }
+    private bool loading = false;
+
+    private bool isDisabledEditarGestacao { get; set; }
+    private bool isTodasCriancasTransformadas { get; set; }
+
+    private List<PreNatalModel> listaPreNatal;
+
+    protected override async Task OnInitializedAsync()
+
+    {
+        loading = true;
+        codEOLPreNatal = await sessionStorage.GetItemAsync<string>("codEOLPreNatal");
+        codEOLPreNatal = Util.Decriptar(codEOLPreNatal);
+
+        if (!string.IsNullOrEmpty(codEOLPreNatal))
+        {
+            //numeroCns = dadosPreNatalModel.numeroCns;
+            //numeroSisPreNatal = dadosPreNatalModel.numeroSisPreNatal;
+
+            numeroCns = await sessionStorage.GetItemAsync<string>("numeroCns");
+            numeroCns = Util.Decriptar(numeroCns);
+
+            numeroSisPreNatal = await sessionStorage.GetItemAsync<string>("numeroSisPreNatal");
+            numeroSisPreNatal = Util.Decriptar(numeroSisPreNatal);
+
+            await Consultar();
+
+            exibir_mensagem = !string.IsNullOrEmpty(mensagem_retorno);
+        }
+        else
+        {
+            mensagem_retorno = "Acesso inválido.";
+            exibir_mensagem = true;
+            await ExibirMensagem(mensagem_retorno);
+            loading = false;
+            NavigationManager.NavigateTo("");
+        }
+        loading = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("setTitle", "Consulta de inscrições");
+        await JSRuntime.InvokeVoidAsync("funcoes.ativarNavItemMenu", "navConsultaInscricoes");
+        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalMobile", "aviso-modal");
+    }
+
+    private async Task Consultar()
+    {
+        try
+        {
+            mensagem_retorno = "";
+
+            if (string.IsNullOrEmpty(numeroCns) && string.IsNullOrEmpty(numeroSisPreNatal))
+            {
+                mensagem_retorno = "Campo(s) obrigatório(s) não informado(s).";
+                await ExibirMensagem(mensagem_retorno);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(numeroCns) || numeroCns.Replace(" ", "").Trim() == "")
+            {
+                mensagem_retorno = "Número do CNS é obrigatório.";
+                await ExibirMensagem(mensagem_retorno);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(numeroSisPreNatal) || numeroSisPreNatal.Replace(" ", "").Trim() == "")
+            {
+                mensagem_retorno = "Número do cartão Pré-natal é obrigatório.";
+                await ExibirMensagem(mensagem_retorno);
+                return;
+            }
+
+
+            var listaPreNatalRetorno = await restService.BuscarSolicitacoesPreNatal(numeroCns, numeroSisPreNatal);
+            if (listaPreNatalRetorno.Count() > 0)
+            {
+
+                listaPreNatal = listaPreNatalRetorno;
+                //se já tiver alguma criança já transformada,nao pode editar(desabilitar o botao de Editar)
+                isDisabledEditarGestacao = false;
+                isTodasCriancasTransformadas = false;
+                if (listaPreNatal.Count > 0)
+                {
+                    var listaPreNatalTransformados = listaPreNatal.Where(x => x.MatriculaPreNatal.DtTansformacaoCandidato != null).ToList();
+                    if (listaPreNatalTransformados.Count > 0)
+                    {
+                        isDisabledEditarGestacao = true;
+
+                        //verifica se nem todas as crianças foram transformadas
+                        if (listaPreNatal.Count == listaPreNatalTransformados.Count)
+                        {
+                            isTodasCriancasTransformadas = true;
+                        }
+                    }
+
+                }
+
+            }
+            else
+            {
+                mensagem_retorno = "Não foram encontrados dados do pré-natal.";
+                await ExibirMensagem(mensagem_retorno);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            //ver mensagem de exception
+            mensagem_retorno = "Ocorreu um erro na consulta de inscrições Pré-Natal." + ex.Message;
+            await ExibirMensagem(mensagem_retorno);
+        }
+    }
+
+
+
+
+
+
+    ////modal Protocolo
+    //ProtocoloInscricao protocolo;
+    //bool ExibirProtocolo = false;
+    //private void MostrarProtocoloModal()
+    //{
+    //    ExibirProtocolo = true;
+    //}
+
+
+    private void EditarTipoGestacao()
+    {
+        NavigationManager.NavigateTo("cadastro");
+    }
+
+
+    private void MostrarProtocolo()
+    {
+        NavigationManager.NavigateTo("protocoloInscricoes");
+    }
+
+    protected async Task ExibirMensagem(string mensagem)
+    {
+        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalMensagem", mensagem);
+        return;
+    } }

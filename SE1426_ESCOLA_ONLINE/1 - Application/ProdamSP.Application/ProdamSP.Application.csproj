@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\2 - Business\ProdamSP.Business\ProdamSP.Business.csproj" />
+    <ProjectReference Include="..\..\3 - Domain\ProdamSP.Domain\ProdamSP.Domain.csproj" />
+    <ProjectReference Include="..\..\4 - Infrastructure\4.2 - CrossCutting\ProdamSP.CrossCutting\ProdamSP.CrossCutting.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\1 - Application\ProdamSP.Application\ProdamSP.Application.csproj" />
+    <ProjectReference Include="..\..\..\2 - Business\ProdamSP.Business\ProdamSP.Business.csproj" />
+    <ProjectReference Include="..\..\..\3 - Domain\ProdamSP.Domain\ProdamSP.Domain.csproj" />
+    <ProjectReference Include="..\..\4.1 - Data\ProdamSP.Data\ProdamSP.Data.csproj" />
+  </ItemGroup>
+
+</Project>

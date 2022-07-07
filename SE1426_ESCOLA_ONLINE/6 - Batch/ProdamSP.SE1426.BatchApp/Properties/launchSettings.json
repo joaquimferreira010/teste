@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "ProdamSP.SE1426.BatchApp": {
+      "commandName": "Project",
+      "commandLineArgs": "Debug",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Debug"
+      }
+    }
+  }
+}

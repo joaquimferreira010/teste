@@ -1,0 +1,651 @@
+﻿@page "/cadastro"
+
+@using Models
+@inject IJSRuntime JSRuntime
+@inject RestService restService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager NavigationManager
+
+<fieldset class="fieldset_border">
+    <section>
+
+        @*modal cadastro*@
+        <div id="modal_confirmacao_cadastro" class="modal modal_confirmacao">
+            <div class="modal-content">
+                <div class="row no-margin-bottom">
+                    <div class="col s12 texto_centralizado texto_modal">
+                        <p><strong>A data desejada para matrícula é: </strong></p>
+                        <p>@dataConfirmacao<span class="transparent-text">.</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer center-align">
+                <button class="btn-flat modal-close cancelar" type="button">Cancelar</button>
+                <button class="btn-flat btn-eol modal-close" @onclick="() => InserirPreNatal()">Confirmar</button>
+
+            </div>
+        </div>
+
+        @*modal exclusao*@
+        <div id="modal_confirmacao_alteracao" class="modal modal_confirmacao">
+            <div class="modal-content">
+                <div class="row no-margin-bottom">
+                    <div class="col s12 texto_centralizado texto_modal">
+                        <p><strong>Alterar a quantidade de bebês gestados</strong></p>
+                        <p>de: <strong>@qtdeCriancaGestacaoInicial</strong> para: <strong>@qtdeCriancaGestacao</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer center-align">
+                <button class="btn-flat modal-close cancelar" type="button">Cancelar</button>
+                <button class="btn-flat btn-eol modal-close" @onclick="() => AlterarPreNatal()">Confirmar</button>
+
+            </div>
+        </div>
+
+        @*modal cadastro sucesso*@
+        <div id="modalCadastroSucesso" class="modal modal_mensagem notprint">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col s3 m1">
+                        <img src="img/icone_Erro.png" title="Atenção" alt="Atenção." />
+                    </div>
+                    <div class="col s7 m11 cabecalho_atencao">
+                        <p>Atenção</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12" id="contentModalCadastroSucesso">
+                        <p>@mensagem_retorno<span class="transparent-text">.</span></p>
+                    </div>
+                </div>
+                <div class="center">
+                    <button class="btn-flat btn-eol modal-close" @onclick="() => RedirecionarParaConsulta()">OK</button>
+                </div>
+            </div>
+        </div>
+
+        @*modal cadastro invalido*@
+        <div id="modalCadastroInvalido" class="modal modal_mensagem notprint">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col s3 m1">
+                        <img src="img/icone_Erro.png" title="Atenção" alt="Atenção." />
+                    </div>
+                    <div class="col s7 m11 cabecalho_atencao">
+                        <p>Atenção</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12" id="contentModalCadastroSucesso">
+                        <p>@mensagem_retorno<span class="transparent-text">.</span></p>
+                    </div>
+                </div>
+                <div class="center">
+                    <button class="btn-flat btn-eol modal-close" @onclick="() => RedirecionarParaInicio()">OK</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="skipto-content" class="col s12 m8 l9 content-box tamanho_box">
+            <div class="row hide-on-small-only">
+                <div class="col s12 right-align">
+                    <a href="#" title="Botão Sair" alt="Botão Sair" tabindex="20"><img src="assets/img/btn_Sair.png" alt="Botão de sair" title="Botão Sair"></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <h3>
+                        Cadastro Pré-Natal
+                    </h3>
+                </div>
+            </div>
+
+            @if (loading == true)
+            {
+<div id="spinner"><div class="spinner" title="Carregando"></div></div>}
+
+            <form>
+                <div class="row">
+                    <div class="col s12 m4">
+                        <div class="form-item readonly">
+                            <label for="cns">Nº CNS (Nº SUS)</label>
+                            <input readonly aria-readonly="true" placeholder="000 0000 0000 0000" id="cns" type="text" @bind="numeroCns" tabindex="21" title="Nº CNS (Nº SUS)">
+                        </div>
+                    </div>
+                    <div class="col s12 m4">
+                        <div class="form-item readonly">
+                            <label for="cpn">Nº SISPRENATAL</label>
+                            <input readonly aria-readonly="true" placeholder="00000000000000" id="cpn" type="text" @bind="numeroSisPreNatal" tabindex="22" title="Número SIS Pré-natal">
+                        </div>
+                    </div>
+                    <div class="col s12 m4">
+                        <div class="form-item readonly">
+                            <label for="nome-mae">Nome da mãe</label>
+                            <input readonly aria-readonly="true" placeholder="000 0000 0000 0000" id="nome-mae" type="text" @bind="nmResponsavel" tabindex="23" title="Nome da mãe">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row gestacao-form">
+                    <div class="col s12">
+                        <label>Tipo de gestação</label>
+                        @if (!string.IsNullOrEmpty(codEOLPreNatal) && codEOLPreNatal != "0")
+                        {
+                            if (isDisabledEditarGestacao == false)
+                            {
+            <button class="btn-flat"
+                    type="button"
+                    id="editar-gestacao"
+                    @onclick="@HabilitaEdicao"
+                    tabindex="24" autofocus>
+                Editar tipo gestação
+            </button>}
+    }
+
+                    </div>
+                    <div class="col s6 m3">
+                        <p>
+                            <label for="gestacao-unica">
+                                <input name="tipo-gestacao" id="gestacao-unica" disabled="@isDisabled" type="radio" value="unica" checked="@isUnica" @onchange="() => { isUnica = true; qtdeCriancaGestacao = 1; }" tabindex="25" />
+                                <span>Única</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col s6 m3">
+                        <p>
+                            <label for="gestacao-multipla">
+                                <input name="tipo-gestacao" id="gestacao-multipla" disabled="@isDisabled" type="radio" value="multipla" checked="@(!isUnica)" @onchange="() => { isUnica = false; qtdeCriancaGestacao = 2; }" tabindex="26" />
+                                <span>Múltipla (gêmeos)</span>
+                            </label>
+                        </p>
+                    </div>
+                    @if (!isUnica)
+                    {
+        <div class="col s6 m4 l3">
+            <div class="form-item numero-bebe">
+                <label for="numero-bebe">Número de bebês</label>
+                <input placeholder="0" disabled="@isDisabled" id="numero-bebe" type="number" min="2" max="9" inputmode="numeric" contenteditable="false" @bind="qtdeCriancaGestacao" @onblur="validaQtdeBebes" tabindex="27">
+                <span class="helper-text" data-error="Número deve ser 2 ou mais" data-success="Certo!"></span>
+            </div>
+        </div>}
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m3">
+                        <div class="form-item readonly">
+                            <label for="data-prevista">Data de nascimento prevista</label>
+                            <input readonly aria-readonly="true" placeholder="00/00/0000" id="data-prevista" type="text" @bind="@dataPrevisaoNascimento" format-value="dd/MM/yyyy" tabindex="28">
+                        </div>
+                    </div>
+                    <div class="col s12 m3">
+                        <div class="form-item data-prevista">
+                            <label for="data-matricula">Data desejada para matrícula</label>
+                            <input placeholder="--/--/----" disabled="@(!string.IsNullOrEmpty(codEOLPreNatal) && codEOLPreNatal != "0")" id="data-matricula" class="datepicker" type="text"
+                                   format-value="dd/MM/yyyy" @bind="@dataMatriculaPrevista" @onclick="LimparMensagemRetorno" tabindex="29">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <br />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <h3>Dados do responsável</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <div class="form-item readonly">
+                            <label for="nome-responsavel">Nome do responsável</label>
+                            <input readonly aria-readonly="true" id="nome-responsavel" type="text" @bind="nmResponsavel" tabindex="30">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s8 m4">
+                        <div class="form-item readonly">
+                            <label for="rg">RG</label>
+                            <input readonly aria-readonly="true" id="rg" type="text" @bind="maskedRG" tabindex="31">
+                        </div>
+                    </div>
+                    <div class="col s4 m1">
+                        <div class="form-item readonly">
+                            <label for="uf">UF</label>
+                            <input readonly aria-readonly="true" id="uf" type="text" @bind="rgUF" tabindex="32">
+                        </div>
+                    </div>
+                    <div class="col s12 m4">
+                        <div class="form-item readonly">
+                            <label for="cpf">CPF</label>
+                            <input readonly aria-readonly="true" id="cpf" type="text" @bind="maskedCPF" tabindex="33">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m3">
+                        <div class="form-item readonly">
+                            <label for="nascimento-responsavel">Data de nascimento</label>
+                            <input readonly aria-readonly="true" id="nascimento-responsavel" type="text" @bind="datatNascimentoResponsavel" tabindex="34">
+                        </div>
+                    </div>
+                    <div class="col s12 m9">
+                        <div class="form-item readonly">
+                            <label for="mae-responsavel">Nome da mãe do responsável</label>
+                            <input readonly aria-readonly="true" id="mae-responsavel" type="text" @bind="nomeMaeResponsavel" tabindex="35">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        @if (string.IsNullOrEmpty(codEOLPreNatal) || codEOLPreNatal == "0")
+                        {
+            <button type="button" class="btn-flat btn-eol" @onclick="() => ExibirModalConfirmacaoCadastro()" tabindex="36">Cadastrar pré-natal</button> }
+        else if (!isDisabled)
+        {
+<button type="button" class="btn-flat btn-eol" @onclick="() => ExibirModalConfirmacaoAlteracao()" tabindex="37">Salvar alteração</button>}
+                    </div>
+                </div>
+            </form>
+
+
+
+        </div>
+    </section>
+</fieldset>
+
+@code
+ { public string codEOLPreNatal { get; set; }
+    public string numeroCns { get; set; }
+    public string numeroSisPreNatal { get; set; }
+    private string dataPrevisaoParto { get; set; }
+    private string dataCadastroPreNatal { get; set; }
+    private int qtdeCriancaGestacao { get; set; }
+    private int qtdeCriancaGestacaoInicial { get; set; }
+    private string dataPrevisaoNascimento { get; set; }
+    private bool isUnica { get; set; }
+    private bool isDisabled { get; set; }
+    private bool isDisabledEditarGestacao { get; set; }
+    private string nmResponsavel { get; set; }
+    private string maskedRG { get; set; }
+    private string maskedCPF { get; set; }
+    private string datatNascimentoResponsavel { get; set; }
+    private string nomeMaeResponsavel { get; set; }
+    private string dataMatriculaPrevista { get; set; }
+    private string dataMatriculaPrevistaFormatada { get; set; }
+    private string dataConfirmacao { get; set; }
+    private string rgUF { get; set; }
+    private bool loading = false;
+
+    private List<PreNatalModel> listaPreNatal;
+
+    private string mensagem_retorno { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+
+        numeroCns = await sessionStorage.GetItemAsync<string>("numeroCns");
+        numeroCns = Util.Decriptar(numeroCns);
+
+        if (string.IsNullOrEmpty(numeroCns))
+        {
+            loading = false;
+            mensagem_retorno = "Acesso inválido.";
+            await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modalCadastroInvalido");
+            return;
+        }
+
+        codEOLPreNatal = await sessionStorage.GetItemAsync<string>("codEOLPreNatal");
+        codEOLPreNatal = Util.Decriptar(codEOLPreNatal);
+
+
+        numeroSisPreNatal = await sessionStorage.GetItemAsync<string>("numeroSisPreNatal");
+        numeroSisPreNatal = Util.Decriptar(numeroSisPreNatal);
+
+        numeroSisPreNatal = await sessionStorage.GetItemAsync<string>("numeroSisPreNatal");
+        numeroSisPreNatal = Util.Decriptar(numeroSisPreNatal);
+
+        dataPrevisaoParto = await sessionStorage.GetItemAsync<string>("dataPrevisaoParto");
+        dataPrevisaoParto = Util.Decriptar(dataPrevisaoParto);
+
+        dataCadastroPreNatal = await sessionStorage.GetItemAsync<string>("dataCadastroPreNatal");
+        dataCadastroPreNatal = Util.Decriptar(dataCadastroPreNatal);
+
+        if (!string.IsNullOrEmpty(codEOLPreNatal) && codEOLPreNatal != "0")
+        {
+            listaPreNatal = await restService.BuscarSolicitacoesPreNatal(numeroCns, numeroSisPreNatal);
+        }
+        else
+        {
+            listaPreNatal = await restService.PesquisarPessoaPreNatalSIGA(numeroCns);
+        }
+
+        //pode ser que o aluno esteja com dt_exclusao <> null, mas a solicitacao nao esta desativada
+        if (listaPreNatal == null || listaPreNatal.Count == 0)
+        {
+            loading = false;
+            mensagem_retorno = "Cadastro de pré-natal inválido.";
+            await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modalCadastroInvalido");
+            return;
+        }
+
+        if (listaPreNatal != null && listaPreNatal[0].codRetorno == 99)
+        {
+            mensagem_retorno = listaPreNatal[0].msgRetorno;
+            await ExibirMensagem(mensagem_retorno);
+        }
+        else
+        {
+
+            //campos para bind
+            qtdeCriancaGestacao = listaPreNatal.Count;
+            qtdeCriancaGestacaoInicial = listaPreNatal.Count;
+            isUnica = listaPreNatal.Count == 1;
+            isDisabled = !string.IsNullOrEmpty(codEOLPreNatal) && codEOLPreNatal != "0";
+            nmResponsavel = listaPreNatal[0].Responsavel.NmResponsavel;
+            dataPrevisaoNascimento = DateTime.Parse(dataPrevisaoParto).ToString("dd/MM/yyyy");
+
+            //se já tiver alguma criança já transformada,nao pode editar(desabilitar o botao de Editar)
+            isDisabledEditarGestacao = false;
+            if (listaPreNatal.Count > 0)
+            {
+                var listaPreNatalTransformados = listaPreNatal.Where(x => x.MatriculaPreNatal.DtTansformacaoCandidato != null).ToList();
+                if (listaPreNatalTransformados.Count > 0)
+                {
+                    isDisabledEditarGestacao = true;
+                }
+            }
+
+
+            //máscara CPF
+            if (listaPreNatal[0].Responsavel.CdCpfResponsavel != 0)
+            {
+                string cpf = listaPreNatal[0].Responsavel.CdCpfResponsavel.ToString();
+                int numCpf = Convert.ToInt32(cpf.Substring(0, 3) + cpf.Substring(cpf.Length - 3, 3));
+                maskedCPF = String.Format(@"{0:000\.***\.**0\-00}", numCpf);
+            }
+            else
+            {
+                maskedCPF = "";
+            }
+
+            rgUF = listaPreNatal[0].Responsavel.SgUfRgResponsavel;
+            datatNascimentoResponsavel = listaPreNatal[0].Responsavel.DtNascimentoMaeResponsavel.ToString("dd/MM/yyyy");
+            nomeMaeResponsavel = listaPreNatal[0].Responsavel.NmMaeResponsavel;
+
+            if (!string.IsNullOrEmpty(codEOLPreNatal) && codEOLPreNatal != "0")
+            {
+                dataMatriculaPrevista = listaPreNatal[0].MatriculaPreNatal.DtIntencaoMatricula.ToString("dd/MM/yyyy");
+                //dataMatriculaPrevistaFormatada = listaPreNatal[0].MatriculaPreNatal.DtNascimentoPrevista.ToString("dd 'de' MMMM 'de' yyyy", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
+                dataPrevisaoNascimento = listaPreNatal[0].MatriculaPreNatal.DtNascimentoPrevista.ToString("dd/MM/yyyy");
+                dataCadastroPreNatal = listaPreNatal[0].MatriculaPreNatal.DtInicioPreNatal.Value.ToString("dd/MM/yyyy");
+            }
+
+            //máscara RG
+            if (String.IsNullOrEmpty(listaPreNatal[0].Responsavel.NrRgResponsavel))
+            {
+                maskedRG = "";
+            }
+            else
+            {
+                string rg;
+                //int numRg;
+                if (String.IsNullOrEmpty(listaPreNatal[0].Responsavel.CdDigitoRgResponsavel))
+                {
+                    rg = listaPreNatal[0].Responsavel.NrRgResponsavel;
+                    //numRg = Convert.ToInt32(rg.Substring(0, 3) + rg.Substring(rg.Length - 3, 3));
+                    //maskedRG = String.Format(@"{0:00\.0**\.000}", numRg);
+                    if (rg.Length > 6)
+                    {
+                        maskedRG = rg.Substring(0, 3) + ".***." + rg.Substring(rg.Length - 3, 3);
+                    }
+                    else
+                    {
+                        maskedRG = rg.Substring(0, 2) + ".***.*" + rg.Substring(rg.Length - 2, 2);
+                    }
+                }
+                else
+                {
+                    rg = listaPreNatal[0].Responsavel.NrRgResponsavel.Trim();
+                    //numRg = Convert.ToInt32(rg.Substring(0, 3) + rg.Substring(rg.Length - 3, 3));
+                    //maskedRG = String.Format(@"{0:00\.0**\.*00\-0}", numRg);
+                    if (rg.Length > 6)
+                    {
+                        maskedRG = rg.Substring(0, 3) + ".***." + rg.Substring(rg.Length - 3, 3) + "-" + listaPreNatal[0].Responsavel.CdDigitoRgResponsavel.Trim();
+                    }
+                    else
+                    {
+                        maskedRG = rg.Substring(0, 2) + ".***.*" + rg.Substring(rg.Length - 2, 2) + "-" + listaPreNatal[0].Responsavel.CdDigitoRgResponsavel.Trim();
+                    }
+                }
+            }
+        }
+
+        loading = false;
+    }
+
+    protected void validaQtdeBebes()
+    {
+        if (qtdeCriancaGestacao == 0 || qtdeCriancaGestacao == 1)
+            qtdeCriancaGestacao = 2;
+        else if (qtdeCriancaGestacao > 9)
+            qtdeCriancaGestacao = 9;
+    }
+
+    protected void HabilitaEdicao()
+    {
+        LimparMensagemRetorno();
+        isDisabled = false;
+    }
+
+    protected void LimparMensagemRetorno()
+    {
+        mensagem_retorno = "";
+    }
+
+    protected void FormataData()
+    {
+        var data = dataMatriculaPrevista;
+        if (!String.IsNullOrEmpty(data) && data.Length >= 8)
+            dataMatriculaPrevista = data.Substring(0, 2) + "/" + data.Substring(2, 2) + "/" + data.Substring(4, 4);
+    }
+
+    protected async Task AlterarPreNatal()
+    {
+        if (qtdeCriancaGestacao > qtdeCriancaGestacaoInicial || (qtdeCriancaGestacaoInicial == 1 && qtdeCriancaGestacao == 1))
+            await InserirPreNatal();
+        else
+            await ExcluirPreNatal();
+    }
+
+    protected async Task InserirPreNatal()
+    {
+        PreNatalModel preNatalModel = listaPreNatal[0];
+
+        preNatalModel.MatriculaPreNatal.NrPreNatal = numeroSisPreNatal;
+        preNatalModel.MatriculaPreNatal.DtInicioPreNatal = Convert.ToDateTime(dataCadastroPreNatal);
+        preNatalModel.MatriculaPreNatal.DtIntencaoMatricula = Convert.ToDateTime(dataMatriculaPrevista);
+        // preNatalModel.MatriculaPreNatal.DtNascimentoPrevista = Convert.ToDateTime(dataPrevisaoParto);
+        preNatalModel.MatriculaPreNatal.DtNascimentoPrevista = Convert.ToDateTime(dataPrevisaoNascimento);
+
+
+        preNatalModel.QtdeCriancaGestacao = qtdeCriancaGestacao;
+
+        try
+        {
+            string baseUri = NavigationManager.BaseUri;
+
+            preNatalModel.Base = baseUri;
+
+            loading = true;
+            var dadosRetorno = await restService.IncluirPreNatal(preNatalModel);
+            loading = false;
+            if (dadosRetorno != null)
+            {
+                mensagem_retorno = dadosRetorno.Mensagem;
+                //await ExibirMensagem(mensagem_retorno);
+                if (dadosRetorno.Retorno == "TRUE")
+                {
+                    await sessionStorage.SetItemAsync("codEOLPreNatal", Util.Encriptar(dadosRetorno.CdAluno.Split(",")[0]));
+                    await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modalCadastroSucesso");
+                    //NavigationManager.NavigateTo("consultaInscricoes", forceLoad: true);
+                }
+                else
+                {
+                    await ExibirMensagem(mensagem_retorno);
+                }
+            }
+            else
+            {
+                mensagem_retorno = "Ocorreu um erro na inclusão do cadastro.";
+                await ExibirMensagem(mensagem_retorno);
+            }
+        }
+        catch (Exception e)
+        {
+            loading = false;
+            mensagem_retorno = "Ocorreu um erro durante a execução";
+            await ExibirMensagem(mensagem_retorno);
+        }
+    }
+
+    protected async Task ExcluirPreNatal()
+    {
+
+        PreNatalExclusaoModel preNatalExclusaoModel = new PreNatalExclusaoModel();
+
+        preNatalExclusaoModel.QtdeCriancaGestacao = qtdeCriancaGestacao;
+        preNatalExclusaoModel.NmMaeCrianca = nmResponsavel;
+        preNatalExclusaoModel.DtNascimentoPrevista = listaPreNatal[0].MatriculaPreNatal.DtNascimentoPrevista;
+
+        preNatalExclusaoModel.NrCnsResponsavel = listaPreNatal[0].MatriculaPreNatal.NrCnsResponsavel;
+        preNatalExclusaoModel.NrPreNatal = listaPreNatal[0].MatriculaPreNatal.NrPreNatal;
+
+        try
+        {
+            string baseUri = NavigationManager.BaseUri;
+
+            preNatalExclusaoModel.Base = baseUri;
+            loading = true;
+            var dadosRetorno = await restService.ExcluirPreNatal(preNatalExclusaoModel);
+            loading = false;
+
+            if (dadosRetorno != null)
+            {
+                mensagem_retorno = dadosRetorno.Mensagem;
+                // await ExibirMensagem(mensagem_retorno);
+                if (dadosRetorno.Retorno == "TRUE")
+                {
+                    //await sessionStorage.SetItemAsync("codEOLPreNatal", Util.Encriptar(dadosRetorno.CdAluno.Split(",")[0]));
+                    await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modalCadastroSucesso");
+                    //NavigationManager.NavigateTo("consultaInscricoes", forceLoad: true);
+                }
+                else
+                {
+                    await ExibirMensagem(mensagem_retorno);
+                }
+
+            }
+            else
+            {
+                mensagem_retorno = "Ocorreu um erro na exclusão do cadastro.";
+                await ExibirMensagem(mensagem_retorno);
+            }
+        }
+        catch (Exception e)
+        {
+            loading = false;
+            mensagem_retorno = "Ocorreu um erro durante a execução";
+            await ExibirMensagem(mensagem_retorno);
+        }
+    }
+
+
+
+    protected async void ExibirModalConfirmacaoCadastro()
+    {
+        LimparMensagemRetorno();
+        try
+        {
+            if (listaPreNatal[0].Responsavel.CdNrEndereco != null && listaPreNatal[0].Responsavel.CdNrEndereco.Length > 6)
+            {
+                await ExibirMensagem("Número do logradouro inválido, por favor, procurar a UBS mais próxima para atualizar o endereço.");
+            }
+            else if (listaPreNatal[0].Responsavel.CdCep == 0)
+            {
+                await ExibirMensagem("O CEP do logradouro deve ser numérico, por favor, procurar a UBS mais próxima para atualizar o endereço.");
+            }
+            else
+            {
+
+                dataConfirmacao = Convert.ToDateTime(dataMatriculaPrevista).ToString("dd 'de' MMMM 'de' yyyy", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
+                var dataConvertida = Convert.ToDateTime(dataMatriculaPrevista);
+                if (String.IsNullOrEmpty(dataMatriculaPrevista))
+                {
+                    mensagem_retorno = "A Data desejada para matrícula é obrigatória, por favor, selecionar.";
+                    await ExibirMensagem(mensagem_retorno);
+                }
+                else if (dataConvertida == DateTime.MinValue)
+                {
+                    mensagem_retorno = "A Data desejada para matrícula é inválida.";
+                    await ExibirMensagem(mensagem_retorno);
+                }
+                else if (dataConvertida < Convert.ToDateTime(dataPrevisaoParto))
+                {
+                    mensagem_retorno = "A data desejada para matrícula é menor que a data prevista para o parto.";
+                    await ExibirMensagem(mensagem_retorno);
+                }
+                else
+                {
+                    await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modal_confirmacao_cadastro");
+                }
+            }
+        }
+        catch (FormatException e)
+        {
+            mensagem_retorno = "A Data desejada para matrícula é obrigatória ou está inválida, por favor, selecionar.";
+            await ExibirMensagem(mensagem_retorno);
+        }
+    }
+
+    protected async Task ExibirModalConfirmacaoAlteracao()
+    {
+        LimparMensagemRetorno();
+        await JSRuntime.InvokeVoidAsync("funcoes.abrirModal", "modal_confirmacao_alteracao");
+
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("setTitle", "Cadastro"); ;
+        await JSRuntime.InvokeVoidAsync("funcoes.ativarNavItemMenu", "navCadastro");
+    }
+
+    protected async Task ExibirMensagem(string mensagem)
+    {
+        await JSRuntime.InvokeVoidAsync("funcoes.abrirModalMensagem", mensagem);
+        return;
+    }
+
+    protected async Task RedirecionarParaConsulta()
+    {
+
+        NavigationManager.NavigateTo("consultaInscricoes", forceLoad: true);
+    }
+
+    protected async Task RedirecionarParaInicio()
+    {
+
+        NavigationManager.NavigateTo("");
+    } }
